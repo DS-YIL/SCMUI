@@ -78,6 +78,11 @@ import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWi
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
 import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
+import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
+import { AsnViewComponent } from './ASN/ASNView.component';
+import { AsnListComponent } from './ASN/ASNList.component'
+
+
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -163,7 +168,10 @@ import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationRep
     MPRWiseReportsComponent,
     MPRRequisitionWiseReportComponent,
     ProjectWiseReportsComponent,
-    ProjectDurationReportsComponent
+    ProjectDurationReportsComponent,
+    ASNInitiateComponent,
+    AsnViewComponent,
+    AsnListComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

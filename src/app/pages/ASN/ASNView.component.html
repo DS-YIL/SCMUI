@@ -1,0 +1,263 @@
+<div class="card">
+  <div class="strike m-2">
+    <span class="headername">Shipment Information</span>
+    <div style="float:right;margin:13px">
+      <label style="font-size:14px"><b>Add Communication</b></label>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-plus" (click)="showASNCommunicationDialogToAdd()"></button>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
+      <label class="lblEdit">PO No:</label>
+      <span class="valueEdit">{{asnItem.PONo}}</span>
+    </div>
+    <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
+      <label class="lblEdit">Vendor Name & Vendor Code:</label>
+      <span class="valueEdit">{{asnItem.VendorName}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">ASN No:</label>
+      <span class="valueEdit">{{asnItem.ASNNo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Invoice No:</label>
+      <span class="valueEdit">{{asnItem.InvoiceNo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Invoice Date:</label>
+      <span class="valueEdit">{{asnItem.InvoiceDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Ship From:</label>
+      <span class="valueEdit">{{asnItem.ShipFrom}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Ship To:</label>
+      <span class="valueEdit">{{asnItem.ShipTo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Shipping Date:</label>
+      <span class="valueEdit">{{asnItem.ShippingDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Expected Delivery Date:</label>
+      <span class="valueEdit">{{asnItem.DeliveryDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Freight InvNo:</label>
+      <span class="valueEdit">{{asnItem.FreightInvNo}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Transporter Name:</label>
+      <span class="valueEdit">{{asnItem.TransporterName}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">LR/AWB/BL No:</label>
+      <span class="valueEdit">{{asnItem.BillofLodingNumber}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Incoterm:</label>
+      <span class="valueEdit">{{asnItem.IncoTerm}}</span>
+    </div>
+    <div *ngIf="asnItem.IncoTerm=='Other'" class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Incoterm Description:</label>
+      <span class="valueEdit">{{asnItem.IncotermDescription}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Incoterm Loc.:</label>
+      <span class="valueEdit">{{asnItem.IncotermLoc}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Mode Of Transport:</label>
+      <span class="valueEdit">{{asnItem.ModeOfTransport}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Delivery Note:</label>
+      <span class="valueEdit">{{asnItem.DeliveryNote}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Total Gross Weight in(Kgs):</label>
+      <span class="valueEdit">{{asnItem.TotalGrossWeight_Kgs}}</span>
+    </div>
+  </div>
+
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Total Net Weight in(Kgs):</label>
+      <span class="valueEdit">{{asnItem.TotalNetWeight_Kgs}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Total Volume:</label>
+      <span class="valueEdit">{{asnItem.TotalVolume}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Insurance:</label>
+      <span class="valueEdit">{{asnItem.Insurance}}</span>
+    </div>
+  </div>
+
+
+  <div class="strike m-2">
+    <span class="headername">ASN Items</span>
+  </div>
+  <div class="row m-2">
+    <p-table [value]="asnItem.ASNItemDetails" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="width:50px">S.No</th>
+          <th>PO No</th>
+          <th>PO Date</th>
+          <!--<th>Vendor Code</th>-->
+          <th>PO Line Item</th>
+          <th>Material Code</th>
+          <th style="width:200px">Material Description</th>
+          <th>HSN Code</th>
+          <th style="width:100px">PO Qty</th>
+          <th style="width:200px">Supplier Cumulative Qty</th>
+          <!--<th style="width:200px">PO Cumulative Qty</th>-->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td style="width:4em">
+            {{ri+1}}
+          </td>
+          <td class="ptable-cell">{{rowData.PONo}}</td>
+          <td class="ptable-cell">{{rowData.PODate | date : constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.POItemNo}}</td>
+          <td class="ptable-cell">{{rowData.Material}}</td>
+          <td class="ptable-cell">{{rowData.MaterialDescription}}</td>
+          <td class="ptable-cell">{{rowData.HSNCode}}</td>
+          <td class="ptable-cell">{{rowData.POQty}}</td>
+          <td class="ptable-cell">{{rowData.SupplierCumulativeQty}}</td>
+          <!--<td class="ptable-cell">{{rowData.PoCumulativeQty}}</td>-->
+        </tr>
+      </ng-template>
+    </p-table><br />
+  </div>
+  <div class="strike m-2">
+    <span class="headername">ASN Communication</span>
+  </div>
+  <div class="row m-2">
+    <p-table [value]="asnItem.ASNCommunications" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th class="text-center" style="width:50px">S.No</th>
+          <th class="text-center" style="width:200px">Communication By</th>
+          <th class="text-center" style="width:200px">Date</th>
+          <th class="text-center" style="width:300px">Remarks</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td style="width:4em">
+            {{ri+1}}
+          </td>
+          <td class="ptable-cell">{{rowData.Employee.Name}}</td>
+          <td class="ptable-cell text-center">{{rowData.RemarksDate | date : constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.Remarks}}</td>
+        </tr>
+      </ng-template>
+    </p-table><br />
+  </div>
+  <div class="strike m-2">
+    <span class="headername">Invoice Documents</span>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Tax Invoice:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==1" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Delivery Challan :</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==2" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Packing List :</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==3" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>LR/AWB/Courier Docket/B/L:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==4" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Freight Invoice:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==5" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Test Certificates:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==6" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Inspection Report:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==7" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Bank Guarantee:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==8" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Other Documents:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
+        <span *ngIf="selected.DocumentTypeId==9" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <div class="ui-g-8">
+        <label class="form-label">Remarks</label>&nbsp;<span style="color:red">*</span>&nbsp;
+        <textarea type="text" [(ngModel)]="ASNCommunications.Remarks" class="form-control"></textarea>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="onCommnicationSubmit()" label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+

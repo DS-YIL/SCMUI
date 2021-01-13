@@ -49,6 +49,9 @@ import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
 import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
+import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
+import { AsnViewComponent } from './ASN/ASNView.component';
+import { AsnListComponent } from './ASN/ASNList.component'
 
 const routes: Routes = [{
   path: '',
@@ -113,13 +116,16 @@ const routes: Routes = [{
     { path: "VendorRegInitiate/:VendorId", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
     { path: "VendorRegList", component: VendorRegListComponent, canActivate: [AuthGuard] },
     { path: "VendorRegPendingList", component: VendorRegPendingListComponent, canActivate: [AuthGuard] },
-      { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
-      { path: "statusreport", component: MPRStatusReportsComponent, canActivate: [AuthGuard] },
-      { path: "mprwisereport", component: MPRWiseReportsComponent, canActivate: [AuthGuard] },
-      { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] },
-      { path: "projectreport", component: ProjectWiseReportsComponent, canActivate: [AuthGuard] },
-      { path: "projectduration", component: ProjectDurationReportsComponent, canActivate: [AuthGuard] }
-    
+    { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
+    { path: "statusreport", component: MPRStatusReportsComponent, canActivate: [AuthGuard] },
+    { path: "mprwisereport", component: MPRWiseReportsComponent, canActivate: [AuthGuard] },
+    { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] },
+    { path: "projectreport", component: ProjectWiseReportsComponent, canActivate: [AuthGuard] },
+    { path: "projectduration", component: ProjectDurationReportsComponent, canActivate: [AuthGuard] },
+    { path: "ASNInitiate", component: ASNInitiateComponent, canActivate: [AuthGuard] },
+    { path: "ASNView/:ASNId", component: AsnViewComponent, canActivate: [AuthGuard] },
+    { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] }
+
     // {
     //      path: '',
     //      redirectTo: 'Login',

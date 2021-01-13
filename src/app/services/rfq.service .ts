@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers, ASNInitiate, ASNfilters } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice, RFQCurrencyMaster, RFQGenerateReminderMaster } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice, RFQCurrencyMaster, RFQGenerateReminderMaster, ASNCommunication, InvoiceDetails } from '../Models/rfq';
 
 @Injectable({
   providedIn: 'root'
@@ -102,4 +102,28 @@ export class RfqService {
     return this.http.post<any>(this.url + 'RFQ/SendRFQGeneratedEmail/', RFQGenerateReminderMaster, this.httpOptions);
   }
 
+  //ASN
+
+  getasnlist(data: ASNfilters): Observable<any> {
+    return this.http.post<any>(this.url + 'ASN/getAsnList', data, this.httpOptions);
+  }
+
+  getAsnByAsnno(ASNId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'ASN/getAsnDetails/' + ASNId, this.httpOptions);
+  }
+  GetInvoiceDetails(InvoiceDetails: InvoiceDetails): Observable<any> {
+    return this.http.post<any>(this.url + 'ASN/GetInvoiceDetails/', InvoiceDetails, this.httpOptions);
+  }
+  MergeInvoiceDocs(InvoiceDetails: InvoiceDetails): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }), responseType: 'blob' as any };
+    return this.http.post<any>(this.url + 'ASN/MergeInvoiceDocs/', InvoiceDetails, httpOptions);
+  }
+
+  updateASNComminications(ASNCommunication: ASNCommunication): Observable<any> {
+    return this.http.post<any>(this.url + 'ASN/updateASNComminications/', ASNCommunication, this.httpOptions);
+  }
+
+  InitiateASN(ASNInitiate: ASNInitiate): Observable<any> {
+    return this.http.post<any>(this.url + 'ASN/ASNInitiate', ASNInitiate, this.httpOptions);
+  }
 }

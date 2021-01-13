@@ -237,7 +237,7 @@ export class rfqTerms {
   termsList: Array<any> = [];
 }
 export class RFQDocuments {
- // RfqDocumentId: number;
+  // RfqDocumentId: number;
   RfqDocId: number;
   RfqRevisionId: number;
   RfqItemsId: number;
@@ -264,4 +264,73 @@ export class RFQGenerateReminderMaster {
   rfqno: string;
   Reminder: boolean;
 
+}
+
+//ASN
+export class AsnModels {
+  PONo: string = "";
+  InvoiceNo: string;
+  InvoiceDate: Date;
+  ASNNo: string;
+  VendorName: string;
+  ShipFrom: string;
+  ShipTo: string;
+  ShippingDate: Date;
+  DeliveryDate: Date;
+  FreightInvNo: number;
+  TransporterName: string;
+  BillofLodingNumber: string;
+  IncotermLoc: string;
+  IncoTerm: string = "";
+  IncotermDescription: string;
+  ModeOfTransport: string = "";
+  DeliveryNote: string;
+  TotalGrossWeight_Kgs: number;
+  TotalNetWeight_Kgs: number;
+  TotalVolume: string;
+  Insurance: string;
+  ASNItemDetails: Array<any> = [];
+  VendorId: string;
+  CreatedBy: string;
+  Incoterm: string;
+  HSNCode: string;
+  InboundDeliveryNo: string;
+  DocumentDate: string
+  ASNCommunications: Array<any> = [];
+}
+
+
+export class ASNCommunication {
+  ASNCCId: number;
+  ASNId: number;
+  PONo: string;
+  RemarksFrom: string;
+  RemarksDate: Date;
+  Remarks: string;
+  DeleteFlag: boolean;
+}
+
+export class InvoiceDetails {
+  InvoiceId: number;
+  InvoiceNo: string;
+  ASNId: number;
+  PONo: string;
+  VendorId: string;
+  CreatedDate: Date;
+  CreatedBy: string;
+  ModifiedDate: Date;
+  ModifiedBy
+  Remarks: string;
+  InvoiceDocuments: Array<InvoiceDocuments> = [];
+}
+
+export class InvoiceDocuments {
+  DocumentId: string;
+  InvoiceId: number;
+  DocumentName: string;
+  Path: string;
+  DocumentTypeId: number;
+  UploadedBy: string;
+  UploadedDate: Date;
+  IsDeleted: boolean
 }

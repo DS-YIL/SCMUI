@@ -1,0 +1,75 @@
+<h4 class="text-center">ASN List</h4>
+<div class="card m-2">
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">From Date</label><br />
+      <input type="date" class="form-control" [(ngModel)]="ASNfilters.FromDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">To Date</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="ASNfilters.ToDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Id</label><br />
+      <input class="form-control" [(ngModel)]="ASNfilters.Vendorid">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Name</label><br />
+      <input class="form-control" [(ngModel)]="ASNfilters.VendorName">
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Name</label><br />
+      <input class="form-control" [(ngModel)]="ASNfilters.ASNNo">
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="asnList()">Submit</button>
+    </div>
+  </div>
+  </div>
+  <div class="card compar-card m-2">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table #dt [value]="AsnList" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th class="text-center">S.No</th>
+          <th class="text-center">ASN No.</th>
+          <!--<th class="text-center">PO/Reference No</th>
+  <th class="text-center">PO Date</th>-->
+          <th class="text-center">Vendor Name & Vendor Code</th>
+          <th class="text-center">Invoice No</th>
+          <th class="text-center">Delivery Date</th>
+          <th class="text-center">Created Date</th>
+          <th class="text-center">Merge Invoice Docs</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'ASNNo', 'contains')"></th>
+          <!--<th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PONo', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PODate', 'contains')"></th>-->
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'VendorName', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'InvoiceNo', 'contains')"></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td class="text-center">{{ri +1}}</td>
+          <td class="text-center"><a [routerLink]="['/SCM/ASNView',rowData.ASNId]" target="_blank" routerLinkActive="active">{{rowData.ASNNo}}</a></td>
+          <!--<td class="text-center">{{rowData.PONo}}</td>-->
+          <td class="text-center">{{rowData.VendorName}}</td>
+          <td class="text-center">{{rowData.InvoiceNo}}</td>
+          <td class="text-center">{{rowData.DeliveryDate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.CreatedDate | date :  constants.dateFormat}}</td>
+          <td class="text-center"><button type="button" pButton icon="fa fa-download" class="ui-button-download" (click)="MergeInvoiceDocs(rowData)"></button></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+    </div>
+

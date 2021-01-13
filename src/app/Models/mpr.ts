@@ -594,7 +594,7 @@ export class vendorRegfilters {
   Vendorid: string;
   VendorName: string;
   IntiatedBy: string;
-  IntiatorStatus: string="";
+  IntiatorStatus: string = "";
   CheckedBy: string;
   ApprovedBy: string;
   VerifiedBy: string;
@@ -640,4 +640,20 @@ export class YILTermsandCondition {
   CreatedDate: Date;
   DeletedBy: string;
   DeletedDate: Date;
+}
+export class ASNInitiate {
+  InitiateFrom: string;
+  VendorId: string;
+  VendorName: string;
+  VendorEmailId: string;
+  Remarks: string;
+}
+
+export class ASNfilters {
+  FromDate: string;
+  ToDate: string;
+  ASNNo: string;
+  Vendorid: string
+  VendorName: string;
+  IntiatedBy: string;
 }

@@ -81,13 +81,14 @@ export class MPRPageComponent implements OnInit {
   public jobcodes: any;
   public ShipToParty: any;
   public ShipToPartyName: any;
+
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
-
     else
       this.router.navigateByUrl("Login");
+
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
@@ -321,7 +322,7 @@ export class MPRPageComponent implements OnInit {
     }, 10);
   }
 
-  //Binding searchList data
+  //Binding searchList data used to bind data in list view
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     //if (e.type == "keyup" && searchTxt && searchTxt.length < 3)
     //  return;
