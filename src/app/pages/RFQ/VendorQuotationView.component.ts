@@ -21,8 +21,8 @@ export class VendorQuotationViewComponent implements OnInit {
   public RfqRevisionId: number = 0;
   public quoteDetails: QuoteDetails;
   public rfqDocuments: Array<RFQDocuments> = [];
-  public RFQPriceVisibility: boolean = true;
-  public MPRPriceVisibilty: boolean = true;
+  public RFQPriceVisibility: boolean = false;
+  public MPRPriceVisibilty: boolean = false;
   public RFQCommunications: RFQCommunication;
   public displayCommunicationDialog; statusSubmit: boolean = false;
   public MPRRevisionId: string;
@@ -41,7 +41,7 @@ export class VendorQuotationViewComponent implements OnInit {
 
     this.RFQCommunications = new RFQCommunication();
     if (localStorage.getItem("AccessList")) {
-      this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
+        this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
     if (this.AccessList.filter(li => li.AccessName == "RFQPriceVisibility").length > 0)
       this.RFQPriceVisibility = true;
@@ -75,7 +75,7 @@ export class VendorQuotationViewComponent implements OnInit {
     this.spinner.show();
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
       this.spinner.hide();
-      this.quoteDetails = data;
+        this.quoteDetails = data;
       this.loadCommunicationDetails();
       this.MPRRevisionId = this.quoteDetails.rfqmaster.MPRRevisionId;
       if (this.quoteDetails.mprIncharges.filter(li => li.Incharge == this.employee.EmployeeNo).length > 0)

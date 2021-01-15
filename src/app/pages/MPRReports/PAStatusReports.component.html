@@ -1,0 +1,243 @@
+<div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+  <div class="row form-group">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
+      <input class="form-control" type="text" [(ngModel)]="pofilters.DocumentNumber">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="SaleOrderNo" class="form-label">PO NO:</label> &nbsp;
+      <input class="form-control" [(ngModel)]="pofilters.PONO">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label class="form-label">PODate:</label> &nbsp;
+      <input type="date" class="form-control" [(ngModel)]="pofilters.POdate">
+    </div>
+  </div><br />
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)" [(ngModel)]="pofilters.DepartmentId" placeholder="Select Department" [formControl]="mycontrol" />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayfn">
+          <mat-option *ngFor="let option of filtereddepartments | async" [value]="option">
+            {{option.Department}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.OrgDepartmentId" [disabled]="editable">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <!--<div class="col-lg-4 col-md-4 col-sm-4">
+      <mat-select-autocomplete class="grid-7-11"
+                               [placeholder]="'Options Selection'"
+                               [errorMsg]="errorMessage"
+                               [showErrorMsg]="showError"
+                               [options]="departmentlist"
+                               [display]="'Department'"
+                               [value]="'DepartmentId'"
+                               [multiple]='false'
+                               [labelCount]="2"
+                               [selectedOptions]=""
+                               (selectionChange)="getSelectedOptions($event)">
+      </mat-select-autocomplete>
+    </div>-->
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters.BuyerGroupId" placeholder="Select BuyerGroup" [formControl]="buyercontrol" />
+        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayfn2">
+          <mat-option *ngFor="let option of buyergroups" [value]="option">
+            {{option.BuyerGroup}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select BuyerGroup</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.BuyerGroupId">
+          <option value="" selected></option>
+          <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+            {{option.BuyerGroup}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters.VendorId" placeholder="Select Vendor" [formControl]="vendorcontrol" />
+        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayfn1">
+          <mat-option *ngFor="let option of filteredvendors | async" [value]="option">
+            {{option.VendorName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select Vendor</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.VendorId">
+          <option value="" selected></option>
+          <option *ngFor="let option of Vendors" [value]="option.Vendorid">
+            {{option.VendorName}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div><br />
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="docNo" class="form-label">PA Status:</label> &nbsp;
+      <select [(ngModel)]="pofilters.PAStatus" class="form-control dropdown">
+        <option value="Submitted">Submitted</option>
+        <option value="Pending">Pending</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Approved">Approved</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="paid" class="form-label ">PA ID</label><br />
+      <input class="form-control" [(ngModel)]="pofilters.Paid">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="SaleOrderNo" class="form-label">PO Status:</label> &nbsp;
+      <select [(ngModel)]="pofilters.POStatus" class="form-control dropdown">
+        <option value="Pending">Pending</option>
+        <option value="PO Released">PO Released</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="docNo" class="form-label">Rfq Number:</label> &nbsp;
+      <input class="form-control" type="text" [(ngModel)]="pofilters.rfqnumber">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">From Date</label><br />
+      <input type="date" class="form-control" [(ngModel)]="pofilters.fromDate">
+      <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">To Date</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="pofilters.toDate">
+      <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Approver</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.Approvername" (change)="someFunction($event)">
+          <option value="" selected></option>
+          <option *ngFor="let option of Approvers" [value]="option.Name">
+            {{option.Name}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="docNo" class="form-label">Approver's Status:</label> &nbsp;
+      <select [(ngModel)]="pofilters.Approverstatus" [disabled]="approverselect" class="form-control dropdown">
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+      </select>&nbsp;
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="getPaValueReport(pofilters)">Submit</button>
+    </div>
+  </div>
+</div>
+<br />
+
+<i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large" (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i>
+<div class="card compar-card mt-2">
+  <div class="card-body" style="padding-top:7px">
+    <table class="table table-sm table-striped table-bordered" #TABLE #table>
+      <thead class="thead-dark">
+        <tr style="background-color: #33b5e5">
+          <th>S.No</th>
+          <th>PA NO</th>
+          <th>MPRNO</th>
+          <th>PONO</th>
+          <th>Department</th>
+          <th>BuyerGroup</th>
+          <th>Vendor</th>
+          <th>RequestedBY</th>
+          <th>PA Status</th>
+          <th>PO Status</th>
+          <th>Target Spend</th>
+          <th>PA Value</th>
+          <th>Difference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of palist  let ndx = index">
+          <td>{{ndx+1}}</td>
+          <td><a [routerLink]="['/SCM/mprpa',app.PAId]" target="_blank" routerLinkActive="active">{{app.PAId}}</a></td>
+          <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
+          <td>{{app.pono}}</td>
+          <td>{{app.Department}}</td>
+          <td>{{app.BuyerGroup}}</td>
+          <td>{{app.VendorName}}</td>
+          <td>
+            {{app.Name}}<br />
+            {{app.RequestedOn | date : 'dd.MM.yyyy'}}
+          </td>
+          <td>{{app.PAStatus}}</td>
+          <td>{{app.POStatus}}</td>
+          <td>{{app.targetspend | currency:'INR'}}</td>
+          <td>{{app.PAvalue | currency:'INR'}}</td>
+          <td [ngStyle]="{'background-color': app.targetspend >= app.PAvalue ? 'lightgreen' : 'lightsalmon'}">{{app.targetspend - app.PAvalue | currency:'INR':'symbol':'1.2-2'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
+  <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+    <ng-template pTemplate="caption">
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr style="font-size: 12px !important;">
+        <th style="width:60px">S.No</th>
+        <th style="width:50px">PA NO</th>
+        <th style="width:100px;">MPRNO</th>
+        <th style="width:80px;">PONO</th>
+        <th style="width:100px;">Department</th>
+        <th style="width:100px;">BuyerGroup</th>
+        <th style="width:100px">Vendor</th>
+        <th style="width:100px">RequestedBY</th>
+        <th style="width:80px">Tokochu Request</th>
+        <th style="width:80px">PA Status</th>
+        <th style="width:80px">PO Status</th>
+        <th style="width:80px">PA Value</th>
+        <th style="width:80px">Target Spend</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr style="font-size: 12px !important;">
+        <td class="ptable-cell">
+          {{ri+1}}
+        </td>
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+        <td pEditableColumn class="ptable-cell">{{rowData.pono}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
+        <td pEditableColumn class="ptable-cell">
+          {{rowData.Name}}<br />
+          {{rowData.RequestedOn | date}}
+        </td>
+        <td class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.targetspend}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.PAvalue}}</td>
+      </tr>
+    </ng-template>
+  </p-table><br />
+</div>-->
+

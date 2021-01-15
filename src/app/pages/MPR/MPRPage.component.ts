@@ -81,6 +81,8 @@ export class MPRPageComponent implements OnInit {
   public jobcodes: any;
   public ShipToParty: any;
   public ShipToPartyName: any;
+  public mailsending: Array<any> = [];
+  public communicationlist: Array<any> = [];
 
   //page load event
   ngOnInit() {
@@ -452,7 +454,8 @@ export class MPRPageComponent implements OnInit {
 
         if (this.MPRCommunications.SendEmail == true)
           this.MPRReminderTrackings.MailSentOn = new Date();
-        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+          this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+          this.communicationlist.push(item)
       }
     }
     if (this.formName != "") {
@@ -1042,10 +1045,10 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunications = new MPRCommunication();
   }
 
-  getComName(code: string) {
-    if (code && this.searchItems.filter(li => li.code == code)[0])
-      return this.searchItems.filter(li => li.code == code)[0].name
-  }
+    getComName(code: string) {
+        if (code && this.communicationlist.filter(li => li.code == code)[0])
+            return this.communicationlist.filter(li => li.code == code)[0].name
+    }
 
   removeCommunication(details: MPRReminderTracking) {
     var index = this.MPRCommunications.MPRReminderTrackings.findIndex(x => x.MailTo == details.MailTo);
@@ -1834,7 +1837,124 @@ export class MPRPageComponent implements OnInit {
       }
     }
   }
+    Copymail(event) {
+        //var mailsending = new Array();
+        //to
+        if (this.MPRCommunications.SendEmail == true) {
+            //this.MPRCommunicationForm.controls.toEmail.value = this.AllMPRStatusTrackDetails[0].Name;
+            let Prepared = this.mprRevisionModel.PreparedBy;
+            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Prepared)[0]);
 
+
+            //cc
+            //firstapprover
+            let Approver = this.mprRevisionModel.ApprovedBy;
+            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Approver)[0]);
+
+            //this['MPRCommunicationForm'].controls['ccEmail'].setValue(data[0].Name);
+            //this.MPRCommunicationForm.controls.ccEmail.value = data[0].Name;
+
+            //checker
+            let checker = this.mprRevisionModel.CheckedBy;
+            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == checker)[0]);
+            //this['MPRCommunicationForm'].controls['ccEmail'].setValue(this.MPRReminderTrackings.MailTo);
+
+            //buyermanager
+            let buyermanager = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
+            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == buyermanager)[0]);
+
+            //mpr_assignment
+            //buyermanager
+            if (this.mprRevisionModel.MPR_Assignment.length > 0) {
+                let mprassignment = this.mprRevisionModel.MPR_Assignment[0].Employeeno
+                this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == mprassignment)[0]);
+            }
+
+            if (this.mailsending.length > 0) {
+                this.MPRReminderTrackings = new MPRReminderTracking();
+                if (this.employee.OrgDepartmentId == 14) {
+                    this.MPRReminderTrackings.MailAddressType = 'To';
+                    this.MPRReminderTrackings.MailTo = this.mailsending[0].EmployeeNo;
+                    this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
+                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+                    this.MPRReminderTrackings = new MPRReminderTracking();
+                    this.MPRReminderTrackings.MailAddressType = 'To';
+                    this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
+                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+                }
+                else {
+                    this.MPRReminderTrackings.MailAddressType = 'To';
+                    this.MPRReminderTrackings.MailTo = this.mailsending[3].EmployeeNo;
+                    this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
+                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+                    this.MPRReminderTrackings = new MPRReminderTracking();
+                    this.MPRReminderTrackings.MailAddressType = 'To';
+                    this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
+                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+                }
+
+
+                this.MPRReminderTrackings = new MPRReminderTracking();
+                this.MPRReminderTrackings.MailAddressType = 'CC';
+                this.MPRReminderTrackings.MailTo = this.mailsending[1].EmployeeNo;
+                this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+
+                this.MPRReminderTrackings = new MPRReminderTracking();
+                this.MPRReminderTrackings.MailAddressType = 'CC';
+                this.MPRReminderTrackings.MailTo = this.mailsending[2].EmployeeNo;
+                this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+            }
+            for (var i = 0; i < this.mailsending.length; i++) {
+                var searchItems = new searchList();
+                searchItems.code = this.mailsending[i].EmployeeNo
+                searchItems.name = this.mailsending[i].Name
+                this.communicationlist.push(searchItems)
+            }
+            //this.searchItems.push(this.mailsending[0])
+            //this.searchItems.push(this.mailsending[1])
+            //this.searchItems.push(this.mailsending[2])
+            //this.searchItems.push(this.mailsending[3])
+            //console.log("his.searchItem",this.searchItems)
+            //for (var i = 0; i < this.mailsending.length; i++) {
+            //    if (this.mailsending[i][0].Status == 'Submitted') {
+            //        this.MPRReminderTrackings = new MPRReminderTracking();
+            //        this.MPRReminderTrackings.MailAddressType = 'To';
+
+            //        if (this.employee.OrgDepartmentId == 14) {
+            //            this.MPRReminderTrackings.MailTo = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
+
+            //        }
+            //        else {
+            //            this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo;
+            //        }
+            //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+            //        this.getComName(this.mailsending[i][0].Name)
+            //    }
+            //    else {
+            //        this.MPRReminderTrackings = new MPRReminderTracking();
+            //        this.MPRReminderTrackings.MailAddressType = 'CC';
+            //        this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo
+            //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+            //    }
+            //}
+        }
+        else {
+            //this.MPRReminderTrackings = new MPRReminderTracking();
+            this.mailsending.splice(0, this.mailsending.length)
+            this.MPRCommunications.MPRReminderTrackings.splice(0, this.MPRCommunications.MPRReminderTrackings.length)
+
+        }
+        // console.log("this.mailsending", this.MPRCommunications.MPRReminderTrackings)
+    }
+    removemailCommunication(details: any) {
+        for (var i = 0; i < this.mailsending.length; i++) {
+            var index = this.mailsending[i].findIndex(x => x.EmployeeNo == details.EmployeeNo);
+            if (index > -1) {
+                this.mailsending[i].splice(index, 1);
+            }
+        }
+        //var index = this.mailsending[0].findIndex(x => x.EmployeeNo == details.EmployeeNo);
+    }
   //<<SCM Open issues coding Ended>>
 }
 

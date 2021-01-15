@@ -127,6 +127,9 @@ export class ItemsViewModel {
     ImportFreightAmount: number;
     DutyAmount: number;
     InsuranceAmount: number;
+    SoldToParty: string;
+    ShipToParty: string;
+    EndUser: string;
 }
 export class Additionaltaxes {
     HandlingAmount: number;

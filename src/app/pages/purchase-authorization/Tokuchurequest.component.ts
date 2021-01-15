@@ -231,9 +231,116 @@ export class TokuchuRequestComponent implements OnInit {
       this.tokuchuRequest.CompletedOn = this.purchasedetails.TokuchuRequest.CompletedOn;
       this.tokuchuRequest.TokuchuProcessTracks = this.purchasedetails.TokuchuRequest.TokuchuProcessTracks;
     }
-  }
+    }
+    selectDays(event: any) {
+        let data = this.purchasedetails.Item;
+        let StandardLead = this.purchasedetails.Item.find(x => x['StandardLeadtime'] != null)
+        if (this.purchasedetails.Item.find(x => x['StandardLeadtime'] != null)) {
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                if (event.currentTarget.checked) {
+                    if (data[i]['materialid'].indexOf('BOP1') > -1) {
+                        this.purchasedetails.Item[i]['StandardLeadtime'] = StandardLead['StandardLeadtime'];
+                        if (this.selectedItems.length <= data.length) {
+                            if (this.selectedItems.length == 0) {
+                                this.selectedItems.push(this.purchasedetails.Item[i]);
+                            }
+                            else if (this.selectedItems.length == data.length) {
+                                this.selectedItems[i]['StandardLeadtime'] = StandardLead['StandardLeadtime'];
+                            }
+                            else {
+                                this.selectedItems.push(this.purchasedetails.Item[i]);
+                            }
+                        }
+                    }
+                    else {
+                        this.selectedItems[i].StandardLeadtime = data[i]['StandardLeadtime'];
+                    }
+                }
+                else {
+                    (<HTMLInputElement>document.getElementById("item" + data[i]['paitemid'])).checked = false;
+                    for (var i = 0; i < this.selectedItems.length; i++) {
+                        this.selectedItems[i].StandardLeadtime = null;
+                    }
+                    //this.selectedItems.splice(this.selectedItems.indexOf(0), this.selectedItems.length);
+                }
+            }
+        }
+        else {
+            this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Please Enter Standard Lead Time" });
+            event.currentTarget.checked = false;
+        }
+        //if (data[0]['StandardLeadtime'] == null) {
+        //    this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Please Enter Standard Lead Time At First Position" });
+        //}
+        //else {
 
-  selectItem(details: any, event: any) {
+        
+    }
+    selectItem1(details: any[], event: any) {
+        var errorText = "";
+        for (var i = 0; i < details.length; i++) {
+            if (event.currentTarget.checked) {
+                if (details[i]["materialid"].indexOf('BOP1') > -1) {
+                    if (!details[i].MfgModelNo || !details[i].MfgPartNo || !details[i].VendorModelNo || !details[i].ManufacturerName) {
+                        if (!details[i].MfgModelNo)
+                            errorText += "MfgModelNo";
+                        if (!details[i].MfgPartNo)
+                            errorText += " " + "MfgPartNo";
+                        if (!details[i].VendorModelNo)
+                            errorText += " " + "VendorModelNo";
+                        if (!details[i].ManufacturerName)
+                            errorText += " " + "ManufacturerName";
+                        errorText += " " + "Fields need to be fill.";
+                        this.messageService.add({ severity: 'error', summary: 'Validation', detail: errorText });
+
+                    }
+                    else {
+                        if (this.selectedItems.length <= details.length) {
+                            if (this.selectedItems.length == 0) {
+                                this.selectedItems.push(details[i]);
+                            }
+                            else if (this.selectedItems.length == details.length) {
+                                this.selectedItems;
+                            }
+                            else {
+                                this.selectedItems.push(details[i]);
+                            }
+                        }
+                        (<HTMLInputElement>document.getElementById("item" + details[i].paitemid)).checked = true;
+                    }
+                }
+            }
+            else {
+                this.selectedItems.splice(this.selectedItems.indexOf(0), this.selectedItems.length);
+                (<HTMLInputElement>document.getElementById("item" + details[i].paitemid)).checked = false;
+                event.currentTarget.checked = false;
+            }
+        }
+
+
+        //if (event.currentTarget.checked) {
+        //    for (var i = 0; i <= details.length; i++) {
+        //        if (details[i].materialid.indexOf('BOP1') > -1) {
+        //            this.selectedItems.push(details[i]);
+        //            (<HTMLInputElement>document.getElementById("item" + details[i].paitemid)).checked = true;
+        //            console.log("this.selectedItems", this.selectedItems)
+        //        }
+        //    }
+        //}
+        //else {
+        //    this.selectedItems.splice(this.selectedItems.indexOf(0), this.selectedItems.length);
+        //    console.log("this.selectedItems", this.selectedItems)
+        //}
+        //var index = this.selectedItems.findIndex(x => x.paitemid == details.paitemid);
+        //if (details.materialid.indexOf('BOP1') <= -1) {
+        //    this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Select BOP1 Items" });
+        //    (<HTMLInputElement>document.getElementById("item" + details.paitemid)).checked = false;
+        //    if (index > -1)
+        //        this.selectedItems.splice(index, 1);
+        //    return;
+        //}
+    }
+    selectItem(details: any, event: any) {
     var index = this.selectedItems.findIndex(x => x.paitemid == details.paitemid);
     if (details.materialid.indexOf('BOP1') <= -1) {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Select BOP1 Items" });
@@ -260,7 +367,8 @@ export class TokuchuRequestComponent implements OnInit {
           this.selectedItems.splice(index, 1);
       }
       else {
-        this.selectedItems.push(details);
+          this.selectedItems.push(details);
+          console.log("this.selectedItems[0].SoldToParty", this.selectedItems)
       }
     }
     else {
@@ -344,13 +452,20 @@ export class TokuchuRequestComponent implements OnInit {
     })
   }
 
-  submitTokuchuRequest() {
-    var typeOfuser = "Requestor";
-    var errormessage = "";
-    if (this.selectedItems.length == 0 && this.showSubmit) {
-      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select atleast one item' });
-      return;
-    }
+    submitTokuchuRequest() {
+        var typeOfuser = "Requestor";
+        var errormessage = "";
+        if (this.selectedItems.length == 0 && this.showSubmit) {
+            this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select atleast one item or ' });
+            return;
+        }
+        if (this.selectedItems.length != 0) {
+            if (this.selectedItems[0].SoldToParty == '-' || this.selectedItems[0].ShipToParty == '-' || this.selectedItems[0].EndUser == '-') {
+                this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'SoldToParty ,ShipToParty and EndUser is not null ' });
+                return;
+            }
+        }
+
     this.tokuchuRequest.TokuchRequestid = this.purchasedetails.TokuchuRequest.TokuchRequestid;;
     this.tokuchuRequest.PAId = this.paid;
     this.tokuchuRequest.PreparedBY = this.employee.EmployeeNo;

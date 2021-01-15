@@ -285,7 +285,8 @@ export class mprRevision {
   Enduser: string;
   shiptoparty: string;
   soldtoparty: string;
-  MPRAssignNames: string;
+    MPRAssignNames: string;
+    MPRBuyerGroup: MPRBuyerGroup;
 }
 
 export class SaleOrderDetails {
@@ -358,7 +359,8 @@ export class Employee {
 export class MPRBuyerGroup {
   BuyerGroupId: number;
   BuyerGroup: string;
-  BoolInUse: boolean;
+    BoolInUse: boolean;
+    BuyerManager: string;
 }
 export class MPRProcurementSources {
   ProcurementSourceId: number;

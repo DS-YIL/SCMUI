@@ -208,4 +208,7 @@ export class purchaseauthorizationservice {
     GETApprovernamesbydepartmentid(departmentid: number): Observable<any> {
         return this.http.get<any>(this.url + 'PA/GETApprovernamesbydepartmentid/' + departmentid, this.httpOptions);
     }
+    getPaValueReport(pofilters: PADetailsModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/getPaValueReport', pofilters, this.httpOptions)
+    }
 } 

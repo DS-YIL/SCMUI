@@ -267,7 +267,10 @@ export class MprService {
   }
   DeleteTermsAndConditions(TermId: number,DeletedBy: string): Observable<any> {
     return this.http.get<any>(this.url + 'MPR/DeleteTermsAndConditions/' + TermId + '/' + DeletedBy);
-  }
+    }
+    previousrevisionitems(itemdetailsid: any): Observable<any> {
+        return this.http.post<any>(this.url + 'MPR/Getoldrevisionitems/', itemdetailsid, this.httpOptions);
+    }
 
 }
 

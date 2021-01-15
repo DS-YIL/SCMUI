@@ -1,5 +1,25 @@
 <div style="text-align:center"><h4>Tokuchu Request</h4></div>
 <div class="card m-2">
+  <div class="form-control" style="height:100%">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>SoldParty</th>
+          <th>ShipParty</th>
+          <th>EndUser</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pur of purchasedetails.Item | slice:0:1;">
+          <td>{{pur.SoldToParty}}</td>
+          <td>{{pur.ShipToParty}}</td>
+          <td>{{pur.EndUser}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card m-2">
   <div class="row head-text pl-0" style="margin-left:0px;width:100%">
     <div class="col-md-6 pt-2"> Vendors:</div>
   </div>
@@ -22,12 +42,14 @@
       <thead>
         <tr>
           <th>Selected vendors</th>
+          <th>Vendor Code</th>
           <th>Payment Termcode</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td style="color:#0095ff">{{selectedvendor}}</td>
+          <td *ngFor="let ven of purchasedetails.Item | slice:0:1;">{{ven.VendorCode}}</td>
           <td>{{finalpaymentterm}}</td>
         </tr>
       </tbody>
@@ -59,12 +81,12 @@
              appendTo="body">
       <ng-template pTemplate="header" let-rowData let-editing="editing">
         <tr class="mprltbldata">
-          <th style="width: 3em">
+          <th style="width: 3em"><input type="checkbox" id="checked" (click)="selectItem1(purchasedetails.Item,$event)">
             <!--<p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
           </th>
           <th style="width:60px">Sl No</th>
           <th class="ptable-cell" style="width:250px;text-align:center">Description</th>
-          <th class="ptable-cell" style="width:80px;text-align:center">Standard Lead Time</th>
+          <th class="ptable-cell" style="width:80px;text-align:center">Standard Lead Time<input type="checkbox" id="checked" (click)="selectDays($event)"></th>
           <th class="ptable-cell" style="width:150px;text-align:center">Category Level</th>
         </tr>
       </ng-template>
@@ -119,7 +141,7 @@
               </div>
             </div>
           </td>
-          <td><input [disabled]="!showSubmit" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
+          <td><input [disabled]="!showSubmit" id="timechecked" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
           <td style="display:inline-block;border:none">
             <label class="form-label"><b>Category  Level1:</b></label>&nbsp;{{rowData.ProductCategorylevel1Name}}
             <label class="form-label"><b>Category  Level2:</b></label>&nbsp;{{rowData.ProductCategorylevel2Name}} &nbsp;

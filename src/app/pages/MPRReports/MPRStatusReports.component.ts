@@ -15,7 +15,10 @@ import { NgxSpinnerService } from "ngx-spinner";
     templateUrl: './MPRStatusReports.component.html',
     providers: [DatePipe]
 })
-
+ //Name of Class: <<MPRStatusReportsComponent >> Author :<< Akhil Kumar reddy >>
+//    Date of Creation << 1 - 11 - 2019 >>
+//        Purpose : << To show the Total mpr's pending, submitted and completed by department wise>>
+//            Review Date:<<>> Reviewed By:<<>>
 export class MPRStatusReportsComponent implements OnInit {
 
     constructor(private paService: purchaseauthorizationservice, private datePipe: DatePipe, private spinner: NgxSpinnerService,private router: Router, public messageService: MessageService, public formbuilder: FormBuilder, private routing: Router) { }
@@ -66,12 +69,19 @@ export class MPRStatusReportsComponent implements OnInit {
       
      
   }
-
+     //Name of Function: << loadbuyergroups >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << To load all BuyerGroups >>
+    //            Review Date:<<>> Reviewed By:<<>>
   loadbuyergroups() {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {
         this.buyergroups = data;
     })
-  }
+    }
+    //Name of Function: << GetMprstatusreport >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << To get totalcount of pending,completed and submitted mpr's by department wise >>
+    //            Review Date:<<>> Reviewed By:<<>>
     GetMprstatusreport(status: ReportInputModel) {
         this.spinner.show();
         this.paService.Getmprstatus(status).subscribe(data => {
@@ -83,6 +93,10 @@ export class MPRStatusReportsComponent implements OnInit {
             console.log("this.data1", this.Submitted)
         })
     }
+    //Name of Function: << displymprstatus >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << navigating to the reqiusition report >>
+    //            Review Date:<<>> Reviewed By:<<>>
     displymprstatus(name?: string, data?: number, dept?: any) {
         this.search.totalcount = data;
         this.search.status = name;

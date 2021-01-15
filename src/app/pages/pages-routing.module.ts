@@ -51,7 +51,8 @@ import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.com
 import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
 import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
-import { AsnListComponent } from './ASN/ASNList.component'
+import { AsnListComponent } from './ASN/ASNList.component';
+import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component'
 
 const routes: Routes = [{
   path: '',
@@ -124,7 +125,8 @@ const routes: Routes = [{
     { path: "projectduration", component: ProjectDurationReportsComponent, canActivate: [AuthGuard] },
     { path: "ASNInitiate", component: ASNInitiateComponent, canActivate: [AuthGuard] },
     { path: "ASNView/:ASNId", component: AsnViewComponent, canActivate: [AuthGuard] },
-    { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] }
+      { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
+      { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] }
 
     // {
     //      path: '',

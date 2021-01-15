@@ -1766,7 +1766,7 @@
           </div>
           <div class="ui-g-4 form-inline">
             <label for="CompType">Send Email </label>&nbsp;&nbsp;
-            <p-checkbox [(ngModel)]="MPRCommunications.SendEmail" formControlName="sendemail" binary="true"></p-checkbox>
+            <p-checkbox [(ngModel)]="MPRCommunications.SendEmail" (click)="Copymail($event)" formControlName="sendemail" binary="true"></p-checkbox>
           </div>
         </div>
         <div *ngIf="MPRCommunications.SetReminder" class="ui-g-12 form-inline">
@@ -1796,7 +1796,7 @@
           </div>
           <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
             <label *ngIf="comm.MailAddressType=='CC'" class="form-control">
-              <span style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <span  style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
               <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
             </label>&nbsp;
           </div>

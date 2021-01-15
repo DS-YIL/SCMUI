@@ -80,7 +80,8 @@ import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.com
 import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
 import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
-import { AsnListComponent } from './ASN/ASNList.component'
+import { AsnListComponent } from './ASN/ASNList.component';
+import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component';
 
 
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -171,7 +172,8 @@ import { AsnListComponent } from './ASN/ASNList.component'
     ProjectDurationReportsComponent,
     ASNInitiateComponent,
     AsnViewComponent,
-    AsnListComponent
+      AsnListComponent,
+      PAStatusReportsComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

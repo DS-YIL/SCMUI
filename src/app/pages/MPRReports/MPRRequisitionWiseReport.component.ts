@@ -15,7 +15,10 @@ import { DatePipe } from '@angular/common';
     selector: 'app-MPRRequisitionWiseReport',
     templateUrl: './MPRRequisitionWiseReport.component.html',
 })
-
+    //Name of Class: <<mprrequisitionWisecomponent >> Author :<< Akhil Kumar reddy >>
+//    Date of Creation << 1 - 11 - 2019 >>
+//        Purpose : << to show only Approved  mpr's by all approvers>>
+//            Review Date:<<>> Reviewed By:<<>>
 export class MPRRequisitionWiseReportComponent implements OnInit {
     @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
     constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
@@ -78,12 +81,19 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
       this.loadbuyergroups();
       this.searchdata = new Array<any>();
   }
-
+        //Name of Function: << loadbuyergroups >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << To load all BuyerGroups >>
+    //            Review Date:<<>> Reviewed By:<<>>
   loadbuyergroups() {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {
         this.buyergroups = data;
     })
-  }
+    }
+    //Name of Function: << GetMprRequisitionreport >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << to get all  approved mpr's based on date filter>>
+    //            Review Date:<<>> Reviewed By:<<>>
     GetMprRequisitionreport(status: ReportInputModel) {
         if (this.employee.OrgDepartmentId != 14) {
             //status.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
@@ -106,6 +116,10 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
             this.jobcodestotal = data['jobcode']
         })
     }
+        //Name of Function: << loadallmprdepartments >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << to get all  mpr departments>>
+    //            Review Date:<<>> Reviewed By:<<>>
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
@@ -121,6 +135,10 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
 
         });
     }
+    //Name of Function: << ExportTOExcel >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Exporting the table data  to excel>>
+    //            Review Date:<<>> Reviewed By:<<>>
     ExportTOExcel() {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
         const wb: XLSX.WorkBook = XLSX.utils.book_new();

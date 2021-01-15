@@ -233,10 +233,13 @@ export class purchasePaymentListComponent implements OnInit {
   //redirect to tokuchu request
   createTokuchuRequest(details: any) {
     localStorage.setItem("paid", details.PAId);
-    if (details.TokuchRequestid)
-      this.router.navigate(["/SCM/TokochuRequest", details.TokuchRequestid]);
-    else
-      this.router.navigateByUrl("/SCM/TokochuRequest");
+      if (details.TokuchRequestid)
+          this.router.navigate(["/SCM/TokochuRequest", details.TokuchRequestid]);
+          //window.open("/SCM/TokochuRequest", details.TokuchRequestid, '_blank')
+      else
+          this.router.navigateByUrl("/SCM/TokochuRequest");
+         // window.open("/SCM/TokochuRequest", '_blank')
+       
     }
     someFunction(e) {
         this.approverselect = false;
