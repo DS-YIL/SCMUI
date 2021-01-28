@@ -45,9 +45,9 @@ export class ASNInitiateComponent implements OnInit {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.tableName = this.constants[name].tableName;
     //this.dynamicData.searchCondition = " inner join VendorUserMaster vm on vm.VendorId=VendorMaster.Vendorid" + this.constants[name].condition +" VendorCode is not null and " + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
-    this.dynamicData.searchCondition = "" + this.constants[name].condition + " VendorCode is not null and " + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + " VendorCode is not null and (" + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "venderid")
-      this.dynamicData.searchCondition += " OR VendorCode" + " like '%" + searchTxt + "%' ";
+      this.dynamicData.searchCondition += " OR VendorCode" + " like '%" + searchTxt + "%') ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;

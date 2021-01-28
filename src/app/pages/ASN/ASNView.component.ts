@@ -46,11 +46,11 @@ export class AsnViewComponent implements OnInit {
     this.RfqService.getAsnByAsnno(this.asnid).subscribe(data => {
       this.spinner.hide();
       this.asnItem = data;
-      var arr = this.asnItem.ASNItemDetails.map(({ PONo }) => PONo)
-      arr = arr.filter(function (item, index, inputArray) {
-        return inputArray.indexOf(item) == index;
-      });
-      this.asnItem.PONo = arr.toString();
+      //var arr = this.asnItem.ASNItemDetails.map(({ PONo }) => PONo)
+      //arr = arr.filter(function (item, index, inputArray) {
+      //  return inputArray.indexOf(item) == index;
+      //});
+      //this.asnItem.PONo = arr.toString();
       this.GetInvoiceDetails();
     })
   }
