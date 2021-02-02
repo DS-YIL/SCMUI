@@ -336,12 +336,12 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select MSME Document' });
       return;
     }
-    if (this.VendorData.VendorType == false && this.VendorData.ESI == "1" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.MSMERequired == true && this.VendorData.ESI == "1" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select ESI/PF' });
       return;
     }
 
-    if (this.VendorData.VendorType == false && this.VendorData.ESI == "0" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 16).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.MSMERequired == true && this.VendorData.ESI == "0" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 16).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Declaration On Letter Head' });
       return;
     }
