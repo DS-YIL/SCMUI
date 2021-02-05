@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
-import{Subscription} from 'rxjs-compat';
+import { Subscription } from 'rxjs-compat';
 import { UserData } from '../../../@core/data/users';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Employee } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 
 @Component({
@@ -12,14 +13,16 @@ import { MprService } from 'src/app/services/mpr.service';
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit ,OnDestroy{
-private subscription:Subscription;
+export class HeaderComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
-  currentUser:Employee;
-  name:any;
- public picture1:string;
+  currentUser: Employee;
+  name: any;
+  public picture1: string;
+  public DashboardCnt: string;
+  public dynamicData = new DynamicSearchResult();
 
   themes = [
     {
@@ -42,34 +45,34 @@ private subscription:Subscription;
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Logout' } ];
+  userMenu = [{ title: 'Logout' }];
 
   constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-              private themeService: NbThemeService,
-              private userService: UserData,
-              private breakpointService: NbMediaBreakpointsService,
-              private _usermanage:MprService) {
-                 //this.currentUser = this._usermanage.currentUserValue;
-                // this.currentUser = JSON.parse(localStorage.getItem('Employee'));
-                this._usermanage.currentUser.subscribe(x=>this.currentUser=x);
-                if(this.currentUser){
-                  console.log('Localstorage Value-'+ this.currentUser.Name);
-                }
-                 //this.name = this.currentUser[0].Name 
+    private menuService: NbMenuService,
+    private themeService: NbThemeService,
+    private userService: UserData,
+    private breakpointService: NbMediaBreakpointsService,
+    private _usermanage: MprService, private route: ActivatedRoute, private router: Router) {
+    //this.currentUser = this._usermanage.currentUserValue;
+    // this.currentUser = JSON.parse(localStorage.getItem('Employee'));
+    this._usermanage.currentUser.subscribe(x => this.currentUser = x);
+    if (this.currentUser) {
+      console.log('Localstorage Value-' + this.currentUser.Name);
+    }
+    //this.name = this.currentUser[0].Name 
   }
 
   ngOnInit() {
 
-// console.log(name);
-// console.log(this.currentUser);
-    
+    // console.log(name);
+    // console.log(this.currentUser);
+
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users.nick);
-      console.log(this.user);
+    console.log(this.user);
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -85,6 +88,7 @@ private subscription:Subscription;
         takeUntil(this.destroy$),
       )
       .subscribe(themeName => this.currentTheme = themeName);
+    this.getdashBoardCnt();
   }
 
   ngOnDestroy() {
@@ -101,7 +105,20 @@ private subscription:Subscription;
 
     return false;
   }
-  
+
+  getdashBoardCnt() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "exec DashboardCnt_SP " + this.currentUser.OrgDepartmentId + ", " + this.currentUser.EmployeeNo + "";
+    this._usermanage.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.DashboardCnt = data[0].checkerListCnt + data[0].ApproversListCnt + data[0].SingleVendorListCnt + data[0].PAListCnt;
+      document.getElementById("dashBrdcount").innerHTML = this.DashboardCnt;
+      
+    })
+  }
+
+  navigateDashboard() {
+    this.router.navigateByUrl('/SCM/Dashboard');
+  }
   // navigateHome() {
   //   this.menuService.navigateHome();
   //   return false;

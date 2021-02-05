@@ -11,8 +11,8 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'ngx-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
   @ViewChild("container", { read: ElementRef, static: true }) container: ElementRef;
@@ -20,9 +20,7 @@ export class DashboardComponent {
 
   public totalMPRCnt: number = 0;
   public completedMPRCnt: number = 0;
-  public checkerListCnt: number = 0;
-  public ApproversListCnt: number = 0;
-  public PAListCnt: number = 0;
+  public checkerListCnt; ApproversListCnt; SingleVendorListCnt; PAListCnt: number = 0;
   public dynamicData = new DynamicSearchResult();
   public employee: Employee;
   public mprStatusList: Array<any> = [];
@@ -45,11 +43,14 @@ export class DashboardComponent {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
+
     this.MPRList = [];
-    this.getTotalMPRCnt();
-    this.getCompletedMPRCnt();
-    this.getMPRtotalcnt();
-    this.getPAListCnt();
+    //this.getTotalMPRCnt();
+    //this.getCompletedMPRCnt();
+    //this.getMPRtotalcnt();
+    //this.getPAListCnt();
+    //this.getSingleVendorListCnt();
+    this.getdashBoardCnt();
     if (this.employee.OrgDepartmentId == 14) {
       this.chartLables = [['Approved', 3], ['Acknowledged', 4], ['RFQ Generated', 7], ['RFQ Responded', 8], ['Technical Spec Approved', 9], ['RFQ Finalized', 17], ['PA Generated', 11], ['PA Approved', 18], ['Raising PO Checked', 13], ['Raising PO Approved', 14], ['PO Released', 12], ['MPR On Hold', 16], ['MPR Rejected', 15], ['MPR Closed', 19]];
       this.typeofChart = "funnel";
@@ -58,6 +59,19 @@ export class DashboardComponent {
       this.getMPRStatusData();
     }
 
+  }
+
+  getdashBoardCnt() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "exec DashboardCnt_SP " + this.employee.OrgDepartmentId + ", " + this.employee.EmployeeNo + "";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.totalMPRCnt = data[0].totalMPRCnt;
+      this.completedMPRCnt = data[0].completedMPRCnt;
+      this.checkerListCnt = data[0].checkerListCnt;
+      this.ApproversListCnt = data[0].ApproversListCnt;
+      this.SingleVendorListCnt = data[0].SingleVendorListCnt;
+      this.PAListCnt = data[0].PAListCnt;
+    })
   }
 
   //getTotalMPRCnt() {
@@ -71,16 +85,16 @@ export class DashboardComponent {
   //  })
   //}
 
-    getTotalMPRCnt() {
-        this.dynamicData = new DynamicSearchResult();
-        if (this.employee.OrgDepartmentId == 14)
-            this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
-        else
-            this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-'";
-        this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-            this.totalMPRCnt = data[0].count;
-        })
-    }
+  //getTotalMPRCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  if (this.employee.OrgDepartmentId == 14)
+  //    this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
+  //  else
+  //    this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-'";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.totalMPRCnt = data[0].count;
+  //  })
+  //}
 
 
   //getCompletedMPRCnt() {
@@ -93,36 +107,46 @@ export class DashboardComponent {
   //  })
   //}
 
-    getCompletedMPRCnt() {
-        this.dynamicData = new DynamicSearchResult();
-        //this.dynamicData.query = "select count(*) as count from MPRStatusTrackDetails ms inner join MPRRevisions mpr on mpr.RevisionId=ms.RevisionId  where mpr.BoolValidRevision=1 and ms.StatusId in (12,16,19)";
-        this.dynamicData.query = "select count(*) as count from MPRRevisions mpr where mpr.BoolValidRevision=1 and mpr.StatusId in (12,15,19)";
-        if (this.employee.OrgDepartmentId != 14)
-            this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-' and mpr.StatusId in (12,15,19)";
-        this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-            this.completedMPRCnt = data[0].count;
-        })
-    }
+  //getCompletedMPRCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  //this.dynamicData.query = "select count(*) as count from MPRStatusTrackDetails ms inner join MPRRevisions mpr on mpr.RevisionId=ms.RevisionId  where mpr.BoolValidRevision=1 and ms.StatusId in (12,16,19)";
+  //  this.dynamicData.query = "select count(*) as count from MPRRevisions mpr where mpr.BoolValidRevision=1 and mpr.StatusId in (12,15,19)";
+  //  if (this.employee.OrgDepartmentId != 14)
+  //    this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-' and mpr.StatusId in (12,15,19)";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.completedMPRCnt = data[0].count;
+  //  })
+  //}
 
-  getMPRtotalcnt() {
-    this.dynamicData = new DynamicSearchResult();
-      this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus='Pending') or (CheckStatus='Approved' and ApprovedBy =" + this.employee.EmployeeNo +" and ApprovalStatus ='Pending')";
-    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-      this.MPRList = data;
-      this.checkerListCnt = this.MPRList.filter(li => li.CheckedBy == this.employee.EmployeeNo).length;
-      this.ApproversListCnt = this.MPRList.filter(li => li.ApprovedBy === this.employee.EmployeeNo).length;
-    })
-  }
-  getPAListCnt() {
-    this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select  count(*) as count from MPRPAApprovers mprap inner join MPRPADetails mprpa on mprap.PAId=mprpa.PAId  where  mprap.ApprovalStatus in ('pending', 'submitted')  and mprpa.DeleteFlag=0 and mprpa.PAStatus not in ('Rejected')  and mprap.Approver =" + this.employee.EmployeeNo+"";
-    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {   
-      this.PAListCnt = data[0].count;
-    })
-  }
+  //getMPRtotalcnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus='Pending') or (CheckStatus='Approved' and ApprovedBy =" + this.employee.EmployeeNo + " and ApprovalStatus ='Pending')";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.MPRList = data;
+  //    this.checkerListCnt = this.MPRList.filter(li => li.CheckedBy == this.employee.EmployeeNo).length;
+  //    this.ApproversListCnt = this.MPRList.filter(li => li.ApprovedBy === this.employee.EmployeeNo).length;
+  //  })
+  //}
+
+  //getPAListCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  this.dynamicData.query = "select  count(*) as count from MPRPAApprovers mprap inner join MPRPADetails mprpa on mprap.PAId=mprpa.PAId  where  mprap.ApprovalStatus in ('pending', 'submitted')  and mprpa.DeleteFlag=0 and mprpa.PAStatus not in ('Rejected')  and mprap.Approver =" + this.employee.EmployeeNo + "";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.PAListCnt = data[0].count;
+  //  })
+  //}
+
+  //getSingleVendorListCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1 and PurchaseTypeId =1 and  CheckStatus='Approved' and ApprovalStatus='Approved' and(SecondApprover = " + this.employee.EmployeeNo + " and SecondApproversStatus = 'Pending') or (ThirdApprover = " + this.employee.EmployeeNo + " and ThirdApproverStatus = 'Pending' and SecondApproversStatus='Approved') ";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.SingleVendorListCnt = data[0].count;
+
+  //  })
+  //}
 
   navigateTopage(page: string) {
-    this.router.navigateByUrl('/SCM/'+page+'');
+    this.router.navigateByUrl('/SCM/' + page + '');
   }
   //Load MPRStatus Chart
   getMPRStatusData() {

@@ -8,16 +8,19 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Employee, DynamicSearchResult, searchList, SaleOrderDetails, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, VendorMaster, MPRStatusUpdate, MPRDetail, AccessList, MPRAssignment } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { element } from 'protractor';
+import { HeaderComponent } from 'src/app/@theme/components/header/header.component'
 import { DatePipe } from '@angular/common';
 
 @Component({
+  providers: [HeaderComponent],
   selector: 'app-MPRPage',
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
+  constructor(private HeaderComponent: HeaderComponent,private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
+  //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent: ElementRef;
+  //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent;
   protected dialogElement: ElementRef;
 
   //variable Declarations start
@@ -1225,7 +1228,7 @@ export class MPRPageComponent implements OnInit {
         this.showRfqGen = true;
         this.showCompareRfq = true;
       }
-
+      this.HeaderComponent.getdashBoardCnt();
       this.loadMPRData(this.mprRevisionModel.RevisionId);
       if (statusDetails)
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Reminder Sent' });
