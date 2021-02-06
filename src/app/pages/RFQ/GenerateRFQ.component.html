@@ -71,7 +71,9 @@
 <br />
 <div id="page2">
   <div style="float:initial">
-    <label>Add Vendor : &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openVendorDialog('showVendorDialog')"></button><br />
+    <label>Add Vendor : &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openVendorDialog('showVendorDialog')"></button>&nbsp;&nbsp;
+    <label>Mapping : &nbsp;</label><button type="button" value="mapping" pButton icon="fa fa-plus" (click)="Showmappingitem()"></button>&nbsp;&nbsp;
+    <label>ReCreate : &nbsp;</label><button type="button" value="recreate" pButton icon="fa fa-plus" (click)="Showrecreateitem()"></button><br />
   </div>
   <br />
   <span><input type="text" class="sug-icon" disabled />&nbsp;&nbsp;<b>Suggested Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -87,7 +89,17 @@
 
   <div class="bg-white p-2">
     <div class="row m-2"><div class="form-inline" *ngFor="let col of cols;let k=index"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectAllvendors($event,col.VendorId,col.MPRItemDetailsid)">&nbsp;&nbsp;<b style="color: #a16eff;">{{col.VendorName}}</b>&nbsp;&nbsp;</div></div>
-
+    <div class="row" style="margin-left: 2px;">
+      <div class="col-md-3 mb-3" *ngFor="let vendor1 of  UniqueVendors">
+        <div class="form-control  suggested-List">
+          <label class="form-label">VendorCode : <span class="font-weight-bold">{{vendor1.VendorCode}};</span></label>&nbsp;
+          <!--<label class="form-label">VendorName : <span class="font-weight-bold">{{vendor1.VendorName}};</span></label>&nbsp;-->
+          <label class="form-label">Street : <span class="font-weight-bold">{{vendor1.Street}};</span></label>&nbsp;
+          <label class="form-label">City : <span class="font-weight-bold">{{vendor1.City}};</span></label>&nbsp;
+          <label class="form-label">Postal Code : <span class="font-weight-bold">{{vendor1.PostalCode}};</span></label>&nbsp;
+        </div>
+      </div>
+    </div>
     <div class="container-fluid pl-0 pr-0 border-0 bg-transparent" *ngFor="let Item of rfqQuoteModel;let k=index">
       <div class="row">
         <div class="col-md-12">
@@ -171,6 +183,30 @@
             </div>
             <div class="col-sm-6">
               <b>PT : </b>&nbsp;{{rvendor.PaymentTermCode}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-3" *ngFor="let vendor1 of Item.mappingdoneitems;let i=index">
+        <div *ngIf="vendor1.Duplicateitemid" class="form-control repeat-List" style="margin-top:5px">
+          <span style="color:#ffffff">Mapped Item:</span>
+          <span class="form-inline"><input type="checkbox" [disabled]="vendor1.Duplicateitemid" id='RVendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'RQty',rvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor1.vendorname}}>{{vendor1.vendorname}}-{{vendor1.VendorCode}}-<span><a [routerLink]="['/SCM/VendorQuoteView',vendor1.rfqRevisionId]" target="_blank" routerLinkActive="active">{{vendor1.RFQNo}}</a></span></b></span>
+          <!--<span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='RQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'RQty',rvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>-->
+          <div class="row">
+            <div class="col-sm-6">
+              <b>PQP : </b>&nbsp;{{vendor1.UnitPrice}}
+            </div>
+            <div class="col-sm-6">
+              <b>Q : </b>&nbsp;{{vendor1.mprquantiy}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <b>Dis : </b>&nbsp;{{vendor1.Discount}}
+            </div>
+            <div class="col-sm-6">
+              <b>PT : </b>&nbsp;{{vendor1.PaymentTermCode}}
             </div>
           </div>
         </div>
@@ -550,5 +586,127 @@
     </div>
   </p-footer>
 </p-dialog>
+<p-dialog header="Mapping" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{'width':'95%','height':'90%','overflow':'auto'}" [closable]="false">
+  <div *ngIf="rfqQuoteModel && rfqQuoteModel.length>0">
+    <p-table [columns]="vendorcols" [value]="rfqQuoteModel">
+      <ng-template pTemplate="header" let-columns>
+        <tr class="mprltbldata">
+          <th style="text-align:center;width:200px">Previous</th>
+          <th *ngFor="let col of columns;let colInd=index" style="width:250px">
+            <input type="checkbox" [disabled]="col.Duplicateitemid" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectAllVendoritemList(col,$event,colInd)">
+            {{col.vendorname}}<br />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+        <tr>
+          <!--<input type="checkbox" style="margin-top:4px;width:19px;height:16px" (click)="selectVendoritemList(rowData,$event)" />-->
+          <td let colIndex=index>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                <b>Item Description :</b>{{rowData.ItemDescription}}<br /><b>MPR Item Id :</b>{{rowData.MPRItemDetailsid}}<br /><b>ItemName :</b>{{rowData.ItemName}}<br /><b>Price :</b>{{rowData.UnitPrice}}<br /><b>Quantity :</b>{{rowData.MprQuantity}}
+              </div>
+            </div>
+          </td>
+          <td *ngFor="let vendor of rowData.mappeditems;let colIndex=index" style="width:100px !important;">
+            <div *ngIf="rowData.mappeditems">
+              <input type="checkbox" [disabled]="vendor.Duplicateitemid" style="margin-top:4px;width:19px;height:16px" id='item{{vendor.RFQItemsId}}' (click)="selectVendoritemList(vendor,$event)" />
+              <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                <b>Item Description:</b><span>{{vendor.itemdescription}}</span><br />
+              </div>
+              <table border="1" style="border:#428bca solid 1px;font-weight: 700">
+                <tr>
+                  <td>RfqNo</td>
+                  <td>{{vendor.RFQNo}}</td>
+                </tr>
+                <tr>
+                  <td>Quantity</td>
+                  <td>{{vendor.mprquantiy}}</td>
+                </tr>
+                <tr>
+                  <td>UnitPrice</td>
+                  <td>{{vendor.UnitPrice}}</td>
+                </tr>
+                <tr>
+                  <td>Revisionid</td>
+                  <td>{{vendor.itemrevision}}</td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <!--<button type="submit" *ngIf="mappedboolean" pButton icon="fa fa-check" class="ui-button-primary" (click)="RecreateItem()" label="Recreate"></button>&nbsp;&nbsp;-->
+      <button type="submit" [disabled]="!selecteditems.length" pButton icon="fa fa-check" class="ui-button-success" (click)="Insertmappingitem()" label="MAP"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<!--<p-dialog header="Recreate" [(visible)]="Recreateitems" showEffect="fade" [modal]="true" [style]="{'width':'95%','height':'90%','overflow':'auto'}" [closable]="false">
+  <div *ngIf="rfqQuoteModel && rfqQuoteModel.length>0">
+    <p-table [columns]="vendorcols" [value]="rfqQuoteModel">
+      <ng-template pTemplate="header" let-columns>
+        <tr class="mprltbldata">
+          <th style="text-align:center;width:200px">Current</th>
+          <th *ngFor="let col of columns;let colInd=index" style="width:250px">
+            {{col.vendorname}}<br />
+            <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectAllVendoritemList(PreviousDetails,col,$event,colInd,'prices')"><label>ReCreate With Previous values {{col.RFQNo}}</label><br />
+            <input type="checkbox" style="height:15px;width:15px" id='vendor1{{colInd}}' (click)="selectAllVendoritemList(PreviousDetails,col,$event,colInd,'noprices')"><label>ReCreate Without Previous values {{col.RFQNo}}</label>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+        <tr>
+          <td let colIndex=index>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                <b>Item Description :</b>{{rowData.ItemDescription}}<br /><b>MPR Item Id :</b>{{rowData.MPRItemDetailsid}}<br /><b>ItemName :</b>{{rowData.ItemName}}<br /><b>Price :</b>{{rowData.UnitPrice}}<br /><b>Quantity :</b>{{rowData.MprQuantity}}
+              </div>
+            </div>
+          </td>
+          <td *ngFor="let vendor of rowData.mappeditems;let colIndex=index" style="width:100px !important;">
+            <div *ngIf="rowData.mappeditems">
+              <input type="checkbox" value="copy" style="margin-top:4px;width:19px;height:16px" id='item{{vendor.RFQItemsId}}' (click)="selectVendoritemList(vendor,$event,'prices')" /><label style="margin-left:3px;color:blue">ReCreate With Previous Values</label><br />
+              <input type="checkbox" value="copy" style="margin-top:4px;width:19px;height:16px" id='item1{{vendor.RFQItemsId}}' (click)="selectVendoritemList(vendor,$event,'noprices')" /><label style="margin-left:3px;color:blue">ReCreate Without Previous Values</label>
+              <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                <b>Item Description:</b><span>{{vendor.itemdescription}}</span><br />
+              </div>
+              <table border="1" style="border:#428bca solid 1px;font-weight: 700">
+                <tr>
+                  <td>RfqNo</td>
+                  <td>{{vendor.RFQNo}}</td>
+                </tr>
+                <tr>
+                  <td>Quantity</td>
+                  <td>{{vendor.mprquantiy}}</td>
+                </tr>
+                <tr>
+                  <td>UnitPrice</td>
+                  <td>{{vendor.UnitPrice}}</td>
+                </tr>
+                <tr>
+                  <td>Revisionid</td>
+                  <td>{{vendor.itemrevision}}</td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">-->
+      <!--<button type="submit" *ngIf="mappedboolean" pButton icon="fa fa-check" class="ui-button-primary" (click)="ItemDocumments()" label="Recreate"></button>&nbsp;&nbsp;-->
+      <!--<button type="submit" [disabled]="!selecteditems.length" pButton icon="fa fa-check" class="ui-button-primary" (click)="RecreateItem()" label="Recreate"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>-->
+
 
 

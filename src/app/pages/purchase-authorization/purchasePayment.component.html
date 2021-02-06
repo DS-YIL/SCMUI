@@ -4,10 +4,10 @@
 
 <div class="form-control" style="height:100%;width:100%">
   <div class="row">
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted" style="margin-top:5px">
         <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
-        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%;" [value]="Buyergroup">
+        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:80%;" [value]="Buyergroup">
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-12 col-md-12 col-sm-12 form-group">
         <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
@@ -18,10 +18,10 @@
         <span class="valueEdit"> {{purchasedetails.buyergroup.BuyerGroup}}</span>
       </div>
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted" style="margin-top:5px">
         <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
-        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%;" [value]="Department">
+        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:80%;" [value]="Department">
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
         <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">DepartMent:</label>
@@ -32,12 +32,33 @@
         <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
       </div>
     </div>
+    <!--<div class="col-md-4 col-lg-4 col-sm-4">
+      <div class="form-group" *ngIf="!pasubmitted && !paincompleted" style="margin-top:5px">
+        <label for="Department" class="form-label label" style="margin-left: 12px;">PO Type:</label>&nbsp;&nbsp;
+        <select [(ngModel)]="purchasedetails.potype" style="width:80%" class="form-control dropdown">
+          <option value=""></option>
+          <option value=" Project WBS PO"> Project WBS PO</option>
+          <option value="Base Order PO">Base Order PO</option>
+          <option value="Cost Centre PO">Cost Centre PO</option>
+          <option value="CG PO">CG PO</option>
+          <option value="Dummy PO">Dummy PO</option>
+        </select>
+      </div>
+      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">DepartMent:</label>
+        <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
+      </div>
+      <div *ngIf="paincompleted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">DepartMent:</label>
+        <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
+      </div>
+    </div>-->
   </div>
   <div class="row">
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
         <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:<span class="required-asterisk" style="color:red">*</span></label>
-        <select class="form-control" [(ngModel)]="purchasedetails.PurchaseTypeId" style="margin-left: 12px;width:60%">
+        <select class="form-control" [(ngModel)]="purchasedetails.PurchaseTypeId" style="margin-left: 12px;width:80%">
           <option *ngFor="let pty of purchasetypes" [value]="pty.PurchaseTypeId"> {{pty.PurchaseType}} </option>
         </select>
       </div>
@@ -52,10 +73,10 @@
         </select>
       </div>
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
         <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Purchase Mode:<span class="required-asterisk" style="color:red">*</span></label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.PurchaseModeId" class="form-control" style="margin-left: 12px;width:60%">
+        <select [(ngModel)]="purchasedetails.PurchaseModeId" class="form-control" style="margin-left: 12px;width:80%">
           <option *ngFor="let pur of purchasemodes" [value]="pur.PurchaseModeId"> {{pur.PurchaseMode}} </option>
         </select>
       </div>
@@ -72,10 +93,10 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
-        <input type="text" disabled="true" [value]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
+        <input type="text" disabled="true" [value]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:80%" />
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
         <label for="ProjectName" class="form-label lblEdit" style="margin-left: 0px;">Project Name:</label>
@@ -86,10 +107,10 @@
         <span class="valueEdit"> {{purchasedetails.ProjectName}}</span>
       </div>
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Code:</label>
-        <input type="text" disabled="true" [value]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:60%" />
+        <input type="text" disabled="true" [value]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:80%" />
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
         <label for="ProjectCode" class="form-label lblEdit" style="margin-left: 0px;">Project Code:</label>
@@ -168,53 +189,69 @@
 </div>
 
 <br />
-<div class="form-control" style="width:100%;height:100%">
+<div class="form-control" style="height:100%">
   <div *ngIf="!pasubmitted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
     <div class="col-md-6 pt-2">Item Details</div>
     <div class="col-md-3 pt-2">
       <a [routerLink]="['/SCM/PADetails']" routerLinkActive="active">Add Items</a>
     </div>
   </div>
-  <div *ngIf="!pasubmitted && !paincompleted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px;">
-    <p-table [value]="selectedItems" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
+  <div *ngIf="!pasubmitted && !paincompleted">
+    <p-table [value]="purchasedetails.Item" [paginator]="true" [rows]="10" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
       <ng-template pTemplate="header">
-        <tr class="pt-2">
-          <th style="width: 5em">Sl No</th>
-          <th style="width:7em">Department</th>
-          <th>Vendor Name</th>
+        <tr class="mprltbldata">
+          <th style="width:50px">Sl No</th>
+          <th>Department</th>
+          <!--<th style="width:50px">Vendor Name</th>-->
           <th>Item Description</th>
-          <th style="width:6em">Quantity</th>
-          <th style="width:6em">Price</th>
-          <th style="width:6em">Total Price</th>
-          <th>Target Spend</th>
-          <th>SaleOrder</th>
-          <th>Payment Term</th>
+          <th style="width:50px">Quantity</th>
+          <th style="width:70px">Price</th>
+          <th style="width:70px">Total Price</th>
+          <th style="width:70px">Target Spend</th>
+          <th style="width:70px">SaleOrder</th>
+          <!--<th>Payment Term</th>
           <th>MPR NO</th>
-          <th>HSNCode</th>
+          <th>HSNCode</th>-->
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-        <tr class="pt-2">
+        <tr class="">
           <td class="ptable-cell">{{ri+1}}</td>
-          <td class="ptable-cell">{{rowData.Department}}</td>
-          <td class="ptable-cell">{{rowData.VendorName}}</td>
-          <td class="ptable-cell">{{rowData.ItemDescription}}
-
+          <td class="ptable-cell" style="width:27%">
+            {{rowData.Department}}<br />
+            {{rowData.VendorName}}
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">DocumentNo:&nbsp;&nbsp;<span>{{rowData.DocumentNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">SaleOrderNo:&nbsp;&nbsp;<span>{{rowData.SaleOrderNo}}</span></label>
+            </div>
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;
+              <label class="col-md-10">PaymentTermCode:&nbsp;&nbsp;<span>{{rowData.PaymentTermCode}}</span></label>
+            </div>
+          </td>
+          <td class="ptable-cell">
+            {{rowData.ItemDescription}}<br />
+            <label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
+            <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />
+            <div class="row">
+              <label class="col-md-5">Supply:<input class="col-md-3" type="checkbox"  id="supply{{rowData.Mprrfqsplititemid}}" [value]="supply"  (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
+             <label class="col-md-5">Service:<input class="col-md-3" type="checkbox"  id="service{{rowData.Mprrfqsplititemid}}" [value]="service"  (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label> 
+            </div>
           </td>
           <td class="ptable-cell">{{rowData.QuotationQty}}</td>
           <td class="ptable-cell">{{rowData.UnitPrice}}</td>
           <td class="ptable-cell">{{rowData.itemsum | currency:'INR':'symbol':'1.2-2'}}</td>
           <td class="ptable-cell">{{rowData.TargetSpend}}</td>
           <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
-          <td class="ptable-cell">{{rowData.PaymentTermCode}}</td>
+          <!--<td class="ptable-cell">{{rowData.PaymentTermCode}}</td>
           <td class="ptable-cell">{{rowData.DocumentNo}}</td>
-          <td class="ptable-cell">{{rowData.HSNCode}}</td>
+          <td class="ptable-cell">{{rowData.HSNCode}}</td>-->
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
         <tr class="pt-2">
           <td></td>
-          <td></td>
+          <!--<td></td>-->
           <td></td>
           <td></td>
           <td></td>
@@ -222,9 +259,9 @@
           <td>{{sum | currency:'INR' }}</td>
           <td>{{target}}</td>
           <td></td>
+          <!--<td></td>
           <td></td>
-          <td></td>
-          <td></td>
+          <td></td>-->
         </tr>
       </ng-template>
 

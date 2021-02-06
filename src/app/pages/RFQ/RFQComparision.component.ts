@@ -84,7 +84,7 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.RFQSplitItemId = this.RfqCompareItems[i].RFQSplitItemId;
           rfqQuoteItems.MPRItemDetailsid = this.RfqCompareItems[i].MPRItemDetailsid;
           rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
-          rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
+          rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName 
           rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
           rfqQuoteItems.PONumber = this.RfqCompareItems[i].PONumber;
           rfqQuoteItems.PODate = this.RfqCompareItems[i].PODate;
@@ -95,6 +95,7 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
           rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
           rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
+          rfqQuoteItems.MprQuantity = this.RfqCompareItems[i].MprQuantity;
           rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
           rfqQuoteItems.UnitPrice = parseFloat(this.RfqCompareItems[i].UnitPrice).toFixed(2);//rfqitemsinfo
           rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
@@ -211,7 +212,8 @@ export class RFQComparisionComponent implements OnInit {
         //vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
         this.selectedVendorList.push(vendor);
         const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-        if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
+        //if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
+        if (totalQty > vendor.MprQuantity && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
           this.statusList.push(rowindex + 1);
           event.target.checked = false;
           this.selectedVendorList.splice(index, 1);
@@ -237,7 +239,8 @@ export class RFQComparisionComponent implements OnInit {
           (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
           this.selectedVendorList.push(itmVendor);
           const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-          if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).length > 1)) {
+          //if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).length > 1)) {
+          if (totalQty > item.MprQuantity && (this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).length > 1)) {
             this.statusList.push(rowindex + 1);
             (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
             event.target.checked = false;

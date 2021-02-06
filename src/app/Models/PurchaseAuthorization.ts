@@ -129,7 +129,12 @@ export class ItemsViewModel {
     InsuranceAmount: number;
     SoldToParty: string;
     ShipToParty: string;
-    EndUser: string;
+  EndUser: string;
+  POText: string;
+  PODescription: string;
+  itemtypesupplier: string;
+  itemtypematerial: string;
+  itemtype: string
 }
 export class Additionaltaxes {
     HandlingAmount: number;
@@ -271,7 +276,8 @@ export class mprpadetailsmodel {
     HandlingAmount: number;
     ImportFreightAmount: number;
     DutyAmount: number;
-    InsuranceAmount: number;
+  InsuranceAmount: number;
+  potype: string;
 }
 export class parequestedanddeletemodel {
   paid: number;

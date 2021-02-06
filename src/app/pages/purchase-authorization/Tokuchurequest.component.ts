@@ -305,7 +305,7 @@ export class TokuchuRequestComponent implements OnInit {
                             else {
                                 this.selectedItems.push(details[i]);
                             }
-                        }
+                      }
                         (<HTMLInputElement>document.getElementById("item" + details[i].paitemid)).checked = true;
                     }
                 }
@@ -368,7 +368,6 @@ export class TokuchuRequestComponent implements OnInit {
       }
       else {
           this.selectedItems.push(details);
-          console.log("this.selectedItems[0].SoldToParty", this.selectedItems)
       }
     }
     else {
@@ -455,6 +454,7 @@ export class TokuchuRequestComponent implements OnInit {
     submitTokuchuRequest() {
         var typeOfuser = "Requestor";
         var errormessage = "";
+        var timeerrormessage="";
         if (this.selectedItems.length == 0 && this.showSubmit) {
             this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select atleast one item or ' });
             return;
@@ -485,36 +485,44 @@ export class TokuchuRequestComponent implements OnInit {
       this.tokuchuLineItem.Tklineitemid = item.Tklineitemid;
       this.tokuchuLineItem.TokuchRequestid = this.tokuchuRequest.TokuchRequestid;
       this.tokuchuLineItem.PAItemID = item.paitemid;
-      this.tokuchuLineItem.StandardLeadtime = item.StandardLeadtime;
       if (!item.ProductCategorylevel2id) {
         errormessage += (index + 1) + ","
       }
+      if (!item.StandardLeadtime) {
+        timeerrormessage += (index + 1) + ","
+      }
+      this.tokuchuLineItem.StandardLeadtime = item.StandardLeadtime;
       this.tokuchuLineItem.ProductCategorylevel2id = item.ProductCategorylevel2id;
       this.tokuchuLineItem.updatedby = this.employee.EmployeeNo;
       this.tokuchuRequest.TokuchuLIneItems.push(this.tokuchuLineItem);
     })
-    if (errormessage) {
-      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select category level2 at selected item ' + errormessage + '' });
-      return true;
-    }
-    this.spinner.show();
-    this.paService.updateTokuchuRequest(this.tokuchuRequest, typeOfuser, this.purchasedetails.Item[0]["MPRRevisionId"]).subscribe(data => {
-      this.spinner.hide();
-      if (data) {
-        this.tokuchuRequest.TokuchRequestid = data;
-        var text = "Request Submitted";
-        if (this.tokuchuRequest.PreVerifiedStatus == 'Approved' && this.showPreverSts) {
-          this.showPreverSts = false;
-          text = "Status Updated";
-        }
-        if (this.tokuchuRequest.VerifiedStatus == 'Approved' && this.showverSts) {
-          text = "Status Updated";
-          this.showverSts = false;
-        }
 
-        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: text });
+    if (errormessage) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select category level2 at selected item' + errormessage + '' });
+      return true;
       }
-    });
+      if (timeerrormessage) {
+        this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select standard Lead Time at selected item' + timeerrormessage + '' });
+        return true;
+      }
+    this.spinner.show();
+    //this.paService.updateTokuchuRequest(this.tokuchuRequest, typeOfuser, this.purchasedetails.Item[0]["MPRRevisionId"]).subscribe(data => {
+    //  this.spinner.hide();
+    //  if (data) {
+    //    this.tokuchuRequest.TokuchRequestid = data;
+    //    var text = "Request Submitted";
+    //    if (this.tokuchuRequest.PreVerifiedStatus == 'Approved' && this.showPreverSts) {
+    //      this.showPreverSts = false;
+    //      text = "Status Updated";
+    //    }
+    //    if (this.tokuchuRequest.VerifiedStatus == 'Approved' && this.showverSts) {
+    //      text = "Status Updated";
+    //      this.showverSts = false;
+    //    }
+
+    //    this.messageService.add({ severity: 'success', summary: 'Success Message', detail: text });
+    //  }
+    //});
 
   }
 

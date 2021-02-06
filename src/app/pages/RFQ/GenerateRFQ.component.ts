@@ -7,7 +7,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, DynamicSearchResult, searchList, MPRVendorDetail, VendorMaster, PoFilterParams, MPRDocument } from 'src/app/Models/mpr';
-import { rfqQuoteModel, RFQRevisionData } from 'src/app/Models/rfq';
+import { mappingitems, rfqQuoteModel, RFQRevisionData } from 'src/app/Models/rfq';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -55,7 +55,17 @@ export class GenerateRFQComponent implements OnInit {
   public selectedDocVendors: any[];
   public DocListVendors: any[];
   public docName; path: string = "";
-
+  public EditDialog: boolean;
+  public ItemDetailsid: Array<any> = [];
+  public PreviousDetails: Array<any> = [];
+  public UniqueVendors: any[];
+  public vendorcols: any[];
+  public currenitem: any[];
+  public selecteditems: Array<any> = [];
+  public MappingItems: mappingitems;
+  public mappedboolean: boolean = true;
+  public Recreateitems: boolean;
+  public rfqitemsid: Array<any> = [];
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -69,6 +79,7 @@ export class GenerateRFQComponent implements OnInit {
     this.RFQRevisionData = new RFQRevisionData();
     this.newVendorDetails = new VendorMaster();
     this.PoFilterParams = new PoFilterParams();
+    //this.MappingItems = new mappingitems();
     this.newVendor = this.formBuilder.group({
       VendorName: ['', [Validators.required]],
       Emailid: ['', [Validators.required]],
@@ -126,7 +137,7 @@ export class GenerateRFQComponent implements OnInit {
   getYILTermsAndConditions() {
     this.spinner.show();
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select term.TermId,term.TermGroupId,tg.TermGroup,term.BuyerGroupId, term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term inner join YILTermsGroup tg on tg.TermGroupId=term.TermGroupId left outer join MPRRevisions mpr on mpr.BuyerGroupId = term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId+" and term.DeleteFlag = 0 order by TermGroupId, TermId";
+    this.dynamicData.query = "select term.TermId,term.TermGroupId,tg.TermGroup,term.BuyerGroupId, term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term inner join YILTermsGroup tg on tg.TermGroupId=term.TermGroupId left outer join MPRRevisions mpr on mpr.BuyerGroupId = term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId + " and term.DeleteFlag = 0 order by TermGroupId, TermId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.spinner.hide()
       this.YILTermsAndConditions = data;
@@ -340,6 +351,11 @@ export class GenerateRFQComponent implements OnInit {
           this.rfqQuoteModel.push(rfqQuoteItems);
         }
       }
+      this.UniqueVendors = [];
+      for (var i = 0; i < this.rfqQuoteModel[0].suggestedVendorDetails.length; i++) {
+        this.UniqueVendors.push(this.rfqQuoteModel[0].suggestedVendorDetails[i]);
+      }
+      this.previousrevisionitems();
     }
   }
 
@@ -398,7 +414,7 @@ export class GenerateRFQComponent implements OnInit {
 
   //select unselect All vendors
   selectAllvendors(event: any, vendorId: any, MPRItemDetailsid: any) {
-  
+
     // var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
       this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
@@ -414,7 +430,7 @@ export class GenerateRFQComponent implements OnInit {
           }
         }
         else {
-          if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1>=0 && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
+          if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1 >= 0 && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
             this.selectedVendorList.splice(index1, 1);
             (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = false;
           }
@@ -434,7 +450,7 @@ export class GenerateRFQComponent implements OnInit {
         }
         else {
           if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1 >= 0 && (<HTMLInputElement>document.getElementById("MVendor" + i + index))) {
-           this.selectedVendorList.splice(index1, 1);
+            this.selectedVendorList.splice(index1, 1);
             (<HTMLInputElement>document.getElementById("MVendor" + i + index)).checked = false;
           }
         }
@@ -561,7 +577,7 @@ export class GenerateRFQComponent implements OnInit {
       item.RfqValidDate = new Date(date);
       item.PackingForwading = this.RFQRevisionData.PackingForwading;
       item.ExciseDuty = this.RFQRevisionData.ExciseDuty;
-      item.salesTax = this.RFQRevisionData.salesTax;
+      item.salesTax = this.RFQRevisionData.salesTax; 
       item.freight = this.RFQRevisionData.freight;
       item.Insurance = this.RFQRevisionData.Insurance;
       item.CustomsDuty = this.RFQRevisionData.CustomsDuty;
@@ -604,7 +620,7 @@ export class GenerateRFQComponent implements OnInit {
 
   bindRepeatOrderList() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from RepeatOrdersView where RFQType='Repeat Order'";
+    this.dynamicData.query = "select * from RepeatOrdersView where RFQType in ('Repeat Order','Quote')";
     if (this.PoFilterParams.PONO)
       this.dynamicData.query += "  and PONO ='" + this.PoFilterParams.PONO + "'";
     if (this.PoFilterParams.RFQNo)
@@ -736,6 +752,220 @@ export class GenerateRFQComponent implements OnInit {
     this.router.navigate([]).then(result => {
       window.open('/SCM/TermsAndConditions/', '_blank');
     });
+  }
+
+  Showmappingitem() {
+    this.EditDialog = true;
+  }
+
+  Cancel() {
+    this.EditDialog = false;
+    this.Recreateitems = false;
+  }
+
+  previousrevisionitems() {
+    var data = this.totalRfqItems
+    for (var i = 0; i < this.totalRfqItems.length; i++) {
+      this.ItemDetailsid.push(this.totalRfqItems[i].MPRItemDetailsid)
+    }
+    
+    this.MprService.previousrevisionitems(this.ItemDetailsid).subscribe(data => {
+      this.PreviousDetails = data;
+      this.prepareColsData();
+      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+        for (var j = 0; j < this.PreviousDetails.length; j++) {
+          if (this.rfqQuoteModel[i].MPRItemDetailsid == this.PreviousDetails[j].previousitemdetails) {
+            this.MappingItems = new mappingitems();
+            this.MappingItems.itemrevision = this.PreviousDetails[j].itemrevision;
+            this.MappingItems.rfqRevisionId = this.PreviousDetails[j].rfqRevisionId;
+            this.MappingItems.previousitemdetails = this.PreviousDetails[j].previousitemdetails;
+            this.MappingItems.vendorname = this.PreviousDetails[j].vendorname;
+            this.MappingItems.VendorCode = this.PreviousDetails[j].VendorCode;
+            this.MappingItems.city = this.PreviousDetails[j].city;
+            this.MappingItems.Discount = this.PreviousDetails[j].Discount;
+            this.MappingItems.DiscountPercentage = this.PreviousDetails[j].DiscountPercentage;
+            this.MappingItems.RFQSplitItemId = this.PreviousDetails[j].RFQSplitItemId;
+            this.MappingItems.RfqMasterId = this.PreviousDetails[j].RfqMastefrepeatOrdervendorDetailsrId;
+            this.MappingItems.rfqRevisionId = this.PreviousDetails[j].rfqRevisionId;
+            this.MappingItems.RFQNo = this.PreviousDetails[j].RFQNo;
+            this.MappingItems.RFQItemsId = this.PreviousDetails[j].RFQItemsId;
+            this.MappingItems.itemdescription = this.PreviousDetails[j].itemdescription;
+            this.MappingItems.mprquantiy = this.PreviousDetails[j].mprquantiy;
+            this.MappingItems.UnitPrice = this.PreviousDetails[j].UnitPrice;
+            this.MappingItems.Itemdetailsid = this.PreviousDetails[j].Itemdetailsid;
+            this.MappingItems.Duplicateitemid = this.PreviousDetails[j].Duplicateitemid;
+            this.rfqQuoteModel[i].mappingdoneitems.push(this.MappingItems);
+          }
+          //this.rfqQuoteModel[i].mappingdoneitems.push(this.PreviousDetails.filter(x => x.previousitemdetails == this.rfqQuoteModel[i].MPRItemDetailsid));
+          //this.rfqQuoteModel[i].mappingdoneitems.push(this.PreviousDetails.filter(x => x.previousitemdetails == this.rfqQuoteModel[i].suggestedVendorDetails[j].MPRItemDetailsid));
+        }
+        //this.rfqQuoteModel[i].mappingdoneitems.push(this.PreviousDetails.filter(x => x.previousitemdetails == this.rfqQuoteModel[i].MPRItemDetailsid));
+      }
+      //for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+      //  this.rfqQuoteModel[i].mappingdoneitems.push(this.PreviousDetails.filter(x => x.previousitemdetails == this.rfqQuoteModel[i].MPRItemDetailsid));
+      //}
+      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+        if (this.rfqQuoteModel[i].mappingdoneitems.length > 0) {
+          for (var j = 0; j < this.rfqQuoteModel[i].mappingdoneitems.length; j++) {
+            if (this.rfqQuoteModel[i].suggestedVendorDetails[j].MPRItemDetailsid == this.rfqQuoteModel[i].mappingdoneitems[j].previousitemdetails && this.rfqQuoteModel[i].mappingdoneitems[j].Duplicateitemid != null) {
+              this.rfqQuoteModel[i].suggestedVendorDetails[j]['VendorId'] = null
+            }
+          }
+        }
+      }
+      let data1 = new Array();
+      for (var i = 0; i < this.vendorcols.length; i++) {
+          //var itemdata = new mappingitems();
+        data1 = this.PreviousDetails.filter(x => x.VendorCode == this.vendorcols[i].VendorCode);
+        for (var j = 0; j < data1.length; j++) {
+          this.MappingItems = new mappingitems();
+          this.MappingItems.itemrevision = data1[j].itemrevision;
+          this.MappingItems.rfqRevisionId = data1[j].rfqRevisionId;
+          this.MappingItems.previousitemdetails = data1[j].previousitemdetails;
+          this.MappingItems.vendorname = data1[j].vendorname;
+          this.MappingItems.VendorCode = data1[j].VendorCode;
+          this.MappingItems.city = data1[j].city;
+          this.MappingItems.Discount = data1[j].Discount;
+          this.MappingItems.DiscountPercentage = data1[j].DiscountPercentage;
+          this.MappingItems.RFQSplitItemId = data1[j].RFQSplitItemId;
+          this.MappingItems.RfqMasterId = data1[j].RfqMastefrepeatOrdervendorDetailsrId;
+          this.MappingItems.rfqRevisionId = data1[j].rfqRevisionId;
+          this.MappingItems.RFQNo = data1[j].RFQNo;
+          this.MappingItems.RFQItemsId = data1[j].RFQItemsId;
+          this.MappingItems.itemdescription = data1[j].itemdescription;
+          this.MappingItems.mprquantiy = data1[j].mprquantiy;
+          this.MappingItems.UnitPrice = data1[j].UnitPrice;
+          this.MappingItems.Itemdetailsid = data1[j].Itemdetailsid;
+          this.MappingItems.Duplicateitemid = data1[j].Duplicateitemid;
+          this.rfqQuoteModel[j].mappeditems.push(this.MappingItems);
+        }
+      }
+    })
+  }
+  selectVendor1List(data: any, event: any) {
+    if (event.currentTarget.checked) {
+      console.log("dada", data)
+    }
+    else {
+
+    }
+  }
+  selectAllitems(data1: any, event: any) {
+    if (event.currentTarget.checked) {
+      console.log("dadada", data1)
+    }
+    else {
+
+    }
+  }
+  UniquevendorDetailsArray() {
+    var vendor;
+    let adat = new Array();
+    let vendordetails = new Array();
+    //this.UniqueVendors.push(this.rfqQuoteModel[0].suggestedVendorDetails)
+    console.log("this.UniqueVendors", this.UniqueVendors)
+    //from get rfqitems
+    // adat = this.UniqueVendors;
+
+    //for (var i = 0; i < adat.length; i++) {
+    //    if (i == 0) {
+    //        vendor = adat[i]['VendorName']
+    //        vendordetails.push(adat[i])
+    //    }
+    //    else {
+    //        if (vendor != adat[i]['VendorName']) {
+    //            vendordetails.push(adat[i])
+    //        }
+    //    } 
+
+    //}
+    return vendordetails;
+  }
+  prepareColsData() {
+    this.vendorcols = [];
+    this.PreviousDetails.forEach(vendor => {
+      if (this.vendorcols.filter(li => li.VendorCode == vendor.VendorCode).length == 0) {
+        this.vendorcols.push(vendor);
+      }
+    });
+    this.currenitem = [];
+    for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+
+    }
+    //this.currenitem.push(this.rfqQuoteModel[0]['suggestedVendorDetails'])
+  }
+  selectVendoritemList(data: any, event: any) {
+    //this.recreatetype = type;
+    if (event.currentTarget.checked) {
+      this.selecteditems.push(data);
+    } 
+    else {
+      for (var i = 0; i < this.selecteditems.length; i++) {
+        var index = this.selecteditems.findIndex(x => x.RFQItemsId == data.RFQItemsId)
+        if (index >= 0) {
+          this.selecteditems.splice(index, 1)
+        }
+      }
+    }
+  }
+  selectAllVendoritemList(vendor: any, event: any, colind: any) {
+    //this.recreatetype = type;
+    let index = []
+    if (event.currentTarget.checked) {
+      index = this.PreviousDetails.filter(x => x.VendorCode == vendor.VendorCode && x.Duplicateitemid == null);
+      for (var i = 0; i < index.length; i++) {
+        (<HTMLInputElement>document.getElementById("item" + index[i].RFQItemsId)).checked = true;
+        if (this.selecteditems.filter(x => x.RFQItemsId != index[i].RFQItemsId)) {
+          this.selecteditems.push(index[i])
+        }
+        
+      }
+    }
+    else {
+      let deselect = [];
+      deselect = this.selecteditems.filter(x => x.VendorCode == vendor.VendorCode);
+      deselect.forEach((item) => {
+        var index1 = this.selecteditems.findIndex(li => li.VendorCode == item.VendorCode);
+          (<HTMLInputElement>document.getElementById("item" + item.RFQItemsId)).checked = false;
+        this.selecteditems.splice(index1, 1)
+      })
+    }
+  }
+  Insertmappingitem() {
+    this.MprService.Insertmappingitem(this.selecteditems).subscribe(data => {
+      this.mappedboolean = false;
+      this.rfqitemsid = data;
+      this.EditDialog = false;
+      window.location.reload();
+      //this.rfqitemsid.forEach(item => {
+      //  this.PreviousDetails.filter(x => x.RFQItemsId == item.rfqitemid);
+      //  (<HTMLInputElement>document.getElementById("item" + item.rfqitemid)).disabled = true;
+
+      //});
+    })
+  }
+
+  Showrecreateitem() {
+    this.Recreateitems = true;
+  }
+  //RecreateItem() {
+  //  if (this.selecteditems.length == 0) {
+  //    for (var i = 0; i < this.PreviousDetails.length; i++) {
+  //      this.RfqService.RecreateNewRfqRevision(this.PreviousDetails[i]['rfqRevisionId'],this.recreatetype).subscribe(data => {
+
+  //      })
+  //    }
+  //  }
+  //  else {
+  //    for (var i = 0; i < this.selecteditems.length; i++) {
+  //      this.RfqService.RecreateNewRfqRevision(this.selecteditems[i]['rfqRevisionId'],this.recreatetype).subscribe(data => {
+
+  //      })
+  //    }
+  //  }
+  //}
+  ItemDocumments() {
+    this.showConformationDialog = true;
   }
 }
 

@@ -32,7 +32,9 @@ export class rfqQuoteModel {
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
   repeatOrdervendorDetails: Array<any> = [];
-
+  mappeditems: Array<mappingitems> = [];
+  VendormappedDetails: Array<any> = [];
+  mappingdoneitems: Array<any> = [];
 }
 export class RFQRevisionData {
   CreatedBy: number;
@@ -333,4 +335,27 @@ export class InvoiceDocuments {
   UploadedBy: string;
   UploadedDate: Date;
   IsDeleted: boolean
+}
+export class mappingitems {
+  itemrevision: number;
+  itemdescription: string;
+  DocumentNo: string;
+  previousitemdetails: string;
+  Itemdetailsid: string;
+  vendorname: string;
+  VendorCode: string;
+  city: string;
+  postalcode: string;
+  UnitPrice: string;
+  DiscountPercentage: string;
+  Discount: string;
+  RFQSplitItemId: number;
+  RfqMasterId: number;
+  rfqRevisionId: number;
+  RFQNo: string;
+  RFQItemsId: string;
+  itemid: string;
+  mprquantiy: string;
+  mprrevisionid: number;
+  Duplicateitemid: string;
 }

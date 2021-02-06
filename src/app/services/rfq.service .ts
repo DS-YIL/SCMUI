@@ -126,4 +126,7 @@ export class RfqService {
   InitiateASN(ASNInitiate: ASNInitiate): Observable<any> {
     return this.http.post<any>(this.url + 'ASN/ASNInitiate', ASNInitiate, this.httpOptions);
   }
+  RecreateNewRfqRevision(revisionId: number, recreate: string): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/RecreateNewRfqRevision/' + revisionId + '/' + recreate, this.httpOptions);
+  }
 }

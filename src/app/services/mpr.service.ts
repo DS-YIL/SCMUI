@@ -271,6 +271,8 @@ export class MprService {
     previousrevisionitems(itemdetailsid: any): Observable<any> {
         return this.http.post<any>(this.url + 'MPR/Getoldrevisionitems/', itemdetailsid, this.httpOptions);
     }
-
+  Insertmappingitem(mapping: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/InsertMappingItems/', mapping, this.httpOptions);
+  }
 }
 
