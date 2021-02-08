@@ -73,7 +73,7 @@
   <div style="float:initial">
     <label>Add Vendor : &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openVendorDialog('showVendorDialog')"></button>&nbsp;&nbsp;
     <label>Mapping : &nbsp;</label><button type="button" value="mapping" pButton icon="fa fa-plus" (click)="Showmappingitem()"></button>&nbsp;&nbsp;
-    <label>ReCreate : &nbsp;</label><button type="button" value="recreate" pButton icon="fa fa-plus" (click)="Showrecreateitem()"></button><br />
+    <!--<label>ReCreate : &nbsp;</label><button type="button" value="recreate" pButton icon="fa fa-plus" (click)="Showrecreateitem()"></button><br />-->
   </div>
   <br />
   <span><input type="text" class="sug-icon" disabled />&nbsp;&nbsp;<b>Suggested Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -191,7 +191,7 @@
       <div class="col-md-3 mb-3" *ngFor="let vendor1 of Item.mappingdoneitems;let i=index">
         <div *ngIf="vendor1.Duplicateitemid" class="form-control repeat-List" style="margin-top:5px">
           <span style="color:#ffffff">Mapped Item:</span>
-          <span class="form-inline"><input type="checkbox" [disabled]="vendor1.Duplicateitemid" id='RVendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'RQty',rvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor1.vendorname}}>{{vendor1.vendorname}}-{{vendor1.VendorCode}}-<span><a [routerLink]="['/SCM/VendorQuoteView',vendor1.rfqRevisionId]" target="_blank" routerLinkActive="active">{{vendor1.RFQNo}}</a></span></b></span>
+          <span class="form-inline"><input type="checkbox" [disabled]="vendor1.Duplicateitemid" id='RVendor{{k+""+i}}' class="checkmark vndorinputchk"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor1.vendorname}}>{{vendor1.vendorname}}-{{vendor1.VendorCode}}-<span><a [routerLink]="['/SCM/VendorQuoteView',vendor1.rfqRevisionId]" target="_blank" routerLinkActive="active">{{vendor1.RFQNo}}</a></span></b></span>
           <!--<span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='RQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'RQty',rvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>-->
           <div class="row">
             <div class="col-sm-6">

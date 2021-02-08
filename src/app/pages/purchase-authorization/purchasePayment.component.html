@@ -234,8 +234,8 @@
             <label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
             <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />
             <div class="row">
-              <label class="col-md-5">Supply:<input class="col-md-3" type="checkbox"  id="supply{{rowData.Mprrfqsplititemid}}" [value]="supply"  (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
-             <label class="col-md-5">Service:<input class="col-md-3" type="checkbox"  id="service{{rowData.Mprrfqsplititemid}}" [value]="service"  (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label> 
+              <label class="col-md-5">Supply:<input class="col-md-3" type="checkbox"  id="supply{{rowData.Mprrfqsplititemid}}"  (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
+             <label class="col-md-5">Service:<input class="col-md-3" type="checkbox"  id="service{{rowData.Mprrfqsplititemid}}"   (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label> 
             </div>
           </td>
           <td class="ptable-cell">{{rowData.QuotationQty}}</td>

@@ -299,6 +299,7 @@ export class AsnModels {
   InboundDeliveryNo: string;
   DocumentDate: string
   ASNCommunications: Array<any> = [];
+  PONos: string;
 }
 
 
