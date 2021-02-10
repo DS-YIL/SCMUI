@@ -466,4 +466,21 @@ export class statussearch {
     Issuepurposeid: number;
     OrgDepartmentId: number;
 }
+export class MSAMasterConfimationModel {
+  MSAMasterID: number;
+  PAID: number;
+  StatusRemarks: string;
+  Confirmationflag: boolean;
+  ConfirmationStatus: string;
+  ConfirmedBy:string;
+  ConfirmedDate:Date;
+  DeletedBy :string;
+  DeletedDate:Date;
+  DeletedRemarks:string;
+  UploadedBy: string;
+  UplaodedDate: Date;
+  Deleteflag:boolean;
+  DocumentNo:string;
+  RevisionId:number;
+}
 
