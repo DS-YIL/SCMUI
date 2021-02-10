@@ -82,6 +82,7 @@ import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
 import { AsnListComponent } from './ASN/ASNList.component';
 import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component';
+import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 
 
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -173,7 +174,8 @@ import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component
     ASNInitiateComponent,
     AsnViewComponent,
       AsnListComponent,
-      PAStatusReportsComponent
+      PAStatusReportsComponent,
+      MSALineItemListComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

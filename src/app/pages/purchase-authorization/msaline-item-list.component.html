@@ -1,0 +1,317 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6"><h4>MSA Line Item List and Upload</h4></div>
+  </div>
+  <br />
+  <div class="form-control" style="height:100%">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label label">Paid</label><br />
+        <input class="form-control" [(ngModel)]="inputsearch.PAId">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group" style="margin-Top:17px">
+        <button type="button" class="btn btn-primary" (click)="getMSAlineItemList(inputsearch)">Search</button>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label label">File Upload</label><br />
+        <input class="form-control" type="file" id="file1" (change)="getFileuploadDetails($event)"
+          style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
+        <div *ngFor="let selected of myfiles1;let index = index" style="margin-top:5px">
+          <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true"
+            (click)="removeSelecteduploadFile(index)"></i>
+        </div>&nbsp;&nbsp;
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group" style="margin-Top:17px">
+        <button type="button" class="btn btn-primary" (click)="uploadapprovedFiles(inputsearch)">Upload</button>
+      </div>
+     
+    </div>
+
+<div class="row" *ngIf="MSAConfirmationMOdelForView" >
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">Uploaded By: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label">{{MSAConfirmationMOdelForView.UploadedBy}}</label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">Uploaded On: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label">{{MSAConfirmationMOdelForView.UplaodedDate|date}}</label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">confirmation Status: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label">{{MSAConfirmationMOdelForView.ConfirmationStatus}}</label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">Confirmed By: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label">{{MSAConfirmationMOdelForView.ConfirmedBy}}</label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">Confirmed On: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label">{{MSAConfirmationMOdelForView.ConfirmedDate|date}}</label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <label class="form-label label">Document: </label>
+  </div>
+  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+    <a [routerLink]="['/SCM/MPRForm',MSAConfirmationMOdelForView.RevisionId]" target="_blank" routerLinkActive="active"><b>{{MSAConfirmationMOdelForView.DocumentNo}}</b></a>
+
+    <!-- <a [routerLink]="['/SCM/mprpa',MSAConfirmationMOdelForView.PAId]" target="_blank" routerLinkActive="active">{{MSAConfirmationMOdelForView.DocumentNo}} -->
+    <!-- <label class="form-label">{{MSAConfirmationMOdelForView.DocumentNo}}</label> -->
+  </div>
+</div>
+<div class="row" *ngIf="!MSAConfirmationMOdelForView" >
+  <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+    <label class="form-label red" style="color: red;"><b>**This PA is not uploaded and confirmed yet. Please Process it for next step.**</b></label>
+  </div>
+</div>
+
+  </div>
+ <br/>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <b>Export:  </b> <i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large" (click)="excelExtport()"
+      pTooltip="Export To Excel"></i>
+      <span class="pull-right"><i class="fa fa-square-o mandatory" aria-hidden="true" style="font-size:x-large"></i>*Mandatory Fields</span>
+      <br/><br/>
+    <p-table #TABLE #table [value]="MSALineItemList" [paginator]="true"
+      [style]="{'width':'100%','overflow':'auto!important'}" [rows]="5" [resizableColumns]="true" [responsive]="true"
+      columnResizeMode="expand" resizableColumns="true" appendTo="body">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="width:100px">S.No</th>
+          <th class="mandatory" style="width:100px">item No.</th>
+
+          <th style="width:110px">Deletion Flag</th>
+          <th class="mandatory" style="width:100px">MS Code</th>
+          <th class="mandatory" style="width:100px">Item Desc</th>
+          <th class="mandatory" style="width:100px">WBS</th>
+          <th style="width:100px">WBS Desc</th>
+          <th class="mandatory" style="width:110px">Quantity</th>
+          <th style="width:110px">unit</th>
+          <th class="mandatory" style="width:110px">RequirementDate</th>
+          <th class="mandatory" style="width:110px">Project</th>
+          <th style="width:110px">Project Desc</th>
+
+          <th class="mandatory" style="width:110px">Tokuchu No(Ariba BOP1 buyout)</th>
+          <th style="width:100px">Tokuchu No</th>
+          <th style="width:100px">BUPFPL</th>
+          <th style="width:100px">BUPFPL Desc</th>
+          <th class="mandatory" style="width:100px">Unit Price</th>
+          <th class="mandatory" style="width:110px">Currency</th>
+          <th style="width:110px">Price unit</th>
+          <th style="width:110px">Cost element</th>
+          <th style="width:110px">Cost element desc</th>
+          <th style="width:110px">Plant</th>
+
+          <th style="width:110px">Plant name</th>
+          <th class="mandatory" style="width:100px">Storage Location</th>
+          <th style="width:100px">Storage location name</th>
+          <th style="width:100px">Vendor Code</th>
+          <th style="width:100px">Vendor Name</th>
+          <th style="width:110px">Vendor Model No</th>
+          <th class="mandatory" style="width:110px">Sort string1</th>
+          <th style="width:110px">Project Manager</th>
+          <th style="width:110px">Note1</th>
+          <th style="width:110px">Note2</th>
+
+          <th style="width:110px">note3</th>
+          <th style="width:100px">note4</th>
+          <th style="width:100px">LT</th>
+          <th style="width:100px">deadline</th>
+          <th style="width:100px">deliverydate</th>
+          <th class="mandatory" style="width:110px">text</th>
+          <th style="width:110px">Direct Shipping</th>
+          <th style="width:110px">Ship to Party</th>
+          <th style="width:110px">Ship to Party seq. No.</th>
+          <th style="width:110px">Ship to Party Name</th>
+
+
+          <th style="width:110px">Ship to Party Address</th>
+          <th style="width:100px">Ship to Party Phone</th>
+          <th style="width:100px">Nuclear Spec Code</th>
+          <th style="width:100px">QW Box No.</th>
+          <th style="width:100px">Safe Proof ID</th>
+          <th style="width:110px">XJNo.</th>
+          <th style="width:110px">Product career code</th>
+          <th style="width:110px">QIC Language</th>
+          <th style="width:110px">QIC Delivery style</th>
+          <th style="width:110px">Document Quantity</th>
+
+          <th style="width:110px">Document Item No.</th>
+          <th style="width:100px">IM Language</th>
+          <th style="width:100px">IM Attach Style</th>
+          <th style="width:100px">Tokuchu IM No.</th>
+          <th style="width:100px">Parts Instrument Model</th>
+          <th style="width:110px">Serial Information Flag</th>
+          <th style="width:110px">System Model</th>
+          <th style="width:110px">Additional work code 1</th>
+          <th style="width:110px">Additional work code 2</th>
+          <th style="width:110px">Additional work code 3</th>
+
+          <th style="width:110px">Additional work code 4</th>
+          <th style="width:110px">Additional work code 5</th>
+          <th style="width:110px">Work sheet flag</th>
+          <th style="width:110px">Work sheet Rev</th>
+          <th style="width:100px">Work sheet No.</th>
+          <th style="width:100px">Freight RSP (JPY)</th>
+          <th style="width:100px">Freight RSP (USD)</th>
+          <th style="width:100px">Freight RSP (EUR)</th>
+          <th style="width:110px">Combined MS-Code Indicator</th>
+          <th style="width:110px">Combined MS-Code Control Number</th>
+
+          <th style="width:110px">Comp. No.</th>
+          <th style="width:110px">Order Instruction Title code</th>
+          <th style="width:110px">Order Instruction Title</th>
+          <th style="width:110px">Input Type</th>
+          <th style="width:100px">Min.</th>
+          <th style="width:100px">Max.</th>
+          <th style="width:100px">Unit no</th>
+          <th style="width:100px">Sensor</th>
+          <th style="width:110px">Factor</th>
+          <th style="width:110px">Feature</th>
+
+          <th style="width:100px">Free Text</th>
+          <th style="width:100px">Inquiry ID</th>
+          <th style="width:110px">Process flag INT for internal</th>
+          <th style="width:110px">PA ID</th>
+
+
+
+
+
+          <!--<th style="width:100px">RequestedBy</th>-->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td>
+            {{ri+1}}
+          </td>
+          <!-- <td class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.itemNo}}</a></td> -->
+          <td class="ptable-cell">{{rowData.itemNo}}</td>
+          <td class="ptable-cell">{{rowData.deletionflag}}</td>
+          <td class="ptable-cell ">{{rowData.mscode}}</td>
+          <td class="ptable-cell ">{{rowData.ItemDescription}}</td>
+          <td class="ptable-cell ">{{rowData.WBS}}</td>
+          <td class="ptable-cell">{{rowData.wbsdesc}}</td>
+          <td class="ptable-cell ">{{rowData.Quantity}}</td>
+          <td class="ptable-cell">{{rowData.unit}}</td>
+          <td class="ptable-cell ">{{rowData.RequirementDate}}</td>
+          <td class="ptable-cell ">{{rowData.Project}}</td>
+          <td class="ptable-cell">{{rowData.projectdesc}}</td>
+
+          <td class="ptable-cell ">{{rowData.TokuchuNo}}</td>
+          <td class="ptable-cell">{{rowData.tokchuno}}</td>
+          <td class="ptable-cell">{{rowData.bupfl}}</td>
+          <td class="ptable-cell">{{rowData.bupfldesc}}</td>
+          <td class="ptable-cell ">{{rowData.UnitPrice}}</td>
+          <td class="ptable-cell ">{{rowData.Currency}}</td>
+          <td class="ptable-cell">{{rowData.priceunit}}</td>
+          <td class="ptable-cell">{{rowData.costelement}}</td>
+          <td class="ptable-cell">{{rowData.costelementdesc}}</td>
+          <td class="ptable-cell">{{rowData.plant}}</td>
+
+          <td class="ptable-cell">{{rowData.plantname}}</td>
+          <td class="ptable-cell ">{{rowData.StorageLocation}}</td>
+          <td class="ptable-cell">{{rowData.storagelocationname}}</td>
+          <td class="ptable-cell">{{rowData.VendorCode}}</td>
+          <td class="ptable-cell">{{rowData.VendorName}}</td>
+          <td class="ptable-cell">{{rowData.VendorModelNo}}</td>
+          <td class="ptable-cell ">{{rowData.sortstring1}}</td>
+          <td class="ptable-cell">{{rowData.ProjectManager}}</td>
+          <td class="ptable-cell">{{rowData.note1}}</td>
+          <td class="ptable-cell">{{rowData.note2}}</td>
+
+          <td class="ptable-cell">{{rowData.note3}}</td>
+          <td class="ptable-cell">{{rowData.note4}}</td>
+          <td class="ptable-cell">{{rowData.lt}}</td>
+          <td class="ptable-cell">{{rowData.deadline}}</td>
+          <td class="ptable-cell">{{rowData.deliverydate}}</td>
+          <td class="ptable-cell ">{{rowData.text}}</td>
+          <td class="ptable-cell">{{rowData.directShiping}}</td>
+          <td class="ptable-cell">{{rowData.ShiptoParty}}</td>
+          <td class="ptable-cell">{{rowData.ShiptoPartyseqNo}}</td>
+          <td class="ptable-cell">{{rowData.ShiptoPartyName}}</td>
+
+          <td class="ptable-cell">{{rowData.ShiptoPartyAddress}}</td>
+          <td class="ptable-cell">{{rowData.ShiptoPartyPhone}}</td>
+          <td class="ptable-cell">{{rowData.NuclearSpecCode}}</td>
+          <td class="ptable-cell">{{rowData.QWBoxNo}}</td>
+          <td class="ptable-cell">{{rowData.SafeProofID}}</td>
+          <td class="ptable-cell">{{rowData.XJNo}}</td>
+          <td class="ptable-cell">{{rowData.Productcareercode}}</td>
+          <td class="ptable-cell">{{rowData.QICLanguage}}</td>
+          <td class="ptable-cell">{{rowData.QICDeliverystyle}}</td>
+          <td class="ptable-cell">{{rowData.DocumentQuantity}}</td>
+
+          <td class="ptable-cell">{{rowData.DocumentItemNo}}</td>
+          <td class="ptable-cell">{{rowData.IMLanguage}}</td>
+          <td class="ptable-cell">{{rowData.IMAttachStyle}}</td>
+          <td class="ptable-cell">{{rowData.TokuchuIMNo}}</td>
+          <td class="ptable-cell">{{rowData.PartsInstrumentModel}}</td>
+          <td class="ptable-cell">{{rowData.SerialInformationFlag}}</td>
+          <td class="ptable-cell">{{rowData.SystemModel}}</td>
+          <td class="ptable-cell">{{rowData.Additionalworkcode1}}</td>
+          <td class="ptable-cell">{{rowData.Additionalworkcode2}}</td>
+          <td class="ptable-cell">{{rowData.Additionalworkcode3}}</td>
+
+          <td class="ptable-cell">{{rowData.Additionalworkcode4}}</td>
+          <td class="ptable-cell">{{rowData.Additionalworkcode5}}</td>
+          <td class="ptable-cell">{{rowData.Worksheetflag}}</td>
+          <td class="ptable-cell">{{rowData.WorksheetRev}}</td>
+          <td class="ptable-cell">{{rowData.WorksheetNo}}</td>
+          <td class="ptable-cell">{{rowData.FreightRSPJPY}}</td>
+          <td class="ptable-cell">{{rowData.FreightRSPUSD}}</td>
+          <td class="ptable-cell">{{rowData.FreightRSPEUR}}</td>
+          <td class="ptable-cell">{{rowData.CombinedMSCodeIndicator}}</td>
+          <td class="ptable-cell">{{rowData.CombinedMSCodeControlNumber}}</td>
+
+          <td class="ptable-cell">{{rowData.CompNo}}</td>
+          <td class="ptable-cell">{{rowData.OrderInstructionTitlecode}}</td>
+          <td class="ptable-cell">{{rowData.OrderInstructionTitle}}</td>
+          <td class="ptable-cell">{{rowData.InputType}}</td>
+          <td class="ptable-cell">{{rowData.Min}}</td>
+          <td class="ptable-cell">{{rowData.Max}}</td>
+          <td class="ptable-cell">{{rowData.Unitno}}</td>
+          <td class="ptable-cell">{{rowData.Sensor}}</td>
+          <td class="ptable-cell">{{rowData.Factor}}</td>
+          <td class="ptable-cell">{{rowData.Feature}}</td>
+
+          <td class="ptable-cell">{{rowData.FreeTexts}}</td>
+          <td class="ptable-cell">{{rowData.InquiryID}}</td>
+          <td class="ptable-cell">{{rowData.ProcessflagINTforinternal}}</td>
+          <td class="ptable-cell">{{rowData.paid}}</td>
+        </tr>
+      </ng-template>
+    </p-table><br />
+  </div>
+
+  <div class="footer row" style="position:sticky;margin-left:1px;margin-top:10px">
+   <div class="pull-right" style="margin-left: 315px;"> <button type="button" *ngIf="ShowConfirmbutton" class="btn btn-primary " pTooltip="Click here for confirmation"  (click)="UpdateMSAConfirmation(inputsearch)">Confirm</button>&nbsp;&nbsp;</div>
+    <button type="button" class="btn btn-primary" pTooltip="Click here for Reset and upload new entry" (click)="ShowclearPopup(inputsearch)">Reset</button>
+  </div>
+</div>
+<p-dialog header="Clear Remarks :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <div class="ui-g-8">
+        <label class="form-label">Remarks</label>&nbsp;<span style="color:red">*</span>&nbsp;
+        <textarea type="text" [(ngModel)]="MSAConfirmationModel.DeletedRemarks"  class="form-control"></textarea>
+      </div>
+    </div>
+  </div>
+  <p-footer >
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="ClearMSAConfirmation(inputsearch)"  label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

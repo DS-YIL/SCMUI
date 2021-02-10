@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel, MSAMasterConfimationModel } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -169,46 +169,60 @@ export class purchaseauthorizationservice {
     return this.http.get<mprpadetailsmodel>(this.url + 'PA/GetTokuchuDetailsByPAID/' + PID + '/' + TokuchRequestid, this.httpOptions);
   }
   updateTokuchuRequest(data: TokuchuRequest, typeOfUser: string, revisionId: number): Observable<any> {
-    return this.http.post<any>(this.url + 'PA/updateTokuchuRequest/' + typeOfUser+'/' + revisionId+'', data, this.httpOptions)
+    return this.http.post<any>(this.url + 'PA/updateTokuchuRequest/' + typeOfUser + '/' + revisionId + '', data, this.httpOptions)
   }
 
   getTokuchuReqList(data: tokuchufilters): Observable<any> {
     return this.http.post<any>(this.url + 'PA/getTokuchuReqList', data, this.httpOptions)
   }
-    Getmprstatus(status: ReportInputModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/GetmprstatusReport', status, this.httpOptions)
-    }
-    Getmprstatuswise(status: ReportInputModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/GetMprstatuswisereport', status, this.httpOptions)
-    }
-    GetmprrequisitionReport(status: ReportInputModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/GetmprRequisitionReport', status, this.httpOptions)
-    }
-    getmprreportfilters(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/GetmprRequisitionfilters', this.httpOptions)
-    }
-    getmprstatusbydepartment(data: statussearch): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/getmprstatusbydepartment', data, this.httpOptions)
-    }
-    loadprojectmanagersforreport(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/Loadprojectmanagersforreport', this.httpOptions)
-    }
-    GetProjectWisereport(status: ReportInputModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/Loadprojectcodewisereport', status, this.httpOptions)
-    }
-    GetProjectDurationWisereport(status: ReportInputModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/LoadprojectDurationwisereport', status, this.httpOptions)
-    }
-    Loadjobcodes(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/Loadjobcodes', this.httpOptions)
-    }
-    Loadsaleorder(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/Loadsaleorder', this.httpOptions)
-    }
-    GETApprovernamesbydepartmentid(departmentid: number): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/GETApprovernamesbydepartmentid/' + departmentid, this.httpOptions);
-    }
-    getPaValueReport(pofilters: PADetailsModel): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/getPaValueReport', pofilters, this.httpOptions)
-    }
+  Getmprstatus(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/GetmprstatusReport', status, this.httpOptions)
+  }
+  Getmprstatuswise(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/GetMprstatuswisereport', status, this.httpOptions)
+  }
+  GetmprrequisitionReport(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/GetmprRequisitionReport', status, this.httpOptions)
+  }
+  getmprreportfilters(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/GetmprRequisitionfilters', this.httpOptions)
+  }
+  getmprstatusbydepartment(data: statussearch): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/getmprstatusbydepartment', data, this.httpOptions)
+  }
+  loadprojectmanagersforreport(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Loadprojectmanagersforreport', this.httpOptions)
+  }
+  GetProjectWisereport(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/Loadprojectcodewisereport', status, this.httpOptions)
+  }
+  GetProjectDurationWisereport(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/LoadprojectDurationwisereport', status, this.httpOptions)
+  }
+  Loadjobcodes(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Loadjobcodes', this.httpOptions)
+  }
+  Loadsaleorder(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Loadsaleorder', this.httpOptions)
+  }
+  GETApprovernamesbydepartmentid(departmentid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/GETApprovernamesbydepartmentid/' + departmentid, this.httpOptions);
+  }
+  getPaValueReport(pofilters: PADetailsModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/getPaValueReport', pofilters, this.httpOptions)
+  }
+
+  uploadMSADocument(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/uploadMSA', formdata)
+    .pipe(map(data => {
+      return data;
+    }))
+  }
+  UpdateMSAMasterConfirmation(MSAConfirmationModel: MSAMasterConfimationModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/UpdateMSAConfirmation', MSAConfirmationModel, this.httpOptions)
+  }
+  ClearMSAMasterConfirmation(MSAConfirmationModel: MSAMasterConfimationModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/ClearMSAConfirmation', MSAConfirmationModel, this.httpOptions)
+  }
+
 } 

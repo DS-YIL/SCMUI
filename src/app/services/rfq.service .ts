@@ -126,7 +126,22 @@ export class RfqService {
   InitiateASN(ASNInitiate: ASNInitiate): Observable<any> {
     return this.http.post<any>(this.url + 'ASN/ASNInitiate', ASNInitiate, this.httpOptions);
   }
+
+  UpdateUnMappedItem(ItemList: any, DocList: Array<MPRDocument>): Observable<any> {
+    var data = {
+      rfqItemModel: ItemList,
+      mPRRFQDocuments: DocList
+    }
+    return this.http.post<any>(this.url + 'RFQ/MappedRfqMissedItem', JSON.stringify(data), this.httpOptions);
+  }
+  UpdateMapMPRDoctoRFQDoc(MPRDocument: any): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/MappedMPRDocumnetToRFQDocumnet', JSON.stringify(MPRDocument), this.httpOptions);
+  }
+  UnMapRFQDocumnet(MPRDocument: any): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/UNMappedRFQDocumnet', JSON.stringify(MPRDocument), this.httpOptions);
+  }
   RecreateNewRfqRevision(revisionId: number, recreate: string): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/RecreateNewRfqRevision/' + revisionId + '/' + recreate, this.httpOptions);
+
   }
 }

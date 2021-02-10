@@ -156,7 +156,115 @@
       </tr>
     </ng-template>
   </p-table>
+
+  <div *ngIf="item.MPRDocuments?.length > 0"  class="row m-2 form-group table-bordered" >
+    <div class="col-xs-6 col-md-6 col-sm-6">
+      <h6 style="color:orangered"> All Documents:</h6>
+      <p-table [value]="item.MPRDocuments">
+        <ng-template pTemplate="header">
+          <tr class="text-center mprltbldata">
+            <th class="text-center">File Name</th>
+            <th class="text-center" style="width:105px">Doc Type</th>
+            <th class="text-center" style="width:70px">Add</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr>
+            <td class="ptable-cell"><button type="button" (click)="viewDocument(rowData.Path)" class="btn btn-link" >{{rowData.DocumentName}}</button></td>
+            <td class="text-center ptable-cell">{{rowData.DocumentTypeName}}</td>
+            <td class="text-center ptable-cell">
+              <button pButton [disabled]="disableOtherBtn" (click)="MapMPRDoctoRFQDoc(rowData)" type="button" icon="fa fa-plus" pTooltip="Add To Item"  class="ui-button"></button>&nbsp;
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="col-xs-6 col-md-6 col-sm-6">
+      <h6 style="color:orangered"> Mapped Documents:</h6>
+      <p-table [value]="item.RFQDocuments">
+        <ng-template pTemplate="header">
+          <tr class="text-center mprltbldata">
+            <th class="text-center">File Name</th>
+            <th class="text-center" style="width:105px">Doc Type</th>
+            <th class="text-center" style="width:70px">Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr>
+            <td class="ptable-cell"><button type="button"(click)="viewDocument(rowData.Path)"  class="btn btn-link">{{rowData.DocumentName}}</button></td>
+            <td class="text-center ptable-cell">{{rowData.DocumentTypeName}}</td>
+            <td class="text-center ptable-cell">
+              <button pButton [disabled]="disableOtherBtn" (click)="UNMapRFQDocumnet(rowData)" type="button" pDeleteEditableRow icon="pi pi-trash" pTooltip="Remove"  class="ui-button-danger"></button>&nbsp;
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
 </div><br />
+
+
+
+<div *ngIf="nonMappedItem?.length > 0" class="form-control" style="height:100%;margin-top: 15px;"> 
+  <div class="head-text pl-0">
+    <div class="col-md-6 pt-2">
+      Un-Mapped Item List
+    </div>
+  </div>
+  <p-table [value]="nonMappedItem">
+    <ng-template pTemplate="header">
+      <tr>
+        <th colspan="10" style="text-align: right">
+          <button type="button" class="btn btn-primary"[disabled]="RFQResponded" style="font-size: 14px;" (click)="saveUnmappedItem()" >Update</button>
+        </th>
+      </tr>
+      <tr class="text-center mprltbldata">
+        <th style="width: 35px">
+         Check
+       </th>
+        <th>Sl No.</th>
+        <th>Item Id</th>
+        <th>Item Description</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Documents</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr>
+        <td>
+          <input type="checkbox" id="chk{{ri+1}}" (click)="selectItemList($event,rowData,true)" class="checkmark vndorinputchk"/>
+      </td>
+        <td class="text-center">{{ri+1}}</td>
+        <td class="text-center">{{rowData.Itemid}}</td>
+        <td class="text-center">{{rowData.ItemDescription}}</td>
+        <td class="text-right">{{rowData.QuotationQty}}</td>
+        <td class="text-right">{{rowData.UnitName}}</td>
+        <td class="text-right">
+          <div class="col-sm-12 col-xs-12 col-md-12 form-group">
+            
+              <div *ngFor="let document of MPRRFQDocuments;let i=index">
+                <div class="m-1" style="font-size: 10px" *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==rowData.MRPItemsDetailsID">
+                  <span class="form-inline">
+                    <input type="checkbox" id='doc{{i+""+document.MprDocId}}' class="checkmark vndorinputchk" (click)="selectDoc($event,i,document,ri+1,rowData)">&nbsp;
+                    <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path)"></i>&nbsp;{{document.DocumentName}}
+                  </span>
+                </div>
+              </div>
+            
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+
+
+</div><br />
+
+
 
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid">

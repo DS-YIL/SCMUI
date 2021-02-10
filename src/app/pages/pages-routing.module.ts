@@ -52,7 +52,8 @@ import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationRep
 import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
 import { AsnListComponent } from './ASN/ASNList.component';
-import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component'
+import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component';
+import {MSALineItemListComponent} from './purchase-authorization/msaline-item-list.component';
 
 const routes: Routes = [{
   path: '',
@@ -126,7 +127,8 @@ const routes: Routes = [{
     { path: "ASNInitiate", component: ASNInitiateComponent, canActivate: [AuthGuard] },
     { path: "ASNView/:ASNId", component: AsnViewComponent, canActivate: [AuthGuard] },
       { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
-      { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] }
+      { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
+      { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
 
     // {
     //      path: '',

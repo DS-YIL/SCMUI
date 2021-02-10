@@ -160,6 +160,7 @@ export class RfqItemModel {
   RFQItemsId: number;
   RFQRevisionId: number;
   MPRItemDetailsId: number;
+  MRPItemsDetailsID: number;
   ItemId: string;
   ItemName: string;
   ItemDescription: string;

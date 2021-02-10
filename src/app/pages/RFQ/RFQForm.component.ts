@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { Employee, DynamicSearchResult, AccessList, searchList } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, AccessList, searchList, MPRItemInfoes, MPRDocument } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { constants } from 'src/app/Models/MPRConstants';
@@ -36,6 +36,13 @@ export class RFQFormComponent implements OnInit {
   public currncyArray: any[] = [];
   public rfqResponded; HandlingPercentageChk; ImportFreightPercentageChk; InsurancePercentageChk; DutyPercentageChk: boolean = false;
   public RFQGenerateReminderMaster: RFQGenerateReminderMaster;
+  public nonMappedItem: Array<MPRItemInfoes> = [];
+  public selectedItemList: Array<any> = [];
+  public RevisionId: string;
+  public MPRRFQDocuments: Array<MPRDocument> = [];
+  public selectedDocList: Array<MPRDocument> = [];
+  public mprDocument = new MPRDocument();
+  public rfqItemList: Array<RfqItemModel> = [];
   //page load eventl
   ngOnInit() {
 
@@ -120,8 +127,10 @@ export class RFQFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params["RFQRevisionId"] && !this.constants.RequisitionId) {
         var revisionId = params["RFQRevisionId"];
+        this.RevisionId = params["RFQRevisionId"];
         this.spinner.show();
         this.loadRFQData(revisionId);
+
       }
     });
   }
@@ -412,13 +421,13 @@ export class RFQFormComponent implements OnInit {
     var value = { listName: "ItemId", name: details.ItemName + " - " + details.ItemId, code: details.ItemId };
     this.searchItems.push(value);
     this.selectedItem = this.searchItems.filter(li => li.code == details.ItemId)[0];
-       if (details.ItemId == "0000")
-        this.AddItemForm.controls.ItemId.value = "NewItem";
-      else
-        this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
-      this.AddItemForm.value.ItemId = details.ItemId;
-      this.AddItemForm.controls['ItemId'].updateValueAndValidity();
-      this.spinner.hide();
+    if (details.ItemId == "0000")
+      this.AddItemForm.controls.ItemId.value = "NewItem";
+    else
+      this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
+    this.AddItemForm.value.ItemId = details.ItemId;
+    this.AddItemForm.controls['ItemId'].updateValueAndValidity();
+    this.spinner.hide();
 
     //this.bindSearchListData(e, 'AddItemForm', 'ItemId', "", (): any => {
     //  this.showList = false;
@@ -451,7 +460,7 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
     if (!this.rfqItemInfo.CurrencyId)
-     this.rfqItemInfo.CurrencyId = "";
+      this.rfqItemInfo.CurrencyId = "";
     this.AddItemInfodialog = true;
     this.rfqItemInfo.ValidFrom = new Date(this.rfqItemInfo.ValidFrom);
     this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);
@@ -511,6 +520,8 @@ export class RFQFormComponent implements OnInit {
       this.spinner.hide();
       this.RFQForm.controls["venderid"].setValue(this.rfqRevisionModel.rfqmaster.Vendor.VendorName);
       this.rfqTypeChange();
+      this.GetUnMappedMPRItems(this.rfqRevisionModel.rfqmaster.MPRRevisionId);
+      this.rfqItemList = this.rfqRevisionModel.rfqitem;
     })
   }
 
@@ -649,6 +660,120 @@ export class RFQFormComponent implements OnInit {
          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Reminder Sent' });
     })
   }
+
+  GetUnMappedMPRItems(MPRrevisionid) {
+    var qry = "select distinct Itemdetailsid as MRPItemsDetailsID,Itemid,RevisionId as MPRRevisionId,ItemDescription as ItemDescription,Quantity as QuotationQty,MPRItemInfo.UnitId,UnitName,SaleOrderNo,SOLineItemNo,MfgPartNo from MPRItemInfo ";
+    qry = qry + " inner join RfqMAster on RfqMAster.MPRRevisionId=MPRItemInfo.RevisionId  inner join RfqRevisions_N on RfqRevisions_N.rfqMasterId=RfqMAster.RfqMasterId left join UnitMaster on UnitMaster.UnitId=MPRItemInfo.UnitId ";
+    qry = qry + " where RevisionId=" + MPRrevisionid + " and Itemdetailsid not in (select MPRItemDetailsid from RFQItems_N where RFQRevisionId in";
+    qry = qry + " (select rfqRevisionId from RFQRevisions_N where rfqMasterId in (select RfqMasterId from RFQMaster where MPRRevisionId=" + MPRrevisionid + " )))";
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = qry;
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.nonMappedItem = data;
+      this.dynamicData.query = "select * from MPRDocuments where RevisionId=" + MPRrevisionid + " and DocumentTypeid=1"
+      this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+        this.MPRRFQDocuments = data;
+      });
+    });
+  }
+
+  selectItemList(event: any, itemDetails: any) {
+    var index = this.selectedItemList.findIndex(x => x.Itemdetailsid == itemDetails.Itemdetailsid);
+    if (event.currentTarget.checked) {
+      itemDetails.RFQRevisionId = this.RevisionId;
+
+      this.selectedItemList.push(itemDetails);
+    }
+    else {
+      this.selectedItemList.splice(index, 1);
+    }
+  }
+
+  selectDoc(event, index: any, mprdoc: any, rowIndex: any, itemDetails: any) {
+    if (event.target.checked == true) {
+      (<HTMLInputElement>document.getElementById("chk" + rowIndex)).checked = true;
+      this.selectItemList(event, itemDetails);
+    }
+
+    var index1 = this.selectedDocList.findIndex(x => x.MprDocId == mprdoc.MprDocId && x.VendorId == mprdoc.VendorId);
+    if ((<HTMLInputElement>document.getElementById("doc" + index + mprdoc.MprDocId)).checked == true) {
+      this.mprDocument = new MPRDocument();
+      this.mprDocument.MprDocId = mprdoc.MprDocId;
+      this.mprDocument.Path = mprdoc.Path;
+      this.mprDocument.DocumentName = mprdoc.DocumentName;
+      this.mprDocument.ItemDetailsId = mprdoc.ItemDetailsId;
+      this.mprDocument.DocumentTypeid = mprdoc.DocumentTypeid;
+      this.mprDocument.UploadedBy = this.employee.EmployeeNo;
+      this.selectedDocList.push(this.mprDocument);
+    }
+    else {
+      this.selectedDocList.splice(index1, 1);
+    }
+  }
+  viewDocument(path: string) {
+    var path1 = path.replace(/\\/g, "/");
+    path1 = this.constants.Documnentpath + path1;
+    window.open(path1);
+  }
+
+  saveUnmappedItem() {
+    if (this.selectedItemList.length > 0) {
+      this.spinner.show();
+      this.RfqService.UpdateUnMappedItem(this.selectedItemList, this.selectedDocList).subscribe(data => {
+        this.spinner.hide();
+        if (data == 1)
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Mapped' });
+        this.GetUnMappedMPRItems(this.rfqRevisionModel.rfqmaster.MPRRevisionId);
+      })
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select atleast one item!' });
+    }
+
+  }
+
+  MapMPRDoctoRFQDoc(MPRDocument: any) {
+    MPRDocument.RfqRevisionId = parseInt(this.RevisionId);
+    MPRDocument.UploadedBy = this.employee.EmployeeNo;
+
+    var rfqDocuments = this.rfqItemList.filter(x => x.MRPItemsDetailsID == MPRDocument.ItemDetailsId).map(c => c.RFQDocuments)[0];
+
+    var Result = rfqDocuments.filter(li => li.DocumentName == MPRDocument.DocumentName);
+    
+    if (Result.length == 0) {
+      this.spinner.show();
+      this.RfqService.UpdateMapMPRDoctoRFQDoc(MPRDocument).subscribe(data => {
+        this.loadRFQData(MPRDocument.RfqRevisionId);
+        if (data == 1)
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Document Successfully Mapped' });
+        else if (data == 2)
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Document Already Mapped' });
+        else
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'RFQ Document not Mapped' });
+
+      })
+    }
+    else
+    {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Document Already Mapped' });
+    }
+
+  }
+
+  UNMapRFQDocumnet(MPRDocument: any) {
+    MPRDocument.RfqRevisionId = parseInt(this.RevisionId);
+    MPRDocument.UploadedBy = this.employee.EmployeeNo;
+    this.spinner.show();
+    this.RfqService.UnMapRFQDocumnet(MPRDocument).subscribe(data => {
+      this.loadRFQData(MPRDocument.RfqRevisionId);
+      if (data == 1)
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Document Successfully Removed' });
+      else
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'RFQ Document not Removed' });
+
+    })
+  }
+
 }
 
 

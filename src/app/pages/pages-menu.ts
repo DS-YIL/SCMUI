@@ -192,6 +192,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'Tokuchu Req List',
                 link: '/SCM/TokochuReqList',
                 icon: 'layers-outline'
+            },
+            {
+                title: 'MSA Line Item List',
+                link: '/SCM/MSALineItem',
+                icon: 'layers-outline'
             }
         ],
     },
