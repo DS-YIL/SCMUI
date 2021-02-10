@@ -723,7 +723,7 @@ export class RFQFormComponent implements OnInit {
         this.spinner.hide();
         if (data == 1)
           this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Mapped' });
-        this.GetUnMappedMPRItems(this.rfqRevisionModel.rfqmaster.MPRRevisionId);
+         this.loadRFQData(parseInt(this.RevisionId))
       })
     }
     else {

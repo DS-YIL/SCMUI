@@ -173,7 +173,7 @@
             <td class="ptable-cell"><button type="button" (click)="viewDocument(rowData.Path)" class="btn btn-link" >{{rowData.DocumentName}}</button></td>
             <td class="text-center ptable-cell">{{rowData.DocumentTypeName}}</td>
             <td class="text-center ptable-cell">
-              <button pButton [disabled]="disableOtherBtn" (click)="MapMPRDoctoRFQDoc(rowData)" type="button" icon="fa fa-plus" pTooltip="Add To Item"  class="ui-button"></button>&nbsp;
+              <button pButton  (click)="MapMPRDoctoRFQDoc(rowData)" type="button" icon="fa fa-plus" pTooltip="Add To Item"  class="ui-button"></button>&nbsp;
             </td>
           </tr>
         </ng-template>
@@ -194,7 +194,7 @@
             <td class="ptable-cell"><button type="button"(click)="viewDocument(rowData.Path)"  class="btn btn-link">{{rowData.DocumentName}}</button></td>
             <td class="text-center ptable-cell">{{rowData.DocumentTypeName}}</td>
             <td class="text-center ptable-cell">
-              <button pButton [disabled]="disableOtherBtn" (click)="UNMapRFQDocumnet(rowData)" type="button" pDeleteEditableRow icon="pi pi-trash" pTooltip="Remove"  class="ui-button-danger"></button>&nbsp;
+              <button pButton  (click)="UNMapRFQDocumnet(rowData)" type="button" pDeleteEditableRow icon="pi pi-trash" pTooltip="Remove"  class="ui-button-danger"></button>&nbsp;
             </td>
           </tr>
         </ng-template>
@@ -216,7 +216,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th colspan="10" style="text-align: right">
-          <button type="button" class="btn btn-primary"[disabled]="RFQResponded" style="font-size: 14px;" (click)="saveUnmappedItem()" >Update</button>
+          <button type="button" class="btn btn-primary" style="font-size: 14px;" (click)="saveUnmappedItem()" >Update</button>
         </th>
       </tr>
       <tr class="text-center mprltbldata">
@@ -234,7 +234,7 @@
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
       <tr>
         <td>
-          <input type="checkbox" id="chk{{ri+1}}" (click)="selectItemList($event,rowData,true)" class="checkmark vndorinputchk"/>
+          <input type="checkbox" id="chk{{ri+1}}" (click)="selectItemList($event,rowData)" class="checkmark vndorinputchk"/>
       </td>
         <td class="text-center">{{ri+1}}</td>
         <td class="text-center">{{rowData.Itemid}}</td>

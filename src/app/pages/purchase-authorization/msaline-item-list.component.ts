@@ -29,8 +29,8 @@ export class MSALineItemListComponent implements OnInit {
   public MSAConfirmationModel: MSAMasterConfimationModel;
   public MSAConfirmationMOdelForView: MSAMasterConfimationModel;
   public displayCommunicationDialog: boolean;
-  public ShowConfirmbutton:boolean;
-  public statusCheckModel:StatusCheckModel;
+  public ShowConfirmbutton: boolean;
+  public statusCheckModel: StatusCheckModel;
 
 
   ngOnInit() {
@@ -39,19 +39,19 @@ export class MSALineItemListComponent implements OnInit {
     }
     else {
       this.router.navigateByUrl("Login");
-    }                                                                                             
+    }
     this.paid;
     this.incompletedlist = new Array<any>();
     this.inputsearch = new painutmodel();
     this.MSAConfirmationModel = new MSAMasterConfimationModel();
     this.MSAConfirmationMOdelForView = new MSAMasterConfimationModel();
-    this.ShowConfirmbutton=false;
+    this.ShowConfirmbutton = false;
     // this.getMSAlineItemList(this.inputsearch)
   }
   getMSAlineItemList(model: painutmodel) {
     {
       if (model.PAId > 0) {
-       
+
         var qry = "select *,[Item No.] as itemNo,[Direct Shipping] as directShiping,[Ship to Party] as ShiptoParty,[Ship to Party seq. No.] as ShiptoPartyseqNo ,[Ship to Party Name] as ShiptoPartyName";
         qry = qry + ",[Ship to Party Address] as ShiptoPartyAddress,[Ship to Party Phone] as ShiptoPartyPhone,[Nuclear Spec Code] as NuclearSpecCode,[QW Box No.] as QWBoxNo,";
         qry = qry + "[Safe Proof ID] as SafeProofID,[XJNo.] as XJNo,[Product career code] as Productcareercode,[QIC Language] as QICLanguage,[QIC Delivery style] as QICDeliverystyle,[Document Quantity]as DocumentQuantity";
@@ -86,7 +86,7 @@ export class MSALineItemListComponent implements OnInit {
               });
 
             });
-           
+
           }
           else {
             qry = qry + " from RPALoadItemForMSA where paid=" + model.PAId + "";
@@ -124,7 +124,6 @@ export class MSALineItemListComponent implements OnInit {
   }
 
   getFileuploadDetails(e) {
-    //console.log (e.target.files);
     for (var i = 0; i < e.target.files.length; i++) {
       this.myfiles1.push(e.target.files[i]);
     }
@@ -146,17 +145,17 @@ export class MSALineItemListComponent implements OnInit {
         this.myfiles1.pop();
         this.spinner.show();
         this.paService.uploadMSADocument(formData).subscribe(data => {
-          this.spinner.hide();    
-          if(data.Sid==1)
-          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: data.StatusMesssage });
-          if(data.Sid==2)
-          this.messageService.add({ severity: 'error', summary: 'Confirmation Alert', detail: data.StatusMesssage });
-          if(data.Sid==-2)
-          this.messageService.add({ severity: 'error', summary: 'Excel Sheet Format Alert', detail: data.StatusMesssage });
-          if(data.Sid==-1)
-          this.messageService.add({ severity: 'error', summary: 'Upload error', detail: data.StatusMesssage });
-          
-          // this.getMSAlineItemList(model);
+          this.spinner.hide();
+          if (data.Sid == 1) {
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: data.StatusMesssage });
+            this.getMSAlineItemList(model);
+          }
+          if (data.Sid == 2)
+            this.messageService.add({ severity: 'error', summary: 'Confirmation Alert', detail: data.StatusMesssage });
+          if (data.Sid == -2)
+            this.messageService.add({ severity: 'error', summary: 'Excel Sheet Format Alert', detail: data.StatusMesssage });
+          if (data.Sid == -1)
+            this.messageService.add({ severity: 'error', summary: 'Upload error', detail: data.StatusMesssage });
         })
       }
       else {
@@ -173,23 +172,17 @@ export class MSALineItemListComponent implements OnInit {
   UpdateMSAConfirmation(model: painutmodel) {
 
     if (model.PAId > 0) {
-      // var data= new MSAMasterConfimationModel();
-      // this.MSAConfirmationModel.Confirmationflag = true;
-      // this.MSAConfirmationModel.Deleteflag = false;
-      // this.MSAConfirmationModel.PAID = model.PAId;
-      // this.MSAConfirmationModel.UploadedBy = this.employee.EmployeeNo;
-      // this.MSAConfirmationModel.StatusRemarks = "Manual";
-      var data= new MSAMasterConfimationModel();
+      var data = new MSAMasterConfimationModel();
       data.Confirmationflag = true;
       data.Deleteflag = false;
       data.PAID = model.PAId;
       data.UploadedBy = this.employee.EmployeeNo;
       data.StatusRemarks = "Manual";
-      this.MSAConfirmationModel=data;
+      this.MSAConfirmationModel = data;
       this.spinner.show();
       this.paService.UpdateMSAMasterConfirmation(this.MSAConfirmationModel).subscribe(data => {
         this.getMSAlineItemList(model);
-       
+
         if (data != null) {
           if (data.StatusRemarks == "1") {
             this.messageService.add({ severity: 'success', summary: 'success', detail: 'PA item successfully confirmed' });
@@ -209,7 +202,7 @@ export class MSALineItemListComponent implements OnInit {
           else {
             this.messageService.add({ severity: 'error', summary: 'error', detail: 'PA item not confirmed successfully' });
           }
-         
+
         }
       })
     }
@@ -230,15 +223,15 @@ export class MSALineItemListComponent implements OnInit {
 
   ClearMSAConfirmation(model: painutmodel) {
     if (model.PAId > 0) {
-      var reset=new MSAMasterConfimationModel();
+      var reset = new MSAMasterConfimationModel();
       reset.Deleteflag = true;
       reset.PAID = model.PAId;
       reset.DeletedBy = this.employee.EmployeeNo;
-      reset.DeletedRemarks=this.MSAConfirmationModel.DeletedRemarks;
-      this.MSAConfirmationModel=reset;
+      reset.DeletedRemarks = this.MSAConfirmationModel.DeletedRemarks;
+      this.MSAConfirmationModel = reset;
       this.spinner.show();
       this.paService.ClearMSAMasterConfirmation(this.MSAConfirmationModel).subscribe(data => {
-        
+
         if (data != null) {
           if (data.StatusRemarks == "1") {
             this.messageService.add({ severity: 'error', summary: 'warning message', detail: 'Clear from Confirmation table only.' });
@@ -263,31 +256,30 @@ export class MSALineItemListComponent implements OnInit {
     this.dialogCancel();
   }
 
-  GetPAConfirmationDetails(PAid)
-  {
-    var existQuery=" select * from  ("
-    existQuery= existQuery+" select MSAMasterID,PAID,case Confirmationflag when 0 then 'Not Yet Confirm' when 1 then 'Confirmed' end as ConfirmationStatus,";
-    existQuery=existQuery+"emp.Name as ConfirmedBy,emp1.Name as UploadedBy,ConfirmedDate,UplaodedDate,StatusRemarks,Confirmationflag,DeletedBy,DeletedDate,DeletedRemarks,Deleteflag from MSAMasterConfirmation msa";
-    existQuery=existQuery+" left join Employee Emp on msa.ConfirmedBy=Emp.EmployeeNo left join Employee Emp1 on msa.UploadedBy=Emp1.EmployeeNo "
-    existQuery=existQuery+ " where Deleteflag='False' and PAID="+PAid+"";
-    existQuery=existQuery+" ) as Table1";
-    existQuery=existQuery+" left join (";
-    existQuery=existQuery+"select distinct MPRRevisions.RevisionId,MPRDetails.DocumentNo,PAItem.PAID from MPRItemInfo inner join MPRRevisions on MPRItemInfo.RevisionId=MPRRevisions.RevisionId";
-    existQuery=existQuery+" inner join MPRDetails on MPRDetails.RequisitionId=MPRRevisions.RequisitionId inner join PAItem on PAItem.MPRItemDetailsId=MPRItemInfo.Itemdetailsid ";
-    existQuery=existQuery+" and PAItem.PAID="+PAid+" ";
-    existQuery=existQuery+" ) as table2 on Table1.PAID=table2.PAID"
+  GetPAConfirmationDetails(PAid) {
+    var existQuery = " select * from  ("
+    existQuery = existQuery + " select MSAMasterID,PAID,case Confirmationflag when 0 then 'Not Yet Confirm' when 1 then 'Confirmed' end as ConfirmationStatus,";
+    existQuery = existQuery + "emp.Name as ConfirmedBy,emp1.Name as UploadedBy,ConfirmedDate,UplaodedDate,StatusRemarks,Confirmationflag,DeletedBy,DeletedDate,DeletedRemarks,Deleteflag from MSAMasterConfirmation msa";
+    existQuery = existQuery + " left join Employee Emp on msa.ConfirmedBy=Emp.EmployeeNo left join Employee Emp1 on msa.UploadedBy=Emp1.EmployeeNo "
+    existQuery = existQuery + " where Deleteflag='False' and PAID=" + PAid + "";
+    existQuery = existQuery + " ) as Table1";
+    existQuery = existQuery + " left join (";
+    existQuery = existQuery + "select distinct MPRRevisions.RevisionId,MPRDetails.DocumentNo,PAItem.PAID from MPRItemInfo inner join MPRRevisions on MPRItemInfo.RevisionId=MPRRevisions.RevisionId";
+    existQuery = existQuery + " inner join MPRDetails on MPRDetails.RequisitionId=MPRRevisions.RequisitionId inner join PAItem on PAItem.MPRItemDetailsId=MPRItemInfo.Itemdetailsid ";
+    existQuery = existQuery + " and PAItem.PAID=" + PAid + " ";
+    existQuery = existQuery + " ) as table2 on Table1.PAID=table2.PAID"
 
 
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = existQuery;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-        this.MSAConfirmationMOdelForView=data[0];
-        if(this.MSAConfirmationMOdelForView)
-          this.ShowConfirmbutton=!this.MSAConfirmationMOdelForView.Confirmationflag;
-        else
-          this.ShowConfirmbutton=true;
+      this.MSAConfirmationMOdelForView = data[0];
+      if (this.MSAConfirmationMOdelForView)
+        this.ShowConfirmbutton = !this.MSAConfirmationMOdelForView.Confirmationflag;
+      else
+        this.ShowConfirmbutton = true;
     });
-   
+
   }
 
 }
