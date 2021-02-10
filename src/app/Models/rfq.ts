@@ -325,6 +325,7 @@ export class InvoiceDetails {
   ModifiedDate: Date;
   ModifiedBy
   Remarks: string;
+  LRRemarks: string;
   InvoiceDocuments: Array<InvoiceDocuments> = [];
 }
 
