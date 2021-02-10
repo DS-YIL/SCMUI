@@ -7,16 +7,14 @@
     </div>
   </div>
   <div class="row m-2">
-    <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">PO No:</label>
       <span class="valueEdit">{{asnItem.PONos}}</span>
     </div>
-    <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Vendor Name & Vendor Code:</label>
       <span class="valueEdit">{{asnItem.VendorName}}</span>
     </div>
-  </div>
-  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">ASN No:</label>
       <span class="valueEdit">{{asnItem.ASNNo}}</span>
@@ -25,6 +23,8 @@
       <label class="lblEdit">Invoice No:</label>
       <span class="valueEdit">{{asnItem.InvoiceNo}}</span>
     </div>
+  </div>
+  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Invoice Date:</label>
       <span class="valueEdit">{{asnItem.InvoiceDate | date :  constants.dateFormat}}</span>
@@ -33,12 +33,12 @@
       <label class="lblEdit">Ship From:</label>
       <span class="valueEdit">{{asnItem.ShipFrom}}</span>
     </div>
-  </div>
-  <div class="row m-2">
-    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+    <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
       <label class="lblEdit">Ship To:</label>
       <span class="valueEdit">{{asnItem.ShipTo}}</span>
     </div>
+  </div>
+  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Shipping Date:</label>
       <span class="valueEdit">{{asnItem.ShippingDate | date :  constants.dateFormat}}</span>
@@ -51,12 +51,12 @@
       <label class="lblEdit">Freight InvNo:</label>
       <span class="valueEdit">{{asnItem.FreightInvNo}}</span>
     </div>
-  </div>
-  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Transporter Name:</label>
       <span class="valueEdit">{{asnItem.TransporterName}}</span>
     </div>
+  </div>
+  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">LR/AWB/BL No:</label>
       <span class="valueEdit">{{asnItem.BillofLodingNumber}}</span>
@@ -69,12 +69,12 @@
       <label class="lblEdit">Incoterm Description:</label>
       <span class="valueEdit">{{asnItem.IncotermDescription}}</span>
     </div>
-  </div>
-  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Incoterm Loc.:</label>
       <span class="valueEdit">{{asnItem.IncotermLoc}}</span>
     </div>
+  </div>
+  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Mode Of Transport:</label>
       <span class="valueEdit">{{asnItem.ModeOfTransport}}</span>
@@ -87,13 +87,13 @@
       <label class="lblEdit">Total Gross Weight in(Kgs):</label>
       <span class="valueEdit">{{asnItem.TotalGrossWeight_Kgs}}</span>
     </div>
-  </div>
-
-  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Total Net Weight in(Kgs):</label>
       <span class="valueEdit">{{asnItem.TotalNetWeight_Kgs}}</span>
     </div>
+  </div>
+
+  <div class="row m-2">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
       <label class="lblEdit">Total Volume:</label>
       <span class="valueEdit">{{asnItem.TotalVolume}}</span>
@@ -195,6 +195,12 @@
       </div>
     </div>
   </div>
+  <div class="row m-2 form-inline" *ngIf="InvoiceDetails.LRRemarks">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>LR/AWB/Courier Docket/B/L Remarks:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <span class="fixed-text_new">{{InvoiceDetails.LRRemarks}}</span>
+    </div>
+  </div>
   <div class="row m-2 form-inline">
     <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>LR/AWB/Courier Docket/B/L:</b> </div>
     <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
@@ -241,6 +247,12 @@
       <div *ngFor="let selected of InvoiceDetails.InvoiceDocuments;let index = index">
         <span *ngIf="selected.DocumentTypeId==9" class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
       </div>
+    </div>
+  </div>
+  <div class="row m-2 form-inline" >
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Remarks:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <span class="fixed-text_new">{{InvoiceDetails.Remarks}}</span>
     </div>
   </div>
 </div>
