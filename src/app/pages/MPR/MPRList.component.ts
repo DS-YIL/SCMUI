@@ -328,6 +328,9 @@ export class MPRListComponent implements OnInit {
   getReviseBtn(rowData: any) {
 
     if ((rowData.MPRStatus == 'RFQ Generated' || rowData.MPRStatus == 'RFQ Responded' || rowData.MPRStatus == 'PA Generated' || rowData.MPRStatus == 'PO Generated' || rowData.MPRStatus == 'PA Approved' || rowData.MPRStatus == 'MPR Closed' || rowData.MPRStatus == 'PA Rejected' || rowData.MPRStatus == 'Technical Spec Approved' || rowData.MPRStatus == 'RFQ Finalized')) {
+      if (rowData.IssuePurposeId == 1 && rowData.MPRStatus == 'MPR Closed') {
+        return true;
+      }
       return false;
     }
     else

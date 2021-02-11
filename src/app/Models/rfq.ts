@@ -361,4 +361,5 @@ export class mappingitems {
   mprquantiy: string;
   mprrevisionid: number;
   Duplicateitemid: string;
+  Newitemrevision: string;
 }

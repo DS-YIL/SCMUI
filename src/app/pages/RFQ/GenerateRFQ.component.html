@@ -190,8 +190,10 @@
 
       <div class="col-md-3 mb-3" *ngFor="let vendor1 of Item.mappingdoneitems;let i=index">
         <div *ngIf="vendor1.Duplicateitemid" class="form-control repeat-List" style="margin-top:5px">
-          <span style="color:#ffffff">Mapped Item:</span>
-          <span class="form-inline"><input type="checkbox" [disabled]="vendor1.Duplicateitemid" id='RVendor{{k+""+i}}' class="checkmark vndorinputchk"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor1.vendorname}}>{{vendor1.vendorname}}-{{vendor1.VendorCode}}-<span><a [routerLink]="['/SCM/VendorQuoteView',vendor1.rfqRevisionId]" target="_blank" routerLinkActive="active">{{vendor1.RFQNo}}</a></span></b></span>
+          <span style="color:#ffffff">Mapped Item:</span>&nbsp;&nbsp;<button *ngIf="vendor1.Duplicateitemid" class="btn btn-sm btn-secondary" (click)="ItemUnmapping(vendor1)">Unmap</button>
+          <span class="form-inline">
+            <input type="checkbox" [disabled]="vendor1.Duplicateitemid" id='RVendor{{k+""+i}}' class="checkmark vndorinputchk"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor1.vendorname}}>{{vendor1.vendorname}}-{{vendor1.VendorCode}}-<span><a [routerLink]="['/SCM/VendorQuoteView',vendor1.rfqRevisionId]" target="_blank" routerLinkActive="active">{{vendor1.RFQNo}}</a></span></b>
+          </span>
           <!--<span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='RQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'RQty',rvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>-->
           <div class="row">
             <div class="col-sm-6">
@@ -611,6 +613,7 @@
           <td *ngFor="let vendor of rowData.mappeditems;let colIndex=index" style="width:100px !important;">
             <div *ngIf="rowData.mappeditems">
               <input type="checkbox" [disabled]="vendor.Duplicateitemid" style="margin-top:4px;width:19px;height:16px" id='item{{vendor.RFQItemsId}}' (click)="selectVendoritemList(vendor,$event)" />
+
               <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                 <b>Item Description:</b><span>{{vendor.itemdescription}}</span><br />
               </div>

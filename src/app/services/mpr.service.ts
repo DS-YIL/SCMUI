@@ -274,5 +274,8 @@ export class MprService {
   Insertmappingitem(mapping: any): Observable<any> {
     return this.http.post<any>(this.url + 'PA/InsertMappingItems/', mapping, this.httpOptions);
   }
+  Unmappingitem(mapping: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/Unmappingitem/', mapping, this.httpOptions);
+  }
 }
 

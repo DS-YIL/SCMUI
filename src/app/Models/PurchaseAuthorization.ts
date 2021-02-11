@@ -278,6 +278,8 @@ export class mprpadetailsmodel {
     DutyAmount: number;
   InsuranceAmount: number;
   potype: string;
+  AribaRequired: boolean;
+  msarequired: boolean;
 }
 export class parequestedanddeletemodel {
   paid: number;
