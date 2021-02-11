@@ -524,6 +524,7 @@ export class VendorRegistration {
   PhoneNumberForAccounts: string;
   EmailIdForAccounts: string;
   AltEmailidForAccounts: string;
+  HaveGST: boolean;
   GSTNo: string;
   NatureofBusiness: number;
   PANNo: string;
