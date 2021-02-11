@@ -52,21 +52,21 @@
           <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData('BuyerGroupId',VendorRegApprovalProcess.BuyerGroupId)"></button>
         </span>
       </div>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-2">
-        <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
-        <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
-        <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
-      </div>
     </div>
-    <div class="row m-2">
-      <div class="col-sm-4 col-md-4 col-lg-4">
-      </div>
-      <div class="col-sm-2 col-md-2 col-lg-2 form-inline">
-        <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
-      </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-2">
+      <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
     </div>
   </div>
+  <div class="row m-2">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2 form-inline">
+      <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
+    </div>
+  </div>
+</div>
 
 <div *ngIf="VendorData" class="row m-2" style="background-color: goldenrod;height:1%; margin-bottom:0px!important">
   <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4"></div>
@@ -91,7 +91,7 @@
       <p-radioButton name="PerformanceVerificationRequired" value="0" label="No" [(ngModel)]="VendorData.PerformanceVerificationRequired"></p-radioButton>&nbsp;&nbsp;
     </div>
   </div>
-  <div *ngIf="showDetails"  class="row m-2">
+  <div *ngIf="showDetails" class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="lblEdit">One time vendor</label>
       <span class="valueEdit"><span *ngIf="VendorData.Onetimevendor==true">Yes</span><span *ngIf="VendorData.Onetimevendor==false">No</span></span>
@@ -277,7 +277,8 @@
         <label class="lblEdit">PAN No:</label><span class="valueEdit">{{VendorData.PANNo}}</span>
       </div>
       <div class="col-xs-3 col-md-3 col-sm-3 form-group">
-        <label class="lblEdit">GST No:</label><span class="valueEdit">{{VendorData.GSTNo}}</span>
+        <label class="lblEdit">GST No:</label><span *ngIf="VendorData.GSTNo" class="valueEdit">{{VendorData.GSTNo}}</span>
+        <span *ngIf="!VendorData.GSTNo" class="valueEdit">No GST No</span>
       </div>
       <div class="col-xs-3 col-md-3 col-sm-3 form-group">
         <label class="lblEdit">CIN No:</label><span class="valueEdit">{{VendorData.CINNo}}</span>
