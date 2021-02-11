@@ -283,7 +283,7 @@
           <input type="text" class="form-control" ngModel minlength="10" maxlength="10" formControlName="PANNo" [(ngModel)]="VendorData.PANNo" oninput="this.value = this.value.replace(/^([!@#$%^&*()_+\-=\[\]{};':\\|,.<>\/? ])?$/g, '');" pattern="^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$" (blur)="CheckPanNo()" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.PANNo.errors}" />
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.PANNo.errors" class="invalid-feedback">Enter valid PANNo & length should be 10.</span>
         </div>
-        <div *ngIf="VendorData.VendorType==false" class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <div *ngIf="VendorData.VendorType==false" class="col-xs-3 col-md-3 col-sm-3 form-group mt-4">
           <label>Have GST NO</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
           <p-radioButton name="HaveGST" value="1" label="Yes" formControlName="HaveGST" [(ngModel)]="VendorData.HaveGST" (click)=GSTChange();></p-radioButton>&nbsp;&nbsp;
           <p-radioButton name="HaveGST" value="0" label="No" formControlName="HaveGST" [(ngModel)]="VendorData.HaveGST" (click)=GSTChange();></p-radioButton>&nbsp;&nbsp;
