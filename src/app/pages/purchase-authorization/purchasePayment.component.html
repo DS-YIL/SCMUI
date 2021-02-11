@@ -32,7 +32,7 @@
         <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
       </div>
     </div>
-    <!--<div class="col-md-4 col-lg-4 col-sm-4">
+    <div class="col-md-4 col-lg-4 col-sm-4">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted" style="margin-top:5px">
         <label for="Department" class="form-label label" style="margin-left: 12px;">PO Type:</label>&nbsp;&nbsp;
         <select [(ngModel)]="purchasedetails.potype" style="width:80%" class="form-control dropdown">
@@ -45,14 +45,14 @@
         </select>
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
-        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">DepartMent:</label>
-        <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
+        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">PO Type:</label>
+        <span class="valueEdit"> {{purchasedetails.potype}}</span>
       </div>
       <div *ngIf="paincompleted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
-        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">DepartMent:</label>
-        <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
+        <label for="DepartMent" class="form-label lblEdit" style="margin-left: 0px;">PO Type:</label>
+        <span class="valueEdit"> {{purchasedetails.potype}}</span>
       </div>
-    </div>-->
+    </div>
   </div>
   <div class="row">
     <div class="col-md-4 col-lg-4 col-sm-4">
@@ -91,6 +91,24 @@
         </select>
       </div>
     </div>
+    <!--//////bhdbsdbs-->
+    <div class="col-md-4 col-lg-4 col-sm-4">
+      <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
+        <label for="AribaRequired" class="form-label label" style="margin-left: 12px;">Ariba Required</label>
+        <div class="form-inline">
+          <p-radioButton class="form-inline" name="group1" [value]="true" label="Yes" [(ngModel)]="purchasedetails.AribaRequired" inputId="opt1"></p-radioButton>&nbsp;&nbsp;
+          <p-radioButton class="form-inline" name="group1" [value]="false" label="No" [(ngModel)]="purchasedetails.AribaRequired" inputId="opt2"></p-radioButton>
+        </div>
+      </div>
+      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <label for="Purchasemode" class="form-label lblEdit" style="margin-left: 0px;">Ariba Required:</label>
+        <span class="valueEdit"> {{purchasedetails.AribaRequired}}</span>
+      </div>
+      <div class="form-group" *ngIf="paincompleted">
+        <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Ariba Required:<span class="required-asterisk" style="color:red">*</span></label>&nbsp;&nbsp;
+        <span class="valueEdit"> {{purchasedetails.AribaRequired}}</span>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-4 col-lg-4 col-sm-4">
@@ -119,6 +137,23 @@
       <div *ngIf="paincompleted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
         <label for="ProjectCode" class="form-label lblEdit" style="margin-left: 0px;">Project Code:</label>
         <span class="valueEdit"> {{purchasedetails.ProjectCode}}</span>
+      </div>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4">
+      <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
+        <label for="AribaRequired" class="form-label label" style="margin-left: 12px;">MSA Required</label>
+        <div class="form-inline">
+          <p-radioButton class="form-inline" name="msagroup1" [value]="true" label="Yes" [(ngModel)]="purchasedetails.msarequired" inputId="opt1"></p-radioButton>&nbsp;&nbsp;
+          <p-radioButton class="form-inline" name="msagroup1" [value]="false" label="No" [(ngModel)]="purchasedetails.msarequired" inputId="opt2"></p-radioButton>
+        </div>
+      </div>
+      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <label for="Purchasemode" class="form-label lblEdit" style="margin-left: 0px;">MSA Required:</label>
+        <span class="valueEdit"> {{purchasedetails.msarequired}}</span>
+      </div>
+      <div class="form-group" *ngIf="paincompleted">
+        <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">MSA Required:<span class="required-asterisk" style="color:red">*</span></label>&nbsp;&nbsp;
+        <span class="valueEdit"> {{purchasedetails.msarequired}}</span>
       </div>
     </div>
   </div>

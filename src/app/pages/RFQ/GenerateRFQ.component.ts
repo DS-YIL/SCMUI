@@ -794,6 +794,7 @@ export class GenerateRFQComponent implements OnInit {
             this.MappingItems.UnitPrice = this.PreviousDetails[j].UnitPrice;
             this.MappingItems.Itemdetailsid = this.PreviousDetails[j].Itemdetailsid;
             this.MappingItems.Duplicateitemid = this.PreviousDetails[j].Duplicateitemid;
+            this.MappingItems.Newitemrevision = this.PreviousDetails[j].Newitemrevision;
             this.rfqQuoteModel[i].mappingdoneitems.push(this.MappingItems);
           }
           //this.rfqQuoteModel[i].mappingdoneitems.push(this.PreviousDetails.filter(x => x.previousitemdetails == this.rfqQuoteModel[i].MPRItemDetailsid));
@@ -837,6 +838,7 @@ export class GenerateRFQComponent implements OnInit {
           this.MappingItems.UnitPrice = data1[j].UnitPrice;
           this.MappingItems.Itemdetailsid = data1[j].Itemdetailsid;
           this.MappingItems.Duplicateitemid = data1[j].Duplicateitemid;
+          this.MappingItems.Newitemrevision = data1[j].Newitemrevision;
           this.rfqQuoteModel[j].mappeditems.push(this.MappingItems);
         }
       }
@@ -966,6 +968,11 @@ export class GenerateRFQComponent implements OnInit {
   //}
   ItemDocumments() {
     this.showConformationDialog = true;
+  }
+  ItemUnmapping(data: any) {
+    this.MprService.Unmappingitem(data).subscribe(data => {
+
+    })
   }
 }
 
