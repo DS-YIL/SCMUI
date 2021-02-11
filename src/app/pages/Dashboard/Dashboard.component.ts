@@ -20,7 +20,7 @@ export class DashboardComponent {
 
   public totalMPRCnt: number = 0;
   public completedMPRCnt: number = 0;
-  public checkerListCnt; ApproversListCnt; SingleVendorListCnt; PAListCnt: number = 0;
+  public checkerListCnt; ApproversListCnt; SingleVendorListCnt; PAListCnt; VendorRegInitiatorCnt; VendorRegChkerLstCnt; VendorRegApprvrLstCnt; VendorRegFinVerLstCnt; VendorRegFinApprvLstCnt; TokuchuPreverLstCnt; TokuchuverLstCnt: number = 0;
   public dynamicData = new DynamicSearchResult();
   public employee: Employee;
   public mprStatusList: Array<any> = [];
@@ -71,6 +71,13 @@ export class DashboardComponent {
       this.ApproversListCnt = data[0].ApproversListCnt;
       this.SingleVendorListCnt = data[0].SingleVendorListCnt;
       this.PAListCnt = data[0].PAListCnt;
+      this.VendorRegInitiatorCnt = data[0].VendorRegInitiatorCnt;
+      this.VendorRegChkerLstCnt = data[0].VendorRegChkerLstCnt;
+      this.VendorRegApprvrLstCnt = data[0].VendorRegApprvrLstCnt;
+      this.VendorRegFinVerLstCnt = data[0].VendorRegFinVerLstCnt;
+      this.VendorRegFinApprvLstCnt = data[0].VendorRegFinApprvLstCnt;
+      this.TokuchuPreverLstCnt = data[0].TokuchuPreverLstCnt;
+      this.TokuchuverLstCnt = data[0].TokuchuverLstCnt;
     })
   }
 

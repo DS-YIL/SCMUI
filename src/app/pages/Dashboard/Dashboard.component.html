@@ -52,6 +52,13 @@
                       <li *ngIf="ApproversListCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('MPRApproverList');"><b>MPR Pending For Approval <span>- {{ApproversListCnt}}</span> </b></button></li>
                       <li *ngIf="SingleVendorListCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('MPRSingleVendorList');"><b>MPR Single Vendor Approval  <span>- {{SingleVendorListCnt}}</span></b></button></li>
                       <li *ngIf="PAListCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('MPRPAApproverList');"><b>PA Pending For Approval <span>- {{PAListCnt}}</span></b></button></li>
+                      <li *ngIf="VendorRegInitiatorCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('VendorRegPendingList');"><b>Vendor Registration Pending For Initiator <span>- {{VendorRegInitiatorCnt}}</span></b></button></li>
+                      <li *ngIf="VendorRegChkerLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('VendorRegPendingList');"><b>Vendor Registration Pending For Checking <span>- {{VendorRegChkerLstCnt}}</span></b></button></li>
+                      <li *ngIf="VendorRegApprvrLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('VendorRegPendingList');"><b>Vendor Registration Pending For Approval <span>- {{VendorRegApprvrLstCnt}}</span></b></button></li>
+                      <li *ngIf="VendorRegFinVerLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('VendorRegPendingList');"><b>Vendor Registration Pending For Finance Verification <span>- {{VendorRegFinVerLstCnt}}</span></b></button></li>
+                      <li *ngIf="VendorRegFinApprvLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('VendorRegPendingList');"><b>Vendor Registration Pending For Finance Approval <span>- {{VendorRegFinApprvLstCnt}}</span></b></button></li>
+                      <li *ngIf="TokuchuPreverLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('TokochuReqList');"><b>Tokuchu Request Pending For PreVerification <span>- {{TokuchuPreverLstCnt}}</span></b></button></li>
+                      <li *ngIf="TokuchuverLstCnt>0" class="mt-2"><button class="btn btn-link" style="cursor:pointer" (click)="navigateTopage('TokochuReqList');"><b>Tokuchu Request Pending For Verification <span>- {{TokuchuverLstCnt}}</span></b></button></li>
                     </ul>
                   </div>
                 </div>
