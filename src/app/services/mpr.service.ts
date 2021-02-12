@@ -277,5 +277,42 @@ export class MprService {
   Unmappingitem(mapping: any): Observable<any> {
     return this.http.post<any>(this.url + 'PA/Unmappingitem/', mapping, this.httpOptions);
   }
+  GetVendorList(): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/getVendorList', this.httpOptions);
+  }
+  getVendorInfo(vendorid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/getVendorInfo/' + vendorid);
+  }
+  getVendorUserInfo(vid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/GetVendorUserInfo/' + vid);
+  }
+  deleteVendorUser(vendoruser: any): Observable<any> {
+
+    return this.http.post<any>(this.url + 'MPR/deactivateVendor', vendoruser, this.httpOptions);
+
+  }
+  AddNewUser(vendorusermaster: any): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/AddVendorUser', vendorusermaster, this.httpOptions);
+  }
+
+  DeleteRfqRevisionItems(rfqRevisionId: number, mprrevisionid: any): Observable<any> {
+    return this.http.delete<any>(this.url + 'MPR/DeactivateItem/' + rfqRevisionId + '/' + mprrevisionid);
+  }
+  CheckMprRevisionMapped(_mprrevisionId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/GetMappedNotMappedRfqItems/' + _mprrevisionId);
+  }
+
+  downLoadRFQInfoExcel(revisionId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Downloadexcel/' + revisionId, { responseType: 'blob' as 'json' });
+  }
+  UploadRfqData(formdata: FormData, revisionid: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/UpLoadRFQData/' + revisionid, formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
+  GetTokuchuinformation(mprrevisionid: any): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/GetTokuchuinformation/' + mprrevisionid);
+  }
 }
 

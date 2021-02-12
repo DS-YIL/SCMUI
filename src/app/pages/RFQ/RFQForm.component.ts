@@ -10,6 +10,9 @@ import { MprService } from 'src/app/services/mpr.service';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { constants } from 'src/app/Models/MPRConstants';
 import { RFQRevisionData, RFQMasters, RfqItemModel, RfqItemInfoModel, RFQGenerateReminderMaster } from 'src/app/Models/rfq';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+const EXCEL_EXTENSION = '.xlsx';
 
 
 @Component({
@@ -43,6 +46,8 @@ export class RFQFormComponent implements OnInit {
   public selectedDocList: Array<MPRDocument> = [];
   public mprDocument = new MPRDocument();
   public rfqItemList: Array<RfqItemModel> = [];
+  public revisionId: string
+
   //page load eventl
   ngOnInit() {
 
@@ -773,7 +778,42 @@ export class RFQFormComponent implements OnInit {
 
     })
   }
+  Excel() {
+    this.MprService.downLoadRFQInfoExcel(this.revisionId).subscribe(data => { this.downloadFile(data) });
+  }
 
+  DownLoadExcel() {
+    this.MprService.downLoadRFQInfoExcel(this.RevisionId).subscribe(data => { this.downloadFile(data) });
+  }
+
+
+  downloadFile(data: Blob) {
+    const contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const blob = new Blob([data], { type: contentType });
+    const url = window.URL.createObjectURL(blob);
+    const currentdate = new Date();
+    FileSaver.saveAs(blob, 'RfqData_' + currentdate + '_' + this.revisionId + '.xlsx');
+  }
+
+
+
+  uploadExcel(event: any) {
+    this.spinner.show();
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      let formData: FormData = new FormData();
+      var id = this.employee.EmployeeNo;
+      formData.append(id, file, file.name);
+      this.MprService.UploadRfqData(formData, this.revisionId).subscribe(data => {
+        if (data) {
+          this.spinner.hide();
+          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
+        }
+
+      });
+    }
+  }
 }
 
 

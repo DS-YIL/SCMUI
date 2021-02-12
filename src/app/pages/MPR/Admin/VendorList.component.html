@@ -1,0 +1,34 @@
+<div class="row m-2">
+</div>
+<div class="card compar-card m-2">
+<div class="card-body" style="overflow:auto !important">
+  <p-table  [value]="vendorList" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+    <ng-template pTemplate="header">
+      <tr class="mprltbldata">
+        <th style="width:50px">S.No</th>
+        <th style="width:100px">Vendor Id</th>
+        <th style="width:100px">Vendor Name</th>
+        <th style="width:100px">Vendor Code</th>
+        <th style="width:100px">Phone No</th>
+        <th  style="width:100px">Fax No</th>
+        <th  style="width:100px">ContactNo</th>
+        <th style="width:100px">Address</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td style="width:4em">
+          {{ri+1}}
+        </td>
+        <td class="ptable-cell"><button class="btn btn-link" (click)="vendorDetails(rowData)">{{rowData.Vendorid}}</button></td>
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
+        <td class="ptable-cell">{{rowData.VendorCode}}</td>
+        <td class="ptable-cell">{{rowData.PhoneNo}}</td>
+        <td  class="ptable-cell">{{rowData.FaxNo}}</td>
+        <td class="ptable-cell">{{rowData.ContactNo}}</td>
+        <td class="ptable-cell">{{rowData.Street}}<br>{{rowData.City}}<br>{{rowData.PostalCode}}</td>
+      </tr>
+    </ng-template>
+  </p-table><br />
+</div>
+</div>
