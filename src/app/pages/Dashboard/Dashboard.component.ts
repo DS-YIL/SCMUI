@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import Highcharts from 'highcharts';
-import Exporting from 'highcharts/modules/exporting';
-import funnel from 'highcharts/modules/funnel';
+import { NgxSpinnerService } from 'ngx-spinner'
 import { DatePipe } from '@angular/common';
 
 
@@ -16,11 +15,11 @@ import { DatePipe } from '@angular/common';
 })
 export class DashboardComponent {
   @ViewChild("container", { read: ElementRef, static: true }) container: ElementRef;
-  constructor(public MprService: MprService, public constants: constants, private router: Router, private datePipe: DatePipe) { }
+  constructor(public MprService: MprService, private spinner: NgxSpinnerService,public constants: constants, private router: Router, private datePipe: DatePipe) { }
 
   public totalMPRCnt: number = 0;
   public completedMPRCnt: number = 0;
-  public checkerListCnt; ApproversListCnt; SingleVendorListCnt; PAListCnt; VendorRegInitiatorCnt; VendorRegChkerLstCnt; VendorRegApprvrLstCnt; VendorRegFinVerLstCnt; VendorRegFinApprvLstCnt; TokuchuPreverLstCnt; TokuchuverLstCnt: number = 0;
+  public checkerListCnt; ApproversListCnt; SingleVendorListCnt; PAListCnt; VendorRegInitiatorCnt; VendorRegChkerLstCnt; VendorRegApprvrLstCnt; VendorRegFinVerLstCnt; VendorRegFinApprvLstCnt; TokuchuPreverLstCnt; TokuchuverLstCnt;MSALstCnt: number = 0;
   public dynamicData = new DynamicSearchResult();
   public employee: Employee;
   public mprStatusList: Array<any> = [];
@@ -62,9 +61,11 @@ export class DashboardComponent {
   }
 
   getdashBoardCnt() {
+    this.spinner.show();
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = "exec DashboardCnt_SP " + this.employee.OrgDepartmentId + ", " + this.employee.EmployeeNo + "";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.spinner.hide();
       this.totalMPRCnt = data[0].totalMPRCnt;
       this.completedMPRCnt = data[0].completedMPRCnt;
       this.checkerListCnt = data[0].checkerListCnt;
@@ -78,6 +79,7 @@ export class DashboardComponent {
       this.VendorRegFinApprvLstCnt = data[0].VendorRegFinApprvLstCnt;
       this.TokuchuPreverLstCnt = data[0].TokuchuPreverLstCnt;
       this.TokuchuverLstCnt = data[0].TokuchuverLstCnt;
+      this.MSALstCnt = data[0].MSALstCnt;
     })
   }
 
