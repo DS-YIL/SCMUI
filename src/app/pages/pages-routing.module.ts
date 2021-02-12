@@ -53,7 +53,9 @@ import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
 import { AsnListComponent } from './ASN/ASNList.component';
 import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component';
-import {MSALineItemListComponent} from './purchase-authorization/msaline-item-list.component';
+import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
+import { VendorListComponent } from './MPR/Admin/VendorList.component';
+import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
 
 const routes: Routes = [{
   path: '',
@@ -129,7 +131,8 @@ const routes: Routes = [{
       { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
       { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
       { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
-
+    { path: "VendorList", component: VendorListComponent, canActivate: [AuthGuard] },
+    { path: "VendorInfo/:VendorId", component: VendorInfoComponent, canActivate: [AuthGuard] }
     // {
     //      path: '',
     //      redirectTo: 'Login',

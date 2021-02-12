@@ -287,6 +287,7 @@ export class mprRevision {
   soldtoparty: string;
     MPRAssignNames: string;
     MPRBuyerGroup: MPRBuyerGroup;
+  PreviousPORefNumber: string;
 }
 
 export class SaleOrderDetails {
@@ -660,4 +661,32 @@ export class ASNfilters {
   VendorName: string;
   IntiatedBy: string;
   PONo: string;
+}
+export class VendorUserMaster {
+  VendorId: number;
+  Vuserid: string;
+  ContactNumber: string;
+  ContactPerson: string;
+  UpdatedBy: string;
+}
+export class Vendor {
+  Vendorid: number;
+  VendorCode: string;
+  VendorName: string;
+  OldVendorCode: string;
+  Street: string;
+  City: string;
+  RegionCode: string;
+  PostalCode: string;
+  PhoneNo: string;
+  FaxNo: string;
+  AuGr: string;
+  PaymentTermCode: string;
+  Blocked: string;
+  Emailid: string;
+  ContactNo: string;
+  AutoAssignmentofRFQ: string;
+  Deleteflag: string;
+  UpdatedBy: string;
+  UpdatedOn: string;
 }

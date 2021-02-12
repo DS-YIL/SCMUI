@@ -253,7 +253,12 @@ export class purchasePaymentComponent implements OnInit {
         this.paitemdetails.push(this.selectedItems[i]);
         //this.purchasedetails.Item.push(this.selectedItems[i]);
       }
-
+      //console.log("item", this.purchasedetails.Item)
+      //this.purchasedetails.Item.forEach((item1, index) => {
+      //  if (!item1[index]['itemtypesupplier']) {
+      //    console.log()
+      //  }
+      //});
       this.purchasedetails.ApproversList = this.employeelist.Approvers;
       for (var i = 0; i < this.rfqterms.length; i++) {
         this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])

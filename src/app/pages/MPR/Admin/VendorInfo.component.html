@@ -1,0 +1,107 @@
+
+<div  class="strike">
+    <span class="headername">Vendor Details</span>
+  </div>
+  <div  class="tab-pane">
+    <div class="row m-2">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+            <label class="lblEdit">Vendor Name:</label>
+            <span class="valueEdit">{{datails.VendorName}}</span>
+          </div>
+          <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+            <label class="lblEdit">Street:</label>
+            <span class="valueEdit">{{datails.Street}}</span>
+          </div>
+          <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+            <label class="lblEdit">State:</label>
+            <span class="valueEdit">{{datails.State}}</span>
+          </div>
+          <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+            <label class="lblEdit">City:</label>
+            <span class="valueEdit">{{datails.City}}</span>
+          </div>
+         
+    </div>
+    <div class='row m-2'>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Postal Code:</label>
+        <span class="valueEdit">{{datails.PostalCode}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Number:</label>
+        <span class="valueEdit">{{datails.ContactNo}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Region Code :</label>
+        <span class="valueEdit">{{datails.RegionCode}}</span>
+      </div>
+  </div>
+  <div >
+  <div class="m-2">
+    <div class="head-text pl-0">
+      <div class="col-md-6 pt-2">Deactivate Vendor</div>
+      <div class="col-md-6 edit pt-1">
+        <button pButton type="button" class="btn btn-outline-secondary form-control edit-button" (click)="EnableUserAdd()" pButton icon="fa fa-edit" aria-hidden="true" ></button>
+      </div>
+      <div class="col-md-3 pt-2"></div>
+    </div>
+    <div *ngIf="vendorUserDetails" class="form-control" style="height:100%;border-radius:0px;">
+      <p-table [value]="vendorUserDetails">
+        <ng-template pTemplate="header">
+          <tr class="mprltbldata">
+            <th>Sl NO</th>
+            <th>Vendor User Id</th>
+            <th>Mail Id</th>
+            <th>Contact Person</th>
+            <th>Contact Number</th>
+            <th>Deactivate</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+          <tr>
+            <td style="width:4em">{{ri+1}}</td>
+            <td>{{rowData.VuniqueId}}</td>
+            <td>{{rowData.Vuserid}}</td>
+            <td>{{rowData.ContactPerson}}</td>
+            <td>{{rowData.ContactNumber}}</td>
+            <td *ngIf="rowData.Active" align="center">
+            <button pButton type="button" pDeleteEditableRow icon="pi pi-ban" class="ui-button-danger" (click)="DeactivateVendor(rowData)"></button>
+           </td> 
+           <td *ngIf="!rowData.Active" align="center">
+            
+           </td> 
+        </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+  <p-dialog [(visible)]="enableUserAdd" [responsive]="true" showEffect="fade" [style]="{width: '500px', height: '300px'}" >
+    <form [formGroup]="newVendor">
+        <div class="ui-g-12">
+          <div>
+            <label class="form-label">Contact Person</label>
+            <input type="text" class="form-control" formControlName="ContactPerson" [(ngModel)]="vendorUserMaster.ContactPerson" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactPerson.errors }" />
+            <span *ngIf="vendorSubmitted && newVendor.controls.ContactPerson.errors" class="newVendorDetails-feedback"><span style="color:red">vendor Name Required.</span></span><br />
+          </div><br>
+          <label class="form-label">Email Id</label>&nbsp;<span style="color:red">*</span>
+          <div class="form-inline-list">
+            <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="vendorUserMaster.Vuserid" />
+           
+            <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span>
+          </div><br />
+          <div *ngIf="showNewVendor">
+            <label class="form-label">Contact No</label>&nbsp;<span style="color:red">*</span>
+            <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="vendorUserMaster.ContactNumber" />
+            <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+          </div>
+        </div>
+      </form>
+  
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="AddNewVendorUserUser()" label="Submit"></button>
+          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+        </div>
+      </p-footer>
+  </p-dialog>

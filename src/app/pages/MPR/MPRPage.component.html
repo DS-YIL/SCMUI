@@ -308,6 +308,7 @@
                     <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
                     <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
                     &nbsp; &nbsp;<label class="mt-2">DownLoad format :</label>&nbsp; <button class="mt-2" type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
+                    &nbsp; &nbsp;<label class="mt-2">Tokuchu Download :</label>&nbsp; <button class="mt-2" type="button"  pButton icon="fa fa-download" (click)="downLoadExcel(tokuchuinformation)"></button>
                   </span>
                 </div>
               </ng-template>
@@ -470,6 +471,22 @@
             </div>
 
 
+
+            <div *ngIf="!vendorFormEdit && showOldPO" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Old PO Reference Number </label>&nbsp;<span style="color:red">*</span>
+              <div class="form-inline-list">
+                <input type="text" [(ngModel)]="mprRevisionModel.PreviousPORefNumber" class="form-control" formControlName="oldPORef" id="oldPORef" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.oldPORef.errors }">
+
+                <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.oldPORef.value" class="invalid-feedback">Enter Old PO Reference Number.</span>
+              </div>
+            </div>
+            <div *ngIf="vendorFormEdit && showOldPO" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Old PO Reference Number </label>
+              <span class="valueEdit">{{mprRevisionModel.PreviousPORefNumber}}</span>
+            </div>
+
+
+
             <div *ngIf="!vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Type of Preference </label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
@@ -480,6 +497,8 @@
                 <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.PreferredVendorTypeId.value" class="invalid-feedback">Select Type Of Preference.</span>
               </div>
             </div>
+
+
             <div *ngIf="vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Type of Preference </label>
               <span class="valueEdit">{{MPRPageForm2.controls.PreferredVendorTypeId.value}}</span>
@@ -527,7 +546,12 @@
                 <div *ngIf="viewRfq">
                   <label *ngFor="let Item of RfqFilteredGeneratedList">
                     <a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" target="_blank" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>
-                    <i *ngIf="editRfq && getEditData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i><br />
+                    <!--<i *ngIf="editRfq && getEditData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i><br />-->
+                    <i *ngIf="editRfq && getEditData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId) && Item.Mapping==true" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i>
+                    <span>
+                      <button *ngIf="editRfq && getEditData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId) && Item.Mapping==true" pButton type="button" icon="fa fa-trash" style="margin-left: 1px;" class="ui-button-danger" (click)="DeleteRFQRevisionItems(Item.rfqRevisionId)">
+                      </button>
+                    </span><br />
                   </label>
                 </div>
               </td>

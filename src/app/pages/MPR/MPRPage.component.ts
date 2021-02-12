@@ -10,6 +10,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { HeaderComponent } from 'src/app/@theme/components/header/header.component'
 import { DatePipe } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   providers: [HeaderComponent],
@@ -37,10 +38,10 @@ export class MPRPageComponent implements OnInit {
   public searchresult: Array<object> = [];
   public itemDetails: MPRItemInfoes;
   public mprDocuments: MPRDocument;
+  public showList; showOldPO: boolean = false;
   public selectedItem: searchList;
   public saleorderdetails: SaleOrderDetails;
   public selectedmultiItem: searchList;
-  public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
   public formEdit = false;
   public formName; statusAckTxt: string = "Acknowledge";
@@ -86,7 +87,8 @@ export class MPRPageComponent implements OnInit {
   public ShipToPartyName: any;
   public mailsending: Array<any> = [];
   public communicationlist: Array<any> = [];
-
+  public mprRevisionId: string;
+  public tokuchuinformation: Array<any> = [];
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -97,7 +99,15 @@ export class MPRPageComponent implements OnInit {
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
+    this.route.params.subscribe(params => {
+      if (params["MPRRevisionId"]) {
+        this.mprRevisionId = params["MPRRevisionId"];
+      }
+      else {
+        this.mprRevisionId = "";
+      }
 
+    });
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();
@@ -115,6 +125,7 @@ export class MPRPageComponent implements OnInit {
     this.PAdetailsList = [];
     this.rfqCommunicationList = [];
     this.MPRAssignment = new MPRAssignment();
+    this.tokuchuinformation = [];
     //create static drop down text from 0 to 100
     Array(100).fill(1).map((x, i) => {
       this.numbers.push(i);
@@ -161,6 +172,7 @@ export class MPRPageComponent implements OnInit {
       PurchaseTypeId: ['', [Validators.required]],
       PreferredVendorTypeId: ['', [Validators.required]],
       JustificationForSinglePreferredVendor: ['', [Validators.required]],
+      oldPORef: ['', [Validators.required]]
     });
 
     this.MPRInchargeForm = this.formBuilder.group({
@@ -280,6 +292,7 @@ export class MPRPageComponent implements OnInit {
         this.getRfqGeneratedList(revisionId);
         this.getPAdetails(revisionId);
         this.getCommunicationList();
+        this.GetTokuchuinformation(revisionId);
       }
       else {
         if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
@@ -481,6 +494,18 @@ export class MPRPageComponent implements OnInit {
       if (this.txtName == "DispatchLocation") {
         this.selectlocation(item.name);
       }
+    }
+    if (this.formName == "MPRPageForm2" && item.listName == "PurchaseTypeId") {
+      if (item.code == 5) {
+        this.showOldPO = true;
+        this.MPRPageForm2.controls['oldPORef'].setValidators([Validators.required]);
+      }
+      else {
+        this.showOldPO = false;
+        this.MPRPageForm2.controls['oldPORef'].setValue("");
+        this.MPRPageForm2.controls['oldPORef'].clearValidators();
+      }
+      this.MPRPageForm2.controls['oldPORef'].updateValueAndValidity()
     }
     if (this.formName == "MPRPageForm2" && item.listName == "PurchaseTypeId") {
       if (item.code == 1 || item.code == 2) {
@@ -755,6 +780,10 @@ export class MPRPageComponent implements OnInit {
 
   onMPRVendorSubmit(formId: string, showform: string, formEdit: string) {
     this.MPRForm2Submitted = true;
+    if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && this.mprRevisionModel.MPRVendorDetails.length <= 1) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Please Add Atleast two vendors' });
+      return;
+    }
     if (this.MPRPageForm2.invalid) {
       return;
     }
@@ -1106,7 +1135,8 @@ export class MPRPageComponent implements OnInit {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = "select distinct RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId + " "
     //this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId,Ax(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
-    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+    //this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+    this.MprService.CheckMprRevisionMapped(this.mprRevisionId).subscribe(data => {
       this.RfqGeneratedList = data;
       this.RfqGeneratedList.forEach(item => {
         var index = this.RfqFilteredGeneratedList.findIndex(x => x.RFQNo == item.RFQNo && x.RevisionNo == item.RevisionNo);
@@ -1133,7 +1163,17 @@ export class MPRPageComponent implements OnInit {
       this.PAdetailsList = data;
     })
   }
-
+  GetTokuchuinformation(mprrevisionid: number) {
+    this.MprService.GetTokuchuinformation(mprrevisionid).subscribe(data => {
+      this.tokuchuinformation = data;
+    })
+  }
+  downLoadExcel(jsondata: any[]): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsondata);
+    const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    XLSX.writeFile(wb, 'tokuchu.xlsx');
+  }
   statusChange() {
     if (this.targetspendError && this.mprStatusUpdate.status == "Approved" && this.mprStatusUpdate.typeOfuser == "Approver")
       this.disableStatusSubmit = true;
@@ -1493,6 +1533,10 @@ export class MPRPageComponent implements OnInit {
 
   bindMPRPageForm(formName: string, data: any) {
     for (let item in this[formName].controls) {
+      if (item == "PurchaseTypeId") {
+        if (data[item] == 5)
+          this.showOldPO = true;
+      }
       if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
         (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
         //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
@@ -1958,6 +2002,26 @@ export class MPRPageComponent implements OnInit {
         }
         //var index = this.mailsending[0].findIndex(x => x.EmployeeNo == details.EmployeeNo);
     }
+  gettokuchuinformation() {
+
+  }
+  DeleteRFQRevisionItems(rfqRevisionId: number) {
+    if (confirm("Are you sure, You want to Deactivate?")) {
+      this.spinner.show();
+      this.MprService.DeleteRfqRevisionItems(rfqRevisionId, this.mprRevisionId).subscribe({
+        next: data => {
+
+          alert('Deleted successfully');
+          this.getRfqGeneratedList(this.mprRevisionId);
+        },
+        error: error => {
+          alert(error.message);
+        }
+      });
+      this.spinner.hide();
+    }
+  }​​​​​​​
+
   //<<SCM Open issues coding Ended>>
 }
 
