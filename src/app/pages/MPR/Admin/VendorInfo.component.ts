@@ -17,7 +17,8 @@ export class VendorInfoComponent{
     public vendorId: number;
     public newVendor :FormGroup;
     public hideForVerifier;showNewVendor : boolean = true;
-    public datails : Array<any> = [];
+  // public datails: Array<any> = [];
+  public datails: any;
     public vendorUserMaster = new VendorUserMaster();
     public vendorUserDetails : Array<any> = [];
     public enableUserAdd ;vendorSubmitted;showVendorDialog : boolean = false;

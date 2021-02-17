@@ -308,7 +308,7 @@
                     <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
                     <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
                     &nbsp; &nbsp;<label class="mt-2">DownLoad format :</label>&nbsp; <button class="mt-2" type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
-                    &nbsp; &nbsp;<label class="mt-2">Tokuchu Download :</label>&nbsp; <button class="mt-2" type="button"  pButton icon="fa fa-download" (click)="downLoadExcel(tokuchuinformation)"></button>
+                    &nbsp; &nbsp;<label class="mt-2">Tokuchu Download :</label>&nbsp; <button class="mt-2" *ngIf="tokuchuinformation.length" type="button"  pButton icon="fa fa-download" (click)="downLoadExcel(tokuchuinformation)"></button>
                   </span>
                 </div>
               </ng-template>

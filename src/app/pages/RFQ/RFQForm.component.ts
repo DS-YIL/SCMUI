@@ -805,12 +805,24 @@ export class RFQFormComponent implements OnInit {
       let formData: FormData = new FormData();
       var id = this.employee.EmployeeNo;
       formData.append(id, file, file.name);
-      this.MprService.UploadRfqData(formData, this.revisionId).subscribe(data => {
-        if (data) {
-          this.spinner.hide();
-          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
-        }
+      this.MprService.UploadRfqData(formData, this.revisionId).subscribe({
+        next: data => {
 
+          if (data.ErrorMessage) {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: data.ErrorMessage });
+            this.spinner.hide();
+            return;
+          }
+
+          if (data) {
+            console.log(data);
+            this.spinner.hide();
+            this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
+          }
+        }, error: error => {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: error.message });
+          this.spinner.hide();
+        }
       });
     }
   }

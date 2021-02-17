@@ -421,8 +421,8 @@ export class purchasePaymentComponent implements OnInit {
       }
       this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
       this.paService.ApproveItems(item).subscribe(data => {
-        this.employeelist = data['Table'];
-        this.employeelist.Approvers = data['Table'];
+        this.employeelist = data;
+        this.employeelist.Approvers = data;
         //this.incompletedapprovers = this.employeelist;
       })
     }
@@ -450,8 +450,8 @@ export class purchasePaymentComponent implements OnInit {
       }
       this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
       this.paService.ApproveItems(item).subscribe(data => {
-        this.employeelist = data['Table'];
-        this.employeelist.Approvers = data['Table'];
+        this.employeelist = data;
+        this.employeelist.Approvers = data;
         //this.employeelist.Approvers = data;
         console.log("employeelist", this.employeelist)
       })

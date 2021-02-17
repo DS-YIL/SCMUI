@@ -390,21 +390,29 @@
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <!--<label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.PFPercentage | percent}} </span><span>%</span></label>
-                <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
+    <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
                 <label *ngIf="rowData.TotalPFAmount" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
                 <label *ngIf="rowData.TotalFreightAmount" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}}</span>&nbsp;<span *ngIf="rowData.FreightPercentage">({{rowData.FreightPercentage}}%)</span></label>
               </div>
-              <div class="row"  style="margin-left:3px;margin-right:2px">
+              <div class="row" style="margin-left:3px;margin-right:2px">
                 <label *ngIf="rowData.HandlingAmount" style="width:200px">HandlingAmount:<span>{{rowData.HandlingAmount }}</span>&nbsp;</label>
                 <label *ngIf="rowData.DutyAmount" style="width:200px">DutyAmount:<span>{{rowData.DutyAmount}}</span>&nbsp;</label>
               </div>
-              <div class="row"  style="margin-left:3px;margin-right:2px">
+              <div class="row" style="margin-left:3px;margin-right:2px">
                 <label *ngIf="rowData.ImportFreightAmount" style="width:200px">ImportFreightAmount:<span>{{rowData.ImportFreightAmount }}</span>&nbsp;</label>
                 <label *ngIf="rowData.InsuranceAmount" style="width:200px">InsuranceAmount:<span>{{rowData.InsuranceAmount}}</span>&nbsp;</label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <label style="width:200px">HSN Code:<span>{{rowData.HSNCode}}</span></label>
+                <label style="width:200px">POItemType:&nbsp;<span>{{rowData.itemtypesupplier}}</span></label>
               </div>
+              <div class="row" style="margin-left:3px;margin-right:2px">
+                <label>PO Text:&nbsp;<span>{{rowData.POText}}</span></label>
+              </div>
+              <div class="row" style="margin-left:3px;margin-right:2px">
+                <label >PODescription:&nbsp;<span>{{rowData.PODescription}}</span></label>
+              </div>
+
             </div>
           </td>
           <td>{{rowData.QuotationQty  }}</td>
