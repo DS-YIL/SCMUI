@@ -224,5 +224,10 @@ export class purchaseauthorizationservice {
   ClearMSAMasterConfirmation(MSAConfirmationModel: MSAMasterConfimationModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/ClearMSAConfirmation', MSAConfirmationModel, this.httpOptions)
   }
-
+  getincotermmaster(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/getincotermmaster', this.httpOptions)
+  }
+  resettokuchu(tokuchuid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/updatetokuchubyid/' + tokuchuid);
+  }
 } 

@@ -141,7 +141,7 @@
               </div>
             </div>
           </td>
-          <td><input [disabled]="!showSubmit" id="timechecked" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
+          <td><input [disabled]="!showSubmit" id="timechecked{{rowData.paitemid }}" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
           <td style="display:inline-block;border:none">
             <label class="form-label"><b>Category  Level1:</b></label>&nbsp;{{rowData.ProductCategorylevel1Name}}
             <label class="form-label"><b>Category  Level2:</b></label>&nbsp;{{rowData.ProductCategorylevel2Name}} &nbsp;
@@ -165,6 +165,7 @@
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified On: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedOn  | date :  constants.dateFormat}}</span></div>
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified Status: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedStatus }}</span></div>
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified Remarks: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedRemarks}}</span></div>
+    <div class="m-2"> <button class="btn btn-primary" style="margin-left:250px" (click)="resettokuchu()">Reset</button></div>
   </div>
   <div class="row m-2" *ngIf="showSubmit">
     <div class="col-lg-4 col-md-4 col-sm-4 form-inline">

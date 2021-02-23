@@ -82,6 +82,7 @@ export class purchasePaymentComponent implements OnInit {
   public mprno: string;
   public cols: any[];
   public itemdeatils: any;
+  public incoterms: Array<any> = [];
 
   control = new FormArray([]);
   constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
@@ -154,6 +155,7 @@ export class purchasePaymentComponent implements OnInit {
       this.purchasedetails.mprno = this.selectedItems[0].DocumentNo;
       this.mprrevisionid = this.selectedItems[0].MPRRevisionId;
       this.displayRfqTerms(this.rfqrevisionid);
+      this.getincotermmaster();
       this.purchasedetails.Item = [];
       for (var i = 0; i < this.selectedItems.length; i++) {
         this.purchasedetails.Item.push(this.selectedItems[i]);
@@ -521,6 +523,11 @@ export class purchasePaymentComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'file uploaded Successfully' });
     })
 
+  }
+  getincotermmaster() {
+    this.paService.getincotermmaster().subscribe(data => {
+      this.incoterms = data;
+    })
   }
 
   uploadapprovedFiles() {

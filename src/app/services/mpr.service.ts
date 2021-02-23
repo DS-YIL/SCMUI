@@ -306,7 +306,7 @@ export class MprService {
     return this.http.get<any>(this.url + 'PA/Downloadexcel/' + revisionId, { responseType: 'blob' as 'json' });
   }
   UploadRfqData(formdata: FormData, revisionid: any): Observable<any> {
-    return this.http.post<any>(this.url + 'PA/UpLoadRFQData/' + revisionid, formdata)
+    return this.http.post<any>(this.url + 'PA/UploadRfqData/' + revisionid, formdata, this.httpOptions)
       .pipe(map(data => {
         return data;
       }))

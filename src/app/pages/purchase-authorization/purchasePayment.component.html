@@ -269,8 +269,14 @@
             <label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
             <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />
             <div class="row">
-              <label class="col-md-5">Supply:<input class="col-md-3" type="checkbox"  id="supply{{rowData.Mprrfqsplititemid}}"  (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
-             <label class="col-md-5">Service:<input class="col-md-3" type="checkbox"  id="service{{rowData.Mprrfqsplititemid}}"   (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label> 
+              <label class="col-md-3">Supply:<input class="col-md-3" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <label class="col-md-3">Service:<input class="col-md-3" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <div class="col-lg-8 col-md-8 col-sm-8">
+                <label class="form-label">IncoTerms:</label>&nbsp;
+                <select  [(ngModel)]="purchasedetails.incoterms" class="form-control dropdown">
+                  <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Name}}</option>
+                </select>&nbsp;
+              </div>
             </div>
           </td>
           <td class="ptable-cell">{{rowData.QuotationQty}}</td>
@@ -390,7 +396,7 @@
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <!--<label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.PFPercentage | percent}} </span><span>%</span></label>
-    <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
+                <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
                 <label *ngIf="rowData.TotalPFAmount" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
                 <label *ngIf="rowData.TotalFreightAmount" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}}</span>&nbsp;<span *ngIf="rowData.FreightPercentage">({{rowData.FreightPercentage}}%)</span></label>
               </div>
@@ -410,7 +416,7 @@
                 <label>PO Text:&nbsp;<span>{{rowData.POText}}</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
-                <label >PODescription:&nbsp;<span>{{rowData.PODescription}}</span></label>
+                <label>PODescription:&nbsp;<span>{{rowData.PODescription}}</span></label>
               </div>
 
             </div>
@@ -1123,36 +1129,36 @@
 
 <p-dialog header="Add" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '1100px'}" [closable]="false">
   <!--<form (ngSubmit)="SubmitItem(purchasedetails.Item)" #myForm="ngForm">-->
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ITEM</th>
-          <th>MPRNO</th>
-          <th>PONO :<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PONO')" binary="true"></th>
-          <th>POITEMNO<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POITEMNO')"  binary="true"></th>
-          <th>PODATE<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PODATE')" binary="true"></th>
-          <th>POREMARKS<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POREMARKS')" binary="true"></th>
-        </tr>
-      </thead>
-      <tbody>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ITEM</th>
+        <th>MPRNO</th>
+        <th>PONO :<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PONO')" binary="true"></th>
+        <th>POITEMNO<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POITEMNO')" binary="true"></th>
+        <th>PODATE<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PODATE')" binary="true"></th>
+        <th>POREMARKS<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POREMARKS')" binary="true"></th>
+      </tr>
+    </thead>
+    <tbody>
 
-        <tr *ngFor="let items of purchasedetails.Item">
-          <td>{{items.ItemDescription}}</td>
-          <td>{{items.DocumentNo}}</td>
-          <td><input (keypress)="numberOnly($event)" id="txtcopy1" type="text" [(ngModel)]="items.PONO" required maxlength="10" numberOnly class="form-control" /></td>
-          <td><input type="text" maxlength="6" [(ngModel)]="items.POItemNo" required class="form-control" numberOnly /></td>
-          <td><input type="date" [value]="items.POStatusDate | date:'yyyy-MM-dd'" [ngModel]="items.POStatusDate | date:'yyyy-MM-dd'" (ngModelChange)="modelChangeFn($event)" required  class="form-control" /></td>
-          <td><input type="text" [(ngModel)]="items.Remarks" required class="form-control" /></td>
-        </tr>
-      </tbody>
-    </table>
-    <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success"  (click)="SubmitItem(purchasedetails.Item)" label="Insert"></button>&nbsp;&nbsp;
-        <!--(click)="SubmitItem(purchasedetails.Item)"-->
-        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
-      </div>
-    </p-footer>
+      <tr *ngFor="let items of purchasedetails.Item">
+        <td>{{items.ItemDescription}}</td>
+        <td>{{items.DocumentNo}}</td>
+        <td><input (keypress)="numberOnly($event)" id="txtcopy1" type="text" [(ngModel)]="items.PONO" required maxlength="10" numberOnly class="form-control" /></td>
+        <td><input type="text" maxlength="6" [(ngModel)]="items.POItemNo" required class="form-control" numberOnly /></td>
+        <td><input type="date" [value]="items.POStatusDate | date:'yyyy-MM-dd'" [ngModel]="items.POStatusDate | date:'yyyy-MM-dd'" (ngModelChange)="modelChangeFn($event)" required class="form-control" /></td>
+        <td><input type="text" [(ngModel)]="items.Remarks" required class="form-control" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(purchasedetails.Item)" label="Insert"></button>&nbsp;&nbsp;
+      <!--(click)="SubmitItem(purchasedetails.Item)"-->
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
   <!--</form>-->
 </p-dialog>
 

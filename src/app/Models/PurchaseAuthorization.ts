@@ -280,6 +280,7 @@ export class mprpadetailsmodel {
   potype: string;
   AribaRequired: boolean;
   msarequired: boolean;
+  incoterms: string;
 }
 export class parequestedanddeletemodel {
   paid: number;
