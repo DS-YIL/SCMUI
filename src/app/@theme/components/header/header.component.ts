@@ -107,13 +107,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getdashBoardCnt() {
-    this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "exec DashboardCnt_SP " + this.currentUser.OrgDepartmentId + ", " + this.currentUser.EmployeeNo + "";
-    this._usermanage.getDBMastersList(this.dynamicData).subscribe(data => {
-      this.DashboardCnt = data[0].checkerListCnt + data[0].ApproversListCnt + data[0].SingleVendorListCnt + data[0].PAListCnt + data[0].VendorRegInitiatorCnt + data[0].VendorRegChkerLstCnt + data[0].VendorRegApprvrLstCnt + data[0].VendorRegFinVerLstCnt + data[0].VendorRegFinApprvLstCnt + data[0].TokuchuPreverLstCnt + data[0].TokuchuverLstCnt + data[0].MSALstCnt;
-      document.getElementById("dashBrdcount").innerHTML = this.DashboardCnt;
-      
-    })
+    if (this.currentUser) {
+      this.dynamicData = new DynamicSearchResult();
+      this.dynamicData.query = "exec DashboardCnt_SP " + this.currentUser.OrgDepartmentId + ", " + this.currentUser.EmployeeNo + "";
+      this._usermanage.getDBMastersList(this.dynamicData).subscribe(data => {
+        this.DashboardCnt = data[0].checkerListCnt + data[0].ApproversListCnt + data[0].SingleVendorListCnt + data[0].PAListCnt + data[0].VendorRegInitiatorCnt + data[0].VendorRegChkerLstCnt + data[0].VendorRegApprvrLstCnt + data[0].VendorRegFinVerLstCnt + data[0].VendorRegFinApprvLstCnt + data[0].TokuchuPreverLstCnt + data[0].TokuchuverLstCnt + data[0].MSALstCnt;
+        document.getElementById("dashBrdcount").innerHTML = this.DashboardCnt;
+
+      })
+    }
   }
 
   navigateDashboard() {

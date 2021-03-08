@@ -19,6 +19,10 @@
   </div>
   <div class="row m-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Code</label><br />
+      <input class="form-control" [(ngModel)]="vendorRegfilters.VendorCode">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       &nbsp;&nbsp;<label class="form-label">Initiated By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.IntiatedBy">
         <option value="">Select</option>
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
@@ -36,13 +40,15 @@
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>
+  </div>
+  <div class="row m-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
       &nbsp;&nbsp;<label class="form-label">Checker Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.CheckerStatus">
         <option value="">Select</option>
         <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
       </select>&nbsp;
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
       &nbsp;&nbsp;<label class="form-label">Approved By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.ApprovedBy">
         <option value="">Select</option>
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
@@ -60,6 +66,8 @@
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>
+  </div>
+  <div class="row m-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
       &nbsp;&nbsp;<label class="form-label">Verified Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.VerifiedStatus">
         <option value="">Select</option>

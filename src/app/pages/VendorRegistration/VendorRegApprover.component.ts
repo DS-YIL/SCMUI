@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VendorDocDetailsList, VendorRegistration, DynamicSearchResult } from 'src/app/Models/mpr';
+import { VendorDocDetailsList, VendorRegistration, DynamicSearchResult, Employee } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -14,6 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class VendorRegisterApproverComponent implements OnInit {
   constructor(private messageService: MessageService, private router: Router, private formBuilder: FormBuilder, public constants: constants, private spinner: NgxSpinnerService, public MprService: MprService) { }
   VendorRegister: FormGroup;
+  public employee: Employee;
   public vendorDocuments: VendorDocDetailsList;
   public VQAddSubmitted: boolean = false;
   public VendorData: VendorRegistration;
@@ -45,10 +46,15 @@ export class VendorRegisterApproverComponent implements OnInit {
   public regpan: RegExp;
 
   ngOnInit() {
+    if (localStorage.getItem("Employee"))
+      this.employee = JSON.parse(localStorage.getItem("Employee"));
+    else
+      this.router.navigateByUrl("Login");
     if (localStorage.getItem("vendorRegDetails"))
       this.VendorDataLocDetails = JSON.parse(localStorage.getItem("vendorRegDetails"));
     else
-      this.router.navigateByUrl("vendorRegDetails");
+      this.router.navigateByUrl("VendorRegList");
+
     this.regGST = new RegExp('^([0]{1}[1-9]{1}|[1-2]{1}[0-9]{1}|[3]{1}[0-7]{1})([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$');
     this.regpan = new RegExp('^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$');
 
@@ -400,7 +406,7 @@ export class VendorRegisterApproverComponent implements OnInit {
     //  docTypeId = docId;
     //else
     //  docTypeId = document.getElementById(docId)["value"];
-    let idanddocid = this.VendorDataLocDetails.VUniqueId + "_" + this.VendorDataLocDetails.Vendorid + "_" + docTypeId + "_" + "VendorReg";
+    let idanddocid = this.employee.EmployeeNo + "_" + this.VendorDataLocDetails.Vendorid + "_" + docTypeId + "_" + "VendorReg";
     let formData: FormData = new FormData();
     if (fileList.length > 0) {
       //for (let i = 0; i <= fileList.length - 1; i++) {
@@ -412,7 +418,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.MprService.uploadFile(formData).subscribe(data => {
 
         this.vendorDocuments = new VendorDocDetailsList();
-        this.vendorDocuments.UploadedBy = this.VendorDataLocDetails.VUniqueId;
+        this.vendorDocuments.UploadedBy = this.employee.EmployeeNo;
         this.vendorDocuments.DocumentName = idanddocid + "_" + file.name;
         this.vendorDocuments.DocumentationTypeId = docTypeId;
         this.vendorDocuments.VendorId = this.VendorDataLocDetails.Vendorid;

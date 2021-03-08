@@ -285,8 +285,8 @@ export class mprRevision {
   Enduser: string;
   shiptoparty: string;
   soldtoparty: string;
-    MPRAssignNames: string;
-    MPRBuyerGroup: MPRBuyerGroup;
+  MPRAssignNames: string;
+  MPRBuyerGroup: MPRBuyerGroup;
   PreviousPORefNumber: string;
 }
 
@@ -360,8 +360,8 @@ export class Employee {
 export class MPRBuyerGroup {
   BuyerGroupId: number;
   BuyerGroup: string;
-    BoolInUse: boolean;
-    BuyerManager: string;
+  BoolInUse: boolean;
+  BuyerManager: string;
 }
 export class MPRProcurementSources {
   ProcurementSourceId: number;
@@ -597,6 +597,7 @@ export class vendorRegfilters {
   ToDate: Date;
   Vendorid: string;
   VendorName: string;
+  VendorCode: string;
   IntiatedBy: string;
   IntiatorStatus: string = "";
   CheckedBy: string;
@@ -689,4 +690,56 @@ export class Vendor {
   Deleteflag: string;
   UpdatedBy: string;
   UpdatedOn: string;
+}
+export class BankGuarantee {
+  BGId: number;
+  BGNo: string;
+  SequenceNo: number;
+  Vendorid: number;
+  VendorName: string;
+  PONo: string="";
+  PODate: Date;
+  POValue: string;
+  BGDate: Date;
+  BGValue: string;
+  Items: string;
+  BGExpiryDate: Date
+  WarrantyExpiryDate: Date;
+  BGStatus: string = "";
+  BGRemarks: string = "";
+  CreatedBy: string;
+  BGDocuments: Array<BGDocument> = [];
+  BGStatusTracks: Array<BGStatusTrack> = [];
+}
+export class BGDocument {
+  DocId: number;
+  BGId: number;
+  DocumentName: string;
+  Path: string;
+  UploadedBy: string;
+  UploadedDate: Date;
+  DeleteFlag: boolean
+  DeletedBy: string
+  DeletedDate: Date;
+}
+export class BGStatusTrack {
+  StatustrackId: number;
+  BGId: number;
+  Status: string="";
+  Remarks: string="";
+  UpdatedBy: string;
+  UpdatedDate: Date;
+  DeleteFlag: boolean;
+  DeletedBy: string;
+  DeletedDate: Date;
+}
+
+export class BGfilters {
+  FromDate: string;
+  ToDate: string;
+  BGNo: string;
+  VendorName: string;
+  IntiatedBy: string;
+  PONo: string;
+  BGStatus: string = "";
 }
