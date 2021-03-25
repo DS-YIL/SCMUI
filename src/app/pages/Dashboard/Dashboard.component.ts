@@ -162,10 +162,12 @@ export class DashboardComponent {
     var FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
     var ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from MPRRevisions where BoolValidRevision=1 and PreparedOn <= '" + ToDate + "' and PreparedOn >= '" + FromDate + "' and StatusId in (3,4,7,8,9,17,11,18,13,14,12,16,15,19) ";
+    this.dynamicData.query = "select StatusId from MPRRevisions where BoolValidRevision=1 and PreparedOn <= '" + ToDate + "' and PreparedOn >= '" + FromDate + "' and StatusId in (3,4,7,8,9,17,11,18,13,14,12,16,15,19) ";
     if (this.BuyerGroupId)
       this.dynamicData.query += " and BuyerGroupId=" + this.BuyerGroupId + "";
+    this.spinner.show();
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.spinner.hide();
       this.mprStatusList = data;
       if (this.mprStatusList.length > 0) {
         this.chartData = [
