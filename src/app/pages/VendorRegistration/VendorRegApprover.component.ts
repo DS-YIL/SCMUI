@@ -250,12 +250,14 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.VendorRegister.controls['MSME'].clearValidators();
       this.VendorRegister.controls['State'].clearValidators();
       this.VendorRegister.controls['GSTNo'].clearValidators();
+      this.VendorRegister.controls['HaveGST'].clearValidators();
       this.VendorRegister.controls['PANNo'].clearValidators();
       this.VendorRegister.controls['IFSCCode'].clearValidators();
 
       this.VendorRegister.controls['MSME'].updateValueAndValidity();
       this.VendorRegister.controls['State'].updateValueAndValidity();
       this.VendorRegister.controls['GSTNo'].updateValueAndValidity();
+      this.VendorRegister.controls['HaveGST'].updateValueAndValidity();
       this.VendorRegister.controls['PANNo'].updateValueAndValidity();
       this.VendorRegister.controls['IFSCCode'].updateValueAndValidity();
     }
