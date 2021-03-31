@@ -165,6 +165,7 @@
           <th>BuyerGroup</th>
           <th>Vendor</th>
           <th>RequestedBY</th>
+          <th>RequestedOn</th>
           <th>PA Status</th>
           <th>PO Status</th>
           <th>Target Spend</th>
@@ -183,8 +184,8 @@
           <td>{{app.VendorName}}</td>
           <td>
             {{app.Name}}<br />
-            {{app.RequestedOn | date : 'dd.MM.yyyy'}}
           </td>
+          <td>{{app.RequestedOn | date : 'dd.MM.yyyy'}}</td>
           <td>{{app.PAStatus}}</td>
           <td>{{app.POStatus}}</td>
           <td>{{app.targetspend | currency:'INR'}}</td>

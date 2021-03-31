@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service';
 import { Employee, DynamicSearchResult } from '../../Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { NgxSpinnerService } from "ngx-spinner";
 import * as XLSX from 'xlsx';
 import { MessageService } from 'primeng/api';
-import { padocuments, ItemsViewModel, MSAMasterConfimationModel, painutmodel, mprpapurchasetypesmodel, PAReportInputModel, PAApproverDetailsInputModel, mprpapurchasemodesmodel, mprpadetailsmodel, StatusCheckModel } from 'src/app/Models/PurchaseAuthorization'
+import { padocuments, ItemsViewModel, MSAMasterConfimationModel, painutmodel, msainputmodel, mprpapurchasetypesmodel, PAReportInputModel, PAApproverDetailsInputModel, mprpapurchasemodesmodel, mprpadetailsmodel, StatusCheckModel } from 'src/app/Models/PurchaseAuthorization'
 import { IfStmt } from '@angular/compiler';
 @Component({
   selector: 'app-msaline-item-list',
@@ -15,7 +16,7 @@ import { IfStmt } from '@angular/compiler';
 })
 export class MSALineItemListComponent implements OnInit {
   @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
-  constructor(private paService: purchaseauthorizationservice, private router: Router, public MprService: MprService, private spinner: NgxSpinnerService, private messageService: MessageService) { }
+  constructor(private paService: purchaseauthorizationservice, private router: Router, public MprService: MprService, private spinner: NgxSpinnerService, private messageService: MessageService, public formbuilder: FormBuilder) { }
   public employee: Employee;
   public incompletedlist: Array<any>[];
   public paid: number;
@@ -31,8 +32,11 @@ export class MSALineItemListComponent implements OnInit {
   public displayCommunicationDialog: boolean;
   public ShowConfirmbutton: boolean;
   public statusCheckModel: StatusCheckModel;
-
-
+  public prDialog: boolean;
+  public PRForm: FormGroup;
+  public msainput: msainputmodel;
+  public msadata: any;
+  public data: any;
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -46,7 +50,19 @@ export class MSALineItemListComponent implements OnInit {
     this.MSAConfirmationModel = new MSAMasterConfimationModel();
     this.MSAConfirmationMOdelForView = new MSAMasterConfimationModel();
     this.ShowConfirmbutton = false;
+    this.msainput = new msainputmodel();
     // this.getMSAlineItemList(this.inputsearch)
+
+    if (localStorage.getItem("msapaid")) {
+      this.data = JSON.parse(localStorage.getItem("msapaid"));
+      this.inputsearch.PAId = this.data.PAId;
+      this.getMSAlineItemList(this.inputsearch)
+    }
+
+    this.PRForm = this.formbuilder.group({
+      PRno: ['', [Validators.required]],
+      PRLineItemNo: ['', [Validators.required]]
+    })
   }
   getMSAlineItemList(model: painutmodel) {
     {
@@ -105,6 +121,7 @@ export class MSALineItemListComponent implements OnInit {
 
             });
           }
+          
           this.GetPAConfirmationDetails(model.PAId);
         });
       }
@@ -281,5 +298,19 @@ export class MSALineItemListComponent implements OnInit {
     });
 
   }
-
+  openprdialog(data: any) {
+    this.prDialog = true;
+    this.msadata = data
+    //this.paid = padelete.PAId
+  }
+  insertprno(items:any) {
+    this.msainput.PAItemID = this.msadata.PAItemID;
+    this.msainput.paid = this.msadata.paid;
+    this.paService.UpdateMsaprconfirmation(this.msainput).subscribe(data => {
+      this.prDialog = false;
+    })
+  }
+  Cancel() {
+    this.prDialog = false;
+  }
 }

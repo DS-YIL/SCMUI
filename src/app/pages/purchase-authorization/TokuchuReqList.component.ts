@@ -24,15 +24,28 @@ export class TokuchuReqListComponent implements OnInit {
   public dynamicData = new DynamicSearchResult();
 
   ngOnInit() {
+    this.tokuchufilters = new tokuchufilters();
+    this.tokuchufilters.PreparedBY = "";
+    this.tokuchufilters.VerifiedBy = "";
+    this.tokuchufilters.PreverifiedBy = "";
+    this.tokuchuReqList = [];
     if (localStorage.getItem("Employee")) {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
+      this.tokuchufilters.VerifiedBy = this.employee.EmployeeNo
+      console.log(" this.tokuchufilters", this.tokuchufilters)
     }
     else {
       this.router.navigateByUrl("Login");
     }
-    this.tokuchufilters = new tokuchufilters();
-    this.tokuchufilters.PreparedBY = "";
-    this.tokuchufilters.VerifiedBy = "";
+    //if (localStorage.getItem("tokuchuDetails")) {
+    //  this.reportinput = JSON.parse(localStorage.getItem("statusDetails"));
+    //  this.GetMprRequisitionreport(this.reportinput);
+    //  localStorage.removeItem("statusDetails");
+    //  this.reportinput.DepartmentId = this.reportinput.DepartmentId;
+    //}
+    //this.tokuchufilters = new tokuchufilters();
+    //this.tokuchufilters.PreparedBY = "";
+    //this.tokuchufilters.VerifiedBy = "";
     this.tokuchuReqList = [];
     this.getEmplist();
     this.getTokuchuReqList();

@@ -30,6 +30,7 @@ export class VendorQuotationViewComponent implements OnInit {
   public rfqrevisions: Array<any> = [];
   public dynamicData = new DynamicSearchResult();
   public DocTypeList: Array<any> = [];
+  public sum: any;
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -75,7 +76,15 @@ export class VendorQuotationViewComponent implements OnInit {
     this.spinner.show();
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
       this.spinner.hide();
-        this.quoteDetails = data;
+      this.quoteDetails = data;
+      for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
+        this.quoteDetails.rfqitem[i].amount = (this.quoteDetails.rfqitem[i].QuotationQty) * (this.quoteDetails.rfqitem[i]['ItemUnitPrice'])
+      }
+     
+      //this.quoteDetails.rfqitem.forEach(x => {
+      //  this.quoteDetails.rfq = x.QuotationQty * 10;
+      //})
+      this.sum = this.quoteDetails.rfqitem.map(res => res["amount"]).reduce((sum, current) => sum + current);
       this.loadCommunicationDetails();
       this.MPRRevisionId = this.quoteDetails.rfqmaster.MPRRevisionId;
       if (this.quoteDetails.mprIncharges.filter(li => li.Incharge == this.employee.EmployeeNo).length > 0)
@@ -134,7 +143,7 @@ export class VendorQuotationViewComponent implements OnInit {
       this.RFQCommunications.RemarksDate = new Date();
       if (this.newRevision) {
         this.spinner.show();
-        this.RfqService.addNewRevision(this.RfqRevisionId).subscribe(data => {
+        this.RfqService.addNewRevision(this.RfqRevisionId,).subscribe(data => {
           this.spinner.hide();
           this.displayCommunicationDialog = false;
           if (data) {
@@ -213,5 +222,19 @@ export class VendorQuotationViewComponent implements OnInit {
       revisionno = this.rfqrevisions.filter(li => li.rfqRevisionId == revisionId)[0].RevisionNo;
     }
     return revisionno;
+  }
+  calculateTotalDiscountPrice(rowdata: any) {
+    let totalPrice: number = 0;
+    if (rowdata.CurrencyValue > 0) {
+      totalPrice = (rowdata.UnitPrice * (rowdata.DiscountPercentage / 100)) * rowdata.CurrencyValue
+    }
+    else {
+      totalPrice = rowdata.UnitPrice * (rowdata.DiscountPercentage / 100)
+    }
+    //this.rfqQuoteModel.forEach(item => {
+    //  if (item.suggestedVendorDetails[colIndex])
+    //    totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].HandlingChargesTotal);
+    //});
+    return totalPrice.toFixed(2);
   }
 }

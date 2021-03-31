@@ -808,7 +808,7 @@ export class GenerateRFQComponent implements OnInit {
       for (var i = 0; i < this.rfqQuoteModel.length; i++) {
         if (this.rfqQuoteModel[i].mappingdoneitems.length > 0) {
           for (var j = 0; j < this.rfqQuoteModel[i].mappingdoneitems.length; j++) {
-            if (this.rfqQuoteModel[i].suggestedVendorDetails[j].MPRItemDetailsid == this.rfqQuoteModel[i].mappingdoneitems[j].previousitemdetails && this.rfqQuoteModel[i].mappingdoneitems[j].Duplicateitemid != null) {
+            if (this.rfqQuoteModel[i].suggestedVendorDetails[j]['MPRItemDetailsid'] == this.rfqQuoteModel[i].mappingdoneitems[j].previousitemdetails && this.rfqQuoteModel[i].mappingdoneitems[j].Duplicateitemid != null) {
               this.rfqQuoteModel[i].suggestedVendorDetails[j]['VendorId'] = null
             }
           }
@@ -971,7 +971,7 @@ export class GenerateRFQComponent implements OnInit {
   }
   ItemUnmapping(data: any) {
     this.MprService.Unmappingitem(data).subscribe(data => {
-
+      window.location.reload();
     })
   }
 }

@@ -117,8 +117,8 @@
           <th style="width:100px">Vendor Code</th>
           <th style="width:100px">Vendor Name</th>
           <th style="width:110px">Vendor Model No</th>
-          <th class="mandatory" style="width:110px">Sort string1</th>
-          <th style="width:110px">Project Manager</th>
+          <th style="width:110px">Sort string1</th>
+          <th class="mandatory" style="width:110px">sort string2(Project Manager)</th>
           <th style="width:110px">Note1</th>
           <th style="width:110px">Note2</th>
 
@@ -182,7 +182,7 @@
           <th style="width:100px">Inquiry ID</th>
           <th style="width:110px">Process flag INT for internal</th>
           <th style="width:110px">PA ID</th>
-
+          <!--<th style="width:110px">ADD PRNO</th>-->
 
 
 
@@ -228,10 +228,10 @@
           <td class="ptable-cell ">{{rowData.sortstring1}}</td>
           <td class="ptable-cell">{{rowData.ProjectManager}}</td>
           <td class="ptable-cell">{{rowData.note1}}</td>
-          <td class="ptable-cell">{{rowData.note2}}</td>
-
           <td class="ptable-cell">{{rowData.note3}}</td>
-          <td class="ptable-cell">{{rowData.note4}}</td>
+
+          <td class="ptable-cell">{{rowData.PAItemID}}</td>
+          <td class="ptable-cell">{{rowData.note2 | date:'dd.MM.yyyy'}}</td>
           <td class="ptable-cell">{{rowData.lt}}</td>
           <td class="ptable-cell">{{rowData.deadline}}</td>
           <td class="ptable-cell">{{rowData.deliverydate}}</td>
@@ -289,6 +289,9 @@
           <td class="ptable-cell">{{rowData.InquiryID}}</td>
           <td class="ptable-cell">{{rowData.ProcessflagINTforinternal}}</td>
           <td class="ptable-cell">{{rowData.paid}}</td>
+          <td class="ptable-cell">
+            <!--<button pButton type="button" pDeleteEditableRow icon="pi pi-trash" [disabled]="editable" (click)="openprdialog(rowData)" class="ui-button-danger"></button>-->
+          </td>
         </tr>
       </ng-template>
     </p-table><br />
@@ -299,7 +302,7 @@
     <button type="button" class="btn btn-primary" pTooltip="Click here for Reset and upload new entry" (click)="ShowclearPopup(inputsearch)">Reset</button>
   </div>
 </div>
-<p-dialog header="Clear Remarks :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+<p-dialog header="Clear Remarks :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '900px'}">
   <div class="ui-g ui-fluid">
     <div class="ui-g-12">
       <div class="ui-g-8">
@@ -315,3 +318,74 @@
     </div>
   </p-footer>
 </p-dialog>
+<p-dialog header="Add" [(visible)]="prDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}" [closable]="false">
+  <!--<form [formGroup]="PRForm">
+    <div class="" style="margin-left:12px"></div>
+    <label for="ProjectName" class="form-label label">PRNo :</label>
+    <input type="text" [(ngModel)]="msainput.PRno" formControlName="PRno" class="form-control" style="margin-left: 12px;" />
+    <div *ngIf="PRForm.controls['PRno'].invalid && (PRForm.controls['PRno'].dirty || PRForm.controls['PRno'].touched)" class="alert alert-danger" style="margin-left:12px">
+      <div *ngIf="PRForm.controls['PRno'].errors.required">
+        PRno is required.
+      </div>
+    </div><br />
+          <label for="ProjectName" class="form-label label">PRLineItemNo :</label>
+    <input type="text" [(ngModel)]="msainput.PRLineItemNo" formControlName="PRLineItemNo" class="form-control" style="margin-left: 12px;" />
+    <div *ngIf="PRForm.controls['PRLineItemNo'].invalid && (PRForm.controls['PRLineItemNo'].dirty || PRForm.controls['PRLineItemNo'].touched)" class="alert alert-danger" style="margin-left:12px">
+      <div *ngIf="PRForm.controls['PRLineItemNo'].errors.required">
+        PRLineItemNo is required.
+      </div>
+    </div><br />
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix" style="margin-left: 12px;">
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PRForm.valid" (click)="insertprno(msainput)" label="Insert"></button>&nbsp;&nbsp;
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </form>-->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>MSCode</th>
+        <th>ItemDescription</th>
+        <th>PRNO</th>
+        <th>PRLineItemNo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of MSALineItemList">
+        <td>{{items.mscode}}</td>
+        <td>{{items.text}}</td>
+        <td><input  id="txtcopy1" type="text" [(ngModel)]="items.PRno" required maxlength="10"  class="form-control" /></td>
+        <td><input type="text" [(ngModel)]="items.PRLineItemNo" required class="form-control"/></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="margin-left: 12px;">
+      <!--<button type="submit" pButton icon="fa fa-check" class="ui-button-success"  (click)="insertprno(items)" label="Insert"></button>&nbsp;&nbsp;-->
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<div class="card m-2">
+  <h4 class="m-2">Status Track</h4>
+  <p-table>
+    <ng-template pTemplate="header">
+      <tr class="mprltbldata">
+        <th>Employee Name</th>
+        <th>Status</th>
+        <th>Status Updated On</th>
+        <th>Remarks</th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr>
+        <!--<td>{{rowData.Statusby}}</td>
+        <td>{{rowData.Status}}</td>
+        <td>{{rowData.StatusDate  | date :  constants.dateFormat}}</td>
+        <td>{{rowData.Remarks}}</td>-->
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

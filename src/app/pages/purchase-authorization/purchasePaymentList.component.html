@@ -234,7 +234,16 @@
           {{rowData.Name}}<br />
           {{rowData.RequestedOn | date}}
         </td>
-        <td class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td class="ptable-cell">
+          <div>
+            <button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" pTooltip="Ariba" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button>
+          </div>
+          <div style="padding-top:7px">
+            <button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" pTooltip="MSA" (click)="createmsaRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createmsaRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button>
+          </div>
+          <!--<button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button><br />
+          <button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button>-->
+        </td>
         <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.approvers1}}</td>

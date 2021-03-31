@@ -26,6 +26,12 @@
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      &nbsp;&nbsp;<label class="form-label">Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchufilters.PreverifiedBy">
+        <option value="">Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>
   </div>
   <div class="row m-2">
     <div class="col-md-12" style="text-align:center">

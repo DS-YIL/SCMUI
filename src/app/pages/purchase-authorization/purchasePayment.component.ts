@@ -44,7 +44,7 @@ export class purchasePaymentComponent implements OnInit {
   public paitemdetails: Array<ItemsViewModel> = [];
   public paitem: ItemsViewModel;
   public padetails: PADetailsModel;
-  public pasubmitted: boolean;
+  public pasubmitted: boolean = false;
   public panotsubmitted: boolean;
   public Requestrforapprove: boolean = true;
   public EditDialog: boolean;
@@ -83,7 +83,7 @@ export class purchasePaymentComponent implements OnInit {
   public cols: any[];
   public itemdeatils: any;
   public incoterms: Array<any> = [];
-
+  public prDialog: boolean;
   control = new FormArray([]);
   constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
   ngOnInit() {
@@ -132,12 +132,14 @@ export class purchasePaymentComponent implements OnInit {
 
     if (localStorage.getItem("PADetails")) {
       this.selectedItems = JSON.parse(localStorage.getItem("PADetails"));
+      console.log("", this.selectedItems)
       this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
       this.target = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current) || 0;
       this.displayapproveEmployee();
       for (var i = 0; i < this.selectedItems.length; i++) {
         this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
       }
+
       if (this.target > this.sum) {
         this.savingorexcessamount = this.target - this.sum;
       }
@@ -164,6 +166,14 @@ export class purchasePaymentComponent implements OnInit {
       }
       //for (var i = 0; i < this.purchasedetails.Item.length; i++) {
       //  if (this.purchasedetails.Item[i][])
+      //}
+      //for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+      //  this.paincompleted = false;
+      //  this.pasubmitted = false;
+      //  if (this.purchasedetails.Item[i]['Itemid'].indexOf('BOP1') > -1)
+      //    this.purchasedetails.Item[i]["itemtypesupplier"] = "Supply";
+      //  console.log("gaga", this.purchasedetails.Item)
+      //  console.log("this", (<HTMLInputElement>document.getElementById("supply" + this.purchasedetails.Item[i]['Mprrfqsplititemid'])))
       //}
       localStorage.removeItem("PADetails");
       this.showemployee = true;
@@ -423,8 +433,10 @@ export class purchasePaymentComponent implements OnInit {
       }
       this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
       this.paService.ApproveItems(item).subscribe(data => {
-        this.employeelist = data;
-        this.employeelist.Approvers = data;
+        this.employeelist = data['Table'];
+        this.employeelist.Approvers = data['Table'];
+        //console.log("tetet", this.employeelist)
+        //this.employeelist.Approvers = data;
         //this.incompletedapprovers = this.employeelist;
       })
     }
@@ -848,5 +860,18 @@ Review Date :<<>>   Reviewed By :<<>>*/
   modelChangeFn(event: any) {
     console.log("event", event)
     this.purchasedetails.Item[0]["POStatusDate"] = event;
+  }
+  openprdialog() {
+    this.prDialog = true;
+    //this.msadata = data
+    //this.paid = padelete.PAId
+  }
+  insertprno(items: any) {
+    this.paService.UpdateMsaprconfirmation(items).subscribe(data => {
+      this.prDialog = false;
+    })
+  }
+  closedialog() {
+    this.prDialog = false;
   }
 }

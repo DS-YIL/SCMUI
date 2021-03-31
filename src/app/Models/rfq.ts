@@ -164,7 +164,7 @@ export class RfqItemModel {
   ItemId: string;
   ItemName: string;
   ItemDescription: string;
-  QuotationQty: string;
+  QuotationQty: number;
   VendorModelNo: string;
   HSNCode: string;
   CustomDuty: string;
@@ -190,6 +190,7 @@ export class RfqItemModel {
   ImportFreightPercentage: string;
   InsurancePercentage: string;
   DutyPercentage: string;
+  amount: number
 }
 
 export class rfqFilterParams {

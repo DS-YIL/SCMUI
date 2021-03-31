@@ -134,7 +134,9 @@ export class ItemsViewModel {
   PODescription: string;
   itemtypesupplier: string;
   itemtypematerial: string;
-  itemtype: string
+  itemtype: string;
+  PRno: string;
+  PRLineItemNo: string;
 }
 export class Additionaltaxes {
     HandlingAmount: number;
@@ -429,6 +431,7 @@ export class tokuchufilters {
   Paid: string;
   PreparedBY: string;
   VerifiedBy: string;
+  PreverifiedBy: string;
 }
 export class ReportInputModel {
     BuyerGroupId: number;
@@ -485,5 +488,13 @@ export class MSAMasterConfimationModel {
   Deleteflag:boolean;
   DocumentNo:string;
   RevisionId:number;
+}
+export class msainputmodel {
+  PRno: string;
+  PRLineItemNo: string;
+  PRcreatedOn: Date;
+  PRcreatedBy: string;
+  PAItemID: number;
+  paid: number;
 }
 

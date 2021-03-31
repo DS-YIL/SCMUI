@@ -240,8 +240,19 @@ export class purchasePaymentListComponent implements OnInit {
           this.router.navigateByUrl("/SCM/TokochuRequest");
          // window.open("/SCM/TokochuRequest", '_blank')
        
-    }
+  }
+  createmsaRequest(details: any) {
+    localStorage.setItem("msapaid", JSON.stringify(details));
+    if (details.PAId)
+      this.router.navigate(["/SCM/MSALineItem"]);
+    //window.open("/SCM/TokochuRequest", details.TokuchRequestid, '_blank')
+    else
+      //this.router.navigateByUrl("/SCM/MSALineItem");
+      window.open("/SCM/MSALineItem", '_blank')
+
+  }
     someFunction(e) {
         this.approverselect = false;
-    }
+  }
+
 }

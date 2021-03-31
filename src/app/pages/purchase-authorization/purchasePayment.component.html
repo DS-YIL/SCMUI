@@ -96,7 +96,7 @@
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
         <label for="AribaRequired" class="form-label label" style="margin-left: 12px;">Ariba Required</label>
         <div class="form-inline">
-          <p-radioButton class="form-inline" name="group1" [value]="true" label="Yes" [(ngModel)]="purchasedetails.AribaRequired" inputId="opt1"></p-radioButton>&nbsp;&nbsp;
+          <p-radioButton class="form-inline" name="group1" value="true" label="Yes" [(ngModel)]="purchasedetails.AribaRequired" inputId="opt1"></p-radioButton>&nbsp;&nbsp;
           <p-radioButton class="form-inline" name="group1" [value]="false" label="No" [(ngModel)]="purchasedetails.AribaRequired" inputId="opt2"></p-radioButton>
         </div>
       </div>
@@ -269,11 +269,12 @@
             <label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
             <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />
             <div class="row">
-              <label class="col-md-3">Supply:<input class="col-md-3" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" required /></label>
-              <label class="col-md-3">Service:<input class="col-md-3" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
-              <div class="col-lg-8 col-md-8 col-sm-8">
+              <label class="col-md-3">Supply:<input class="col-md-4" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') > -1" required /></label>
+              <label class="col-md-3">Service:<input class="col-md-5" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <div  class="col-lg-8 col-md-8 col-sm-8">
                 <label class="form-label">IncoTerms:</label>&nbsp;
-                <select  [(ngModel)]="purchasedetails.incoterms" class="form-control dropdown">
+                <select [(ngModel)]="purchasedetails.incoterms" class="form-control dropdown">
+                  <option value=""></option>
                   <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Name}}</option>
                 </select>&nbsp;
               </div>
@@ -360,11 +361,19 @@
   </div>
   <div *ngIf="pasubmitted" class="form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <p-table #dt [value]="purchasedetails.Item" [globalFilterFields]="['PONO']" [responsive]="true" [paginator]="true" [autoLayout]="true" [rows]="10" editMode="row" columnResizeMode="expand" [style]="{'width':'100%','overflow':'auto!important'}">
+      <!--<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>-->
+      
       <ng-template pTemplate="header" let-rowData let-editing="editing">
         <tr>
-          <th colspan="12" class="text-right">
+          <th colspan="2">
             <input type="text" pInputText size="35" placeholder="Search by PONO" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
           </th>
+          <th colspan="2" [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem()"></button></th>
+          <th class="inline" colspan="2">
+            <button type="button" class="btn btn-primary btn-sm" (click)="openprdialog()">Add PRNO'S</button><br /><br />
+            <button type="button" class="btn btn-primary btn-sm" (click)="openprdialog()">Approve PRNO'S</button>
+          </th>
+          
         </tr>
         <tr>
           <th>Sl No</th>
@@ -373,7 +382,6 @@
           <th>Price</th>
           <th>Target Spend</th>
           <th>Total Price</th>
-          <th [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem()"></button></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -396,28 +404,28 @@
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <!--<label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.PFPercentage | percent}} </span><span>%</span></label>
-                <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
+            <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
                 <label *ngIf="rowData.TotalPFAmount" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
                 <label *ngIf="rowData.TotalFreightAmount" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}}</span>&nbsp;<span *ngIf="rowData.FreightPercentage">({{rowData.FreightPercentage}}%)</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
-                <label *ngIf="rowData.HandlingAmount" style="width:200px">HandlingAmount:<span>{{rowData.HandlingAmount }}</span>&nbsp;</label>
-                <label *ngIf="rowData.DutyAmount" style="width:200px">DutyAmount:<span>{{rowData.DutyAmount}}</span>&nbsp;</label>
+                <label *ngIf="rowData.HandlingAmount" style="width:200px">HandlingAmount:<span>{{rowData.HandlingAmount | currency :'INR':'symbol':'1.2-2' }}</span>&nbsp;</label>
+                <label *ngIf="rowData.DutyAmount" style="width:200px">DutyAmount:<span>{{rowData.DutyAmount | currency :'INR':'symbol':'1.2-2'}}</span>&nbsp;</label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
-                <label *ngIf="rowData.ImportFreightAmount" style="width:200px">ImportFreightAmount:<span>{{rowData.ImportFreightAmount }}</span>&nbsp;</label>
-                <label *ngIf="rowData.InsuranceAmount" style="width:200px">InsuranceAmount:<span>{{rowData.InsuranceAmount}}</span>&nbsp;</label>
+                <label *ngIf="rowData.ImportFreightAmount" style="width:200px">ImportFreightAmount:<span>{{rowData.ImportFreightAmount | currency :'INR':'symbol':'1.2-2' }}</span>&nbsp;</label>
+                <label *ngIf="rowData.InsuranceAmount" style="width:200px">InsuranceAmount:<span>{{rowData.InsuranceAmount | currency :'INR':'symbol':'1.2-2'}}</span>&nbsp;</label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <label style="width:200px">HSN Code:<span>{{rowData.HSNCode}}</span></label>
-                <label style="width:200px">POItemType:&nbsp;<span>{{rowData.itemtypesupplier}}</span></label>
+                <!--<label style="width:200px">POItemType:&nbsp;<span>{{rowData.itemtypesupplier}}</span></label>-->
               </div>
-              <div class="row" style="margin-left:3px;margin-right:2px">
+              <!--<div class="row" style="margin-left:3px;margin-right:2px">
                 <label>PO Text:&nbsp;<span>{{rowData.POText}}</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <label>PODescription:&nbsp;<span>{{rowData.PODescription}}</span></label>
-              </div>
+              </div>-->
 
             </div>
           </td>
@@ -1161,6 +1169,61 @@
   </p-footer>
   <!--</form>-->
 </p-dialog>
+<p-dialog header="Add" [(visible)]="prDialog" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>DocumentNo</th>
+        <th>ItemDescription</th>
+        <th>PRNO</th>
+        <th>PRLineItemNo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of purchasedetails.Item">
+        <td>{{items.DocumentNo}}</td>
+        <td>{{items.ItemDescription}}</td>
+        <td><input id="txtcopy1" type="text" [(ngModel)]="items.PRno" required maxlength="10" class="form-control" /></td>
+        <td><input type="text" [(ngModel)]="items.PRLineItemNo" required class="form-control" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="margin-left: 12px;">
+      <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="insertprno(purchasedetails.Item)" label="Insert"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="closedialog()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<!--<p-dialog header="Add" [(visible)]="prapprovals" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>DocumentNo</th>
+        <th>ItemDescription</th>
+        <th>PRNO</th>
+        <th>PRLineItemNo</th>
+        <th>Approve</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of purchasedetails.Item">
+        <td>{{items.DocumentNo}}</td>
+        <td>{{items.ItemDescription}}</td>
+        <td><input id="txtcopy1" type="text" [(ngModel)]="items.PRno" required maxlength="10" class="form-control" /></td>
+        <td><input type="text" [(ngModel)]="items.PRLineItemNo" required class="form-control" /></td>
+        <td><button type="submit" class="btn btn-primary btn-sm"></button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="margin-left: 12px;">
+      <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="insertprno(purchasedetails.Item)" label="Insert"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="closedialog()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>-->
 
 
 <!--<p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '1000px',height:'1000px'}">

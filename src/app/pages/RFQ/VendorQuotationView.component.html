@@ -56,14 +56,14 @@
               <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
                 <tr>
                   <td>{{ri+1}}</td>
-                  <td class="ptable-cell">{{rowData.ItemName}}</td>
+                  <td class="" style="width:80px">{{rowData.ItemName}}</td>
                   <td class="ptable-cell">
                     {{rowData.ItemDescription}}
                     <div *ngIf="RFQPriceVisibility">
                       <div class="row" style="margin-right:0px;margin-top:2px">
-                        <label class="col-lg-5 col-md-5 col-sm-5" *ngIf="rowData.SGSTPercentage">SGST:<span>{{rowData.SGSTPercentage}}%</span></label>
-                        <label class="col-lg-5 col-md-5 col-sm-5" *ngIf="rowData.CGSTPercentage">CGST:<span>{{rowData.CGSTPercentage}}%</span></label>
-                        <label class="col-lg-5 col-md-5 col-sm-5" *ngIf="rowData.IGSTPercentage">IGST:<span>{{rowData.IGSTPercentage}}%</span></label>
+                        <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.SGSTPercentage">SGST:<span>{{rowData.SGSTPercentage}}%</span></label>
+                        <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.CGSTPercentage">CGST:<span>{{rowData.CGSTPercentage}}%</span></label>
+                        <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.IGSTPercentage">IGST:<span>{{rowData.IGSTPercentage}}%</span></label>
                       </div>
                       <div class="row" style="margin-right:0px;">
                         <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.FreightPercentage">Freight Percentage:<span>{{rowData.FreightPercentage}}%</span></label>
@@ -82,6 +82,10 @@
                         <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.HandlingAmount">HandlingAmount:<span>{{rowData.HandlingAmount}}</span></label>
                         <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.DutyPercentage">DutyPercentage:<span>{{rowData.DutyPercentage}}%</span></label>
                         <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="rowData.DutyAmount">DutyAmount:<span>{{rowData.DutyAmount}}</span></label>
+                      </div>
+                      <div class="row" *ngFor="let data of rowData.iteminfo" style="margin-right:0px;">
+                        <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="data.DiscountPercentage">Discount:<span>{{data.DiscountPercentage}}%</span><span>({{calculateTotalDiscountPrice(data)}})</span></label>
+                        <label class="col-lg-6 col-md-6 col-sm-6" *ngIf="data.Discount">Discount:<span>{{data.Discount}}</span></label>
                       </div>
                     </div>
                   </td>
@@ -119,6 +123,21 @@
                   <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
                   <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
                   <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{sum}}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </ng-template>
             </p-table>
