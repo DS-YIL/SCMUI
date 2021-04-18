@@ -369,7 +369,7 @@
 </p-dialog>
 <div class="card m-2">
   <h4 class="m-2">Status Track</h4>
-  <p-table>
+  <p-table [value]="msaprocesstrack">
     <ng-template pTemplate="header">
       <tr class="mprltbldata">
         <th>Employee Name</th>
@@ -381,10 +381,10 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
       <tr>
-        <!--<td>{{rowData.Statusby}}</td>
+        <td>{{rowData.StatusBy}}</td>
         <td>{{rowData.Status}}</td>
-        <td>{{rowData.StatusDate  | date :  constants.dateFormat}}</td>
-        <td>{{rowData.Remarks}}</td>-->
+        <td>{{rowData.StatusDate | date: 'dd/MM/yyyy hh:mm a'}}</td>
+        <td>{{rowData.Remarks}}</td>
       </tr>
     </ng-template>
   </p-table>

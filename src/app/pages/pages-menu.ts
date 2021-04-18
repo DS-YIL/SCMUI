@@ -331,4 +331,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+  {
+    title: 'ScrapRegister',
+    icon: 'lock-outline',
+    expanded: false,
+    children: [
+      {
+        title: 'Scrapmaster Initiate',
+        link: '/SCM/scrapregister',
+        icon: 'list-outline'
+      }
+    ],
+  },
 ];

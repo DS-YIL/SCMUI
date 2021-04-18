@@ -56,7 +56,7 @@ import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component
 import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 import { VendorListComponent } from './MPR/Admin/VendorList.component';
 import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
-
+import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -132,7 +132,8 @@ const routes: Routes = [{
       { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
       { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
     { path: "VendorList", component: VendorListComponent, canActivate: [AuthGuard] },
-    { path: "VendorInfo/:VendorId", component: VendorInfoComponent, canActivate: [AuthGuard] }
+    { path: "VendorInfo/:VendorId", component: VendorInfoComponent, canActivate: [AuthGuard] },
+    { path: "scrapregister", component: ScrapRegisterComponent, canActivate: [AuthGuard] }
     // {
     //      path: '',
     //      redirectTo: 'Login',

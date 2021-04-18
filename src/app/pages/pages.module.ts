@@ -85,7 +85,7 @@ import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component
 import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 import { VendorListComponent } from './MPR/Admin/VendorList.component';
 import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
-
+import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -178,7 +178,8 @@ import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
       PAStatusReportsComponent,
     MSALineItemListComponent,
     VendorListComponent,
-    VendorInfoComponent
+    VendorInfoComponent,
+    ScrapRegisterComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

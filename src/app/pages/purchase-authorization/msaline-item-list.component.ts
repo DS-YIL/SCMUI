@@ -37,6 +37,7 @@ export class MSALineItemListComponent implements OnInit {
   public msainput: msainputmodel;
   public msadata: any;
   public data: any;
+  public msaprocesstrack: any;
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -124,6 +125,7 @@ export class MSALineItemListComponent implements OnInit {
           
           this.GetPAConfirmationDetails(model.PAId);
         });
+        this.getmsaprocesstrack(model.PAId)
       }
       else {
         this.messageService.add({ severity: 'error', summary: 'PAID Validation', detail: 'Please enter Valid PAID.' });
@@ -132,7 +134,11 @@ export class MSALineItemListComponent implements OnInit {
     }
 
   }
-
+  public getmsaprocesstrack(paid: number) {
+    this.paService.getmsaprocesstrack(paid).subscribe(data => {
+      this.msaprocesstrack = data;
+    })
+  }
   public excelExtport(): void {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.MSALineItemListExport);
     const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
@@ -313,4 +319,5 @@ export class MSALineItemListComponent implements OnInit {
   Cancel() {
     this.prDialog = false;
   }
+
 }

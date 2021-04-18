@@ -462,7 +462,10 @@ export class TokuchuRequestComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select atleast one item or ' });
       return;
     }
-    //|| this.selectedItems[0].VendorCode == null
+    if (this.selectedItems[0].VendorCode == null) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Vendor Code cant be Empty' });
+      return;
+    }
     if (this.selectedItems.length != 0) {
       if (this.selectedItems[0].SoldToParty == '-' || this.selectedItems[0].ShipToParty == '-' || this.selectedItems[0].EndUser == '-') {
         this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'SoldToParty ,ShipToParty and EndUser is not null ' });

@@ -133,6 +133,7 @@ export class RFQFormComponent implements OnInit {
       if (params["RFQRevisionId"] && !this.constants.RequisitionId) {
         var revisionId = params["RFQRevisionId"];
         this.RevisionId = params["RFQRevisionId"];
+        console.log("this.revisionid", this.RevisionId)
         this.spinner.show();
         this.loadRFQData(revisionId);
 
@@ -670,11 +671,12 @@ export class RFQFormComponent implements OnInit {
     var qry = "select distinct Itemdetailsid as MRPItemsDetailsID,Itemid,RevisionId as MPRRevisionId,ItemDescription as ItemDescription,Quantity as QuotationQty,MPRItemInfo.UnitId,UnitName,SaleOrderNo,SOLineItemNo,MfgPartNo from MPRItemInfo ";
     qry = qry + " inner join RfqMAster on RfqMAster.MPRRevisionId=MPRItemInfo.RevisionId  inner join RfqRevisions_N on RfqRevisions_N.rfqMasterId=RfqMAster.RfqMasterId left join UnitMaster on UnitMaster.UnitId=MPRItemInfo.UnitId ";
     qry = qry + " where RevisionId=" + MPRrevisionid + " and Itemdetailsid not in (select MPRItemDetailsid from RFQItems_N where RFQRevisionId in";
-    qry = qry + " (select rfqRevisionId from RFQRevisions_N where rfqMasterId in (select RfqMasterId from RFQMaster where MPRRevisionId=" + MPRrevisionid + " )))";
+    qry = qry + " (select rfqRevisionId from RFQRevisions_N where rfqMasterId in (select RfqMasterId from RFQMaster where RFQItems_N.RFQRevisionId=" + this.RevisionId + " )))";
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = qry;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.nonMappedItem = data;
+      console.log("this.nonMappedItem", this.nonMappedItem)
       this.dynamicData.query = "select * from MPRDocuments where RevisionId=" + MPRrevisionid + " and DocumentTypeid=1"
       this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
         this.MPRRFQDocuments = data;

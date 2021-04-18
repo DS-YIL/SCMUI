@@ -8,6 +8,7 @@ import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ScrapRegisterMasterModel, ScrapItems } from '../Models/ScrapRegister'
 
 @Injectable({
   providedIn: 'root'
@@ -232,5 +233,11 @@ export class purchaseauthorizationservice {
   }
   UpdateMsaprconfirmation(msainput: any): Observable<any> {
     return this.http.post<any>(this.url + 'PA/UpdateMsaprconfirmation', msainput, this.httpOptions)
+  }
+  getmsaprocesstrack(paid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/getmsaprocesstrackbyId/' + paid)
+  }
+  InsertScrapItems(scrapmaster: ScrapRegisterMasterModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/InsertScrapRregister', scrapmaster, this.httpOptions)
   }
 } 
