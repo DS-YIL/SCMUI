@@ -1151,7 +1151,7 @@ export class MPRPageComponent implements OnInit {
 
   getCommunicationList() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from RFQCommunications";
+    this.dynamicData.query = "select * from RFQCommunications com inner join RFQRevisions_N rn on rn.rfqrevisionid=com.RfqRevisionId inner join rfqmaster rm on rm.rfqmasterid=rn.rfqmasterid where rm.mprrevisionid=" + this.mprRevisionId+"";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.rfqCommunicationList = data;
     })
