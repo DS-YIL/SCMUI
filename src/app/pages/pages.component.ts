@@ -17,7 +17,7 @@ import { constants } from 'src/app/Models/MPRConstants';
 })
 export class PagesComponent {
 
-  constructor(private router: Router, public constants: constants,) { }
+  constructor(private router: Router, public constants: constants, ) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   menu = MENU_ITEMS;
@@ -38,6 +38,7 @@ export class PagesComponent {
         MENU_ITEMS[6].hidden = true;
         MENU_ITEMS[7].hidden = true;
         MENU_ITEMS[9].hidden = true;
+        MENU_ITEMS[10].hidden = true; //BG
       }
       else {
         MENU_ITEMS[2].hidden = false;
@@ -47,6 +48,7 @@ export class PagesComponent {
         MENU_ITEMS[6].hidden = false;
         MENU_ITEMS[7].hidden = false;
         MENU_ITEMS[9].hidden = false;
+        MENU_ITEMS[10].hidden = false;//BG
       }
       //check finance login to show vendor reg
       if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2 || this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver)

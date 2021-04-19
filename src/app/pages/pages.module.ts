@@ -85,6 +85,9 @@ import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component
 import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 import { VendorListComponent } from './MPR/Admin/VendorList.component';
 import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
+import { BGApplicableListComponent } from './BG/BGApplicableList.component';
+import { BGViewComponent } from './BG/BGView.component';
+import { BGListComponent } from './BG/BGList.component';
 import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -174,11 +177,14 @@ import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
     ProjectDurationReportsComponent,
     ASNInitiateComponent,
     AsnViewComponent,
-      AsnListComponent,
-      PAStatusReportsComponent,
+    AsnListComponent,
+    PAStatusReportsComponent,
     MSALineItemListComponent,
     VendorListComponent,
     VendorInfoComponent,
+    BGApplicableListComponent,
+    BGViewComponent,
+    BGListComponent,
     ScrapRegisterComponent
   ],
   providers: [MessageService, ConfirmationService],

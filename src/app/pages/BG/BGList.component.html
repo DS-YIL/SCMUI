@@ -1,0 +1,125 @@
+<h4 class="text-center">BG List</h4>
+<div class="card m-2">
+  <div class="row m-2">
+    <b style="text-decoration:underline">BG Status Count:</b>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Open - {{BGOpenCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Submitted - {{BGSubmittedCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Verified - {{BGVerifiedCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Sent for Modification - {{BGSfmCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Rejected - {{BGRejCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Expired - {{BGExpCnt}}</label>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label font-weight-bold" style="color: #a16eff">Closed - {{BGClsCnt}}</label>
+    </div>
+  </div>
+  <div class="row m-2">
+    <b style="text-decoration:underline">Filters:</b>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">From Date</label><br />
+      <input type="date" class="form-control" [(ngModel)]="BGfilters.FromDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">To Date</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="BGfilters.ToDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">BG Request No</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.BGNo">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">PO No</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.PONo">
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Name</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.VendorName">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">BG Status</label><br />
+      <select class="form-control dropdown" name="comptype" [(ngModel)]="BGfilters.BGStatus">
+        <option value="" selected>Select</option>
+        <option value="Open">Open</option>
+        <option value="Submitted">Submitted</option>
+        <option value="Verified">Verified</option>
+        <option value="Sent for Modification">Sent for Modification</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Expired">Expired</option>
+        <option value="Closed">Closed</option>
+      </select>
+
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="bgList()">Submit</button>
+    </div>
+  </div>
+</div>
+<div class="card compar-card m-2">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table #dt [value]="BGList" [paginator]="true" [rows]="10" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th class="text-center" style="width:5%">S.No</th>
+          <th class="text-center" style="width:10%">BG Request No</th>
+          <th class="text-center" style="width:10%">PONo</th>
+          <th class="text-center" style="width:10%">PO Date</th>
+          <th class="text-center" style="width:10%">Vendor Name</th>
+          <th class="text-center" style="width:10%">BG Expiry Date</th>
+          <th class="text-center" style="width:10%">BG Value</th>
+          <th class="text-center" style="width:10%">Warranty Expiry Date</th>
+          <th class="text-center" style="width:10%">BG Status</th>
+          <th class="text-center" style="width:10%">BG Date</th>
+          <th class="text-center" style="width:10%">Created Date</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BGNo', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PONo', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PODate', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'VendorName', 'contains')"></th>
+          <th></th>
+          <th><input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BGValue', 'contains')"></th>
+          <th></th>
+          <th><input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BGStatus', 'contains')"></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td class="text-center">{{ri +1}}</td>
+          <td class="text-center"><a [routerLink]="['/SCM/BGView',rowData.BGId]" target="_blank" routerLinkActive="active">{{rowData.BGNo}}</a></td>
+          <td class="text-center">{{rowData.PONo}}</td>
+          <td class="text-center">{{rowData.PODate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.VendorName}}</td>
+          <td class="text-center">{{rowData.BGExpiryDate  | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.BGValue}}</td>
+          <td class="text-center">{{rowData.WarrantyExpiryDate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.BGStatus}}</td>
+          <td class="text-center">{{rowData.BGDate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.CreatedDate | date :  constants.dateFormat}}</td>          
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+

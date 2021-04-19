@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[6].hidden = true; //Reports
                 MENU_ITEMS[7].hidden = true; //Vendor Reg
                 MENU_ITEMS[9].hidden = true; //ASN
+                MENU_ITEMS[10].hidden = true; //BG
               }
               else {
                 MENU_ITEMS[2].hidden = false;
@@ -86,6 +87,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[6].hidden = false;
                 MENU_ITEMS[7].hidden = false; //Vendor Reg
                 MENU_ITEMS[9].hidden = false; //ASN
+                MENU_ITEMS[10].hidden = false; //BG
               }
               //check finance login to show vendor reg
               if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2 || this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver)

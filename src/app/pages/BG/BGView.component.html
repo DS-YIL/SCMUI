@@ -1,0 +1,127 @@
+<div class="card m-2" style="height:100%;border-radius:0px;">
+  <div class="strike m-2">
+    <span class="headername">Bank Guarantee Details</span>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Request No:</label>
+      <span class="valueEdit">{{BGItem.BGNo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">PO No:</label>
+      <span class="valueEdit">{{BGItem.PONo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">PO Date </label>
+      <span class="valueEdit">{{BGItem.PODate| date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">PO Value:</label>
+      <span class="valueEdit">{{BGItem.POValue | currency:'INR'}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Vendor Name </label>
+      <span class="valueEdit">{{BGItem.VendorName}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Remarks:</label>
+      <span class="valueEdit">{{BGItem.BGRemarks}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Serial No:</label>
+      <span class="valueEdit">{{BGItem.BGSerialNo}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="form-label font-weight-bold">Warranty Expiry Date:</label>
+      <span class="form-inline-list">{{BGItem.WarrantyExpiryDate | date :  constants.dateFormat}}</span>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Date:</label>
+      <span class="valueEdit">{{BGItem.BGDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Value:</label>
+      <span class="valueEdit">{{BGItem.BGValue| currency:'INR' }}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">BG Expiry Date:</label>
+      <span class="valueEdit">{{BGItem.BGExpiryDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Claim Date:</label>
+      <span class="valueEdit">{{BGItem.ClaimDate | date :  constants.dateFormat}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Items:</label>
+      <span class="valueEdit">{{BGItem.Items}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Verified On Receipt Of Original:</label>
+      <span *ngIf="BGItem.VerifiedonReceiptofOriginal" class="valueEdit">Yes</span>
+      <span *ngIf="!BGItem.VerifiedonReceiptofOriginal" class="valueEdit">No</span>
+    </div>
+
+  </div>
+  <div class="strike m-2">
+    <span class="headername">BG Documents</span>
+  </div>
+  <div class="row m-2 form-inline">
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Supporting Docs:</b> </div>
+    <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+      <div *ngFor="let selected of BGItem.BGDocuments;let index = index">
+        <span class="fixed-text_new" (click)="viewDocument(selected.Path)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="strike m-2">
+    <span class="headername">BG Status History</span>
+  </div>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <p-table [value]="BGStatusTrackList">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th>Employee Name</th>
+          <th>Status</th>
+          <th>Status Updated On</th>
+          <th>Remarks</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr>
+          <td>{{rowData.Name}}</td>
+          <td>{{rowData.Status}}</td>
+          <td>{{rowData.UpdatedDate  | date :  constants.dateFormatWithTime}}</td>
+          <td>{{rowData.Remarks}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<div *ngIf="displayFooter" class="footer">
+  <div class="row form-inline m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <input type="checkbox" class="form-control" style="width:30px" [(ngModel)]="BGItem.VerifiedonReceiptofOriginal" />&nbsp; <span class="font-weight-bold" style="color:white !important">Verified On Receipt Of Original</span>
+    </div>
+    <div *ngIf="BGItem.VerifiedonReceiptofOriginal==true" class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="BGStatus.Status">
+        <option value="" selected>Select</option>
+        <option value="Verified">Verified</option>
+        <option value="Sent for Modification">Sent for Modification</option>
+        <option value="Rejected">Rejected</option>
+      </select>&nbsp;
+    </div>
+    <div *ngIf="BGItem.VerifiedonReceiptofOriginal==true" class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      <label class="form-label">Remarks:</label>&nbsp;
+      <textarea type="text" maxlength="500" [(ngModel)]="BGStatus.Remarks" class="form-control"></textarea>
+    </div>
+    <div *ngIf="BGItem.VerifiedonReceiptofOriginal==true" class="col-lg-1 col-md-1 col-sm-1 form-inline">
+      <button type="button" class="btn btn-success" (click)="BGStatusUpdate()" label="Save">Submit</button>
+    </div>
+  </div>
+</div>
+
+

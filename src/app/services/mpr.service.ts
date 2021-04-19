@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess, YILTermsGroup, YILTermsandCondition } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess, YILTermsGroup, YILTermsandCondition, BGStatusTrack, BankGuarantee, BGfilters } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -124,7 +124,6 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/ValidateLoginCredentials/', search)
       .pipe(map(data => {
         if (data.EmployeeNo != null) {
-         // data.EmployeeNo ="220373"
           //const object = Object.assign({}, ...data);
           localStorage.setItem('Employee', JSON.stringify(data));
           this.currentUserSubject.next(data);
@@ -313,6 +312,27 @@ export class MprService {
   }
   GetTokuchuinformation(mprrevisionid: any): Observable<any> {
     return this.http.get<any>(this.url + 'MPR/GetTokuchuinformation/' + mprrevisionid);
+  }
+
+  //Bank Guarantee
+
+  updateBG(bg: BankGuarantee): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/updateBG', bg, this.httpOptions);
+  }
+
+
+  getBGApplicableList(data: BGfilters): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/getBGApplicableList', data, this.httpOptions);
+  }
+  getBGList(data: BGfilters): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/getBGList', data, this.httpOptions);
+  }
+  getBGDetails(BGId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/getBGDetails/' + BGId, this.httpOptions);
+  }
+
+  updateBGStatus(bg: BGStatusTrack): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/updateBGStatus', bg, this.httpOptions);
   }
 }
 

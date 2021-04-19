@@ -695,6 +695,7 @@ export class BankGuarantee {
   BGId: number;
   BGNo: string;
   SequenceNo: number;
+  BGSerialNo: string;
   Vendorid: number;
   VendorName: string;
   PONo: string="";
@@ -705,9 +706,14 @@ export class BankGuarantee {
   Items: string;
   BGExpiryDate: Date
   WarrantyExpiryDate: Date;
+  ClaimDate: Date;
   BGStatus: string = "";
   BGRemarks: string = "";
   CreatedBy: string;
+  BuyerManger: string;
+  BUHead: string;
+  ProjectManager: string;
+  VerifiedonReceiptofOriginal: boolean;
   BGDocuments: Array<BGDocument> = [];
   BGStatusTracks: Array<BGStatusTrack> = [];
 }
@@ -741,5 +747,8 @@ export class BGfilters {
   VendorName: string;
   IntiatedBy: string;
   PONo: string;
+  MPRRevisionId: string;
   BGStatus: string = "";
+  OrgDepartmentId: string="";
+  BuyerGroupId: string="";
 }

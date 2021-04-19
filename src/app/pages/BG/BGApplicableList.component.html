@@ -1,0 +1,152 @@
+<h4 class="text-center">BG Applicable List</h4>
+<div class="card m-2">
+  <div class="row m-2">
+    <b style="text-decoration:underline">Filters:</b>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">PO From Date</label><br />
+      <input type="date" class="form-control" [(ngModel)]="BGfilters.FromDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">PO To Date</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="BGfilters.ToDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">PO No</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.PONo">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Revision Id</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.MPRRevisionId">
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">Vendor Name</label><br />
+      <input class="form-control" [(ngModel)]="BGfilters.VendorName">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label>Select Department</label>
+      <select class="form-control"  [(ngModel)]="BGfilters.OrgDepartmentId" >
+        <option value="" selected>Select</option>
+        <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
+          {{option.Department}}
+        </option>
+      </select>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label>Select BuyerGroup</label>
+      <select class="form-control" [(ngModel)]="BGfilters.BuyerGroupId">
+        <option value="" selected>Select</option>
+        <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+          {{option.BuyerGroup}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="bgList()">Submit</button>
+    </div>
+  </div>
+</div>
+<div class="card compar-card mt-3">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table #dt [value]="BGList" [style]="{'width':'100%','overflow':'auto!important'}"
+             [responsive]="true" [rows]="50"
+             [resizableColumns]="true"
+             columnResizeMode="expand"
+             [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+             appendTo="body">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th class="text-center">S.No</th>
+          <th class="text-center">MPR RevisionId </th>
+          <th class="text-center">PONo</th>
+          <th class="text-center">PO Date</th>
+          <th class="text-center">PO Value</th>
+          <th class="text-center">Vendor Name</th>
+          <th class="text-center">Job Code</th>
+          <th class="text-center">Sale Order No</th>
+          <th class="text-center">PM</th>
+          <th class="text-center">Department</th>
+          <th class="text-center">BuyerGroup</th>
+          <th class="text-center">BG Request No</th>
+          <th class="text-center" style="width:20%">Action</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'MPRRevisionId', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PONo', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PODate', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'POValue', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'VendorName', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'JobCode', 'contains')"></th>
+          <th><input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'SaleOrderNo', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'ProjectManager', 'contains')"></th>
+          <th><input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'Department', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BuyerGroup', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BGNo', 'contains')"></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td class="ptable-cell text-center">{{ri +1}}</td>
+          <td class="ptable-cell text-center"><a [routerLink]="['/SCM/MPRForm',rowData.MPRRevisionId]" target="_blank" routerLinkActive="active">{{rowData.MPRRevisionId}}</a></td>
+          <td class="ptable-cell text-center">{{rowData.PONo}}</td>
+          <td class="ptable-cell text-center">{{rowData.PODate | date :  constants.dateFormat}}</td>
+          <td class="ptable-cell text-center">{{rowData.POValue | currency:'INR'}}</td>
+          <td class="ptable-cell text-left">{{rowData.VendorName}}</td>
+          <td class="ptable-cell text-center">{{rowData.JobCode}}</td>
+          <td class="ptable-cell text-center">{{rowData.SaleOrderNo}}</td>
+          <td class="ptable-cell text-center">{{rowData.PMName}}</td>
+          <td class="ptable-cell text-center">{{rowData.Department}}</td>
+          <td class="ptable-cell text-left">{{rowData.BuyerGroup}}</td>
+          <td class="ptable-cell text-left"><a [routerLink]="['/SCM/BGView',rowData.BGId]" target="_blank" routerLinkActive="active">{{rowData.BGNo}}</a></td>
+          <td class="text-center">
+            <button *ngIf="rowData.BGNo" type="button" style="font-size:12px" pButton icon="fa fa-check" (click)="sendReminder(rowData)" label="Send Reminder"></button>
+            <button *ngIf="!rowData.BGNo" type="button" style="font-size:12px" pButton icon="fa fa-check" (click)="displayBGDialog(rowData)" label="Submit"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-dialog header="BG Details :" [(visible)]="showBGDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '900px'}">
+      <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+          <div class="ui-g-4 form-inline">
+            <label class="form-label"><b>PO No:</b></label>&nbsp;
+            {{BGModel.PONo}}
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label class="form-label"><b>PO Date:</b></label>&nbsp;{{BGModel.PODate | date :  constants.dateFormat}}
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label class="form-label"><b>PO Value:</b></label>&nbsp;{{BGModel.POValue | currency:'INR'}}
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4 form-group">
+            <label class="form-label"><b>Considered Vendor:</b></label>&nbsp;
+            <div class="form-inline-list">
+              {{BGModel.VendorName}}
+            </div>
+          </div>
+          <div class="ui-g-4 form-group">
+            <label class="form-label"><b>Remarks</b></label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input [disabled]="BGModel.BGNo? true:false" type="text" class="form-control forms-input" [(ngModel)]="BGModel.BGRemarks">
+            </div>
+          </div>
+        </div>
+      </div>
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+          <button type="button" pButton icon="fa fa-check" (click)="onBGSubmit()" label="Submit"></button>
+        </div>
+      </p-footer>
+    </p-dialog>
+  </div>
+</div>
+

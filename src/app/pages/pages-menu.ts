@@ -332,6 +332,23 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
+    title: 'BG',
+    icon: 'lock-outline',
+    expanded: false,
+    children: [
+      {
+        title: 'BG Applicable List',
+        link: '/SCM/BGApplicableList',
+        icon: 'list-outline'
+      },
+      {
+        title: 'BG List',
+        link: '/SCM/BGList',
+        icon: 'list-outline'
+      },
+    ],
+  },
+  {
     title: 'ScrapRegister',
     icon: 'lock-outline',
     expanded: false,

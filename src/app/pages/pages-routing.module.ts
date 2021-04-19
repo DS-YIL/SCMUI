@@ -56,6 +56,9 @@ import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component
 import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 import { VendorListComponent } from './MPR/Admin/VendorList.component';
 import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
+import { BGApplicableListComponent } from './BG/BGApplicableList.component';
+import { BGViewComponent } from './BG/BGView.component';
+import { BGListComponent } from './BG/BGList.component';
 import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
 const routes: Routes = [{
   path: '',
@@ -133,7 +136,11 @@ const routes: Routes = [{
       { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
     { path: "VendorList", component: VendorListComponent, canActivate: [AuthGuard] },
     { path: "VendorInfo/:VendorId", component: VendorInfoComponent, canActivate: [AuthGuard] },
-    { path: "scrapregister", component: ScrapRegisterComponent, canActivate: [AuthGuard] }
+    { path: "BGApplicableList", component: BGApplicableListComponent, canActivate: [AuthGuard] },
+    { path: "BGView/:BGId", component: BGViewComponent, canActivate: [AuthGuard] },
+    { path: "BGList", component: BGListComponent, canActivate: [AuthGuard] },
+    { path: "scrapregister", component: ScrapRegisterComponent, canActivate: [AuthGuard] },
+
     // {
     //      path: '',
     //      redirectTo: 'Login',
