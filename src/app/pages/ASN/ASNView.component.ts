@@ -45,13 +45,16 @@ export class AsnViewComponent implements OnInit {
     this.spinner.show();
     this.RfqService.getAsnByAsnno(this.asnid).subscribe(data => {
       this.spinner.hide();
-      this.asnItem = data;
-      //var arr = this.asnItem.ASNItemDetails.map(({ PONo }) => PONo)
-      //arr = arr.filter(function (item, index, inputArray) {
-      //  return inputArray.indexOf(item) == index;
-      //});
-      //this.asnItem.PONo = arr.toString();
-      this.GetInvoiceDetails();
+      if (data) {
+        this.asnItem = data;
+        //var arr = this.asnItem.ASNItemDetails.map(({ PONo }) => PONo)
+        //arr = arr.filter(function (item, index, inputArray) {
+        //  return inputArray.indexOf(item) == index;
+        //});
+        //this.asnItem.PONo = arr.toString();
+
+        this.GetInvoiceDetails();
+      }
     })
   }
 
@@ -81,16 +84,16 @@ export class AsnViewComponent implements OnInit {
     if (this.ASNCommunications.Remarks) {
       this.ASNCommunications.ASNId = this.asnid;
       this.ASNCommunications.RemarksFrom = this.employee.EmployeeNo;
-        this.spinner.show();
+      this.spinner.show();
       this.RfqService.updateASNComminications(this.ASNCommunications).subscribe(data => {
-          this.spinner.hide();
+        this.spinner.hide();
         if (data) {
           this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });
           this.displayCommunicationDialog = false;
           this.getASNDetails();
         }
-        })
- 
+      })
+
     }
     else {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Enter Remarks' });
