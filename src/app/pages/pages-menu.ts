@@ -312,6 +312,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/PAstatusReport',
         icon: 'list-outline'
       },
+      {
+        title: 'Monthly Report 1',
+        link: '/SCM/MonthlyPerformanceReport1',
+        icon: 'list-outline'
+      },
+      {
+        title: 'Monthly Report 2',
+        link: '/SCM/MonthlyReport2',
+        icon: 'list-outline'
+      },
     ],
   },
   {

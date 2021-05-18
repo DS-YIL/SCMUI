@@ -60,6 +60,8 @@ import { BGApplicableListComponent } from './BG/BGApplicableList.component';
 import { BGViewComponent } from './BG/BGView.component';
 import { BGListComponent } from './BG/BGList.component';
 import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
+import { CmmMonthlyperformaceReport1Component } from './MPRReports/cmm-monthlyperformace-report1.component';
+import { MonthlyReport2Component } from './MPRReports/monthly-report2.component';
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -140,7 +142,9 @@ const routes: Routes = [{
     { path: "BGView/:BGId", component: BGViewComponent, canActivate: [AuthGuard] },
     { path: "BGList", component: BGListComponent, canActivate: [AuthGuard] },
     { path: "scrapregister", component: ScrapRegisterComponent, canActivate: [AuthGuard] },
-
+    { path: "MonthlyPerformanceReport1", component: CmmMonthlyperformaceReport1Component, canActivate: [AuthGuard] },
+    { path: "MonthlyReport2", component: MonthlyReport2Component, canActivate: [AuthGuard] },
+    
     // {
     //      path: '',
     //      redirectTo: 'Login',

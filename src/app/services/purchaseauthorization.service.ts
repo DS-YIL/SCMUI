@@ -240,4 +240,10 @@ export class purchaseauthorizationservice {
   InsertScrapItems(scrapmaster: ScrapRegisterMasterModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/InsertScrapRregister', scrapmaster, this.httpOptions)
   }
+  GetCMMMonthlyPerformance1(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/GetCMMMonthlyPerformancereport1', status, this.httpOptions)
+  }
+  GetCMMMonthlyPerformance2(status: ReportInputModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/GetCMMMonthlyreport2', status, this.httpOptions)
+  }
 } 

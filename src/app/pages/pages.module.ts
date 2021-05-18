@@ -88,7 +88,9 @@ import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
 import { BGApplicableListComponent } from './BG/BGApplicableList.component';
 import { BGViewComponent } from './BG/BGView.component';
 import { BGListComponent } from './BG/BGList.component';
-import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
+import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
+import { CmmMonthlyperformaceReport1Component } from './MPRReports/cmm-monthlyperformace-report1.component';
+import { MonthlyReport2Component } from './MPRReports/monthly-report2.component'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -185,7 +187,9 @@ import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
     BGApplicableListComponent,
     BGViewComponent,
     BGListComponent,
-    ScrapRegisterComponent
+    ScrapRegisterComponent,
+    CmmMonthlyperformaceReport1Component,
+    MonthlyReport2Component
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]
