@@ -41,6 +41,7 @@ export class CmmMonthlyperformaceReport1Component implements OnInit {
   filteredoptions: Observable<any[]>;
   public editable: boolean;
   public Orgdepartments: any[];
+  public  showFilterBlock: boolean = false;
 
   ngOnInit() {
     this.report = new ReportInputModel();
@@ -56,7 +57,9 @@ export class CmmMonthlyperformaceReport1Component implements OnInit {
       this.router.navigateByUrl("Login");
     }
 
-    this.report.Fromdate = "2020-01-01";
+    var dt=new Date();
+    dt.setMonth(dt.getMonth()-1);
+    this.report.Fromdate = this.datePipe.transform(dt, "yyyy-MM-dd")
     this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
@@ -101,8 +104,6 @@ export class CmmMonthlyperformaceReport1Component implements OnInit {
     this.spinner.show();
     this.paService.GetCMMMonthlyPerformance1(report).subscribe(data => {
         this.spinner.hide();
-        console.log(data['Table']);
-        
          this.statuslist = data['Table'];
     })
 }
@@ -110,7 +111,10 @@ ExportTOExcel() {
   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
   const wb: XLSX.WorkBook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  XLSX.writeFile(wb, 'CMMReport1.xlsx');
+  XLSX.writeFile(wb, 'MonthlyPerformanceReport1.xlsx');
 }  
+showHideFilterBlock() {
+  this.showFilterBlock = !this.showFilterBlock;
+}
 
 }
