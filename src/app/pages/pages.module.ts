@@ -88,9 +88,15 @@ import { VendorInfoComponent } from './MPR/Admin/VendorInfo.component';
 import { BGApplicableListComponent } from './BG/BGApplicableList.component';
 import { BGViewComponent } from './BG/BGView.component';
 import { BGListComponent } from './BG/BGList.component';
-import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
+import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component'
+import { ScrapRegisterListComponent } from './ScrapRegister/ScrapRegisterList.component'
+import { ScrapflowComponent } from './ScrapRegister/Scrapflow.component'
+import { ScrapRegisterTotalListComponent } from './ScrapRegister/ScrapRegisterTotalList.component'
 import { CmmMonthlyperformaceReport1Component } from './MPRReports/cmm-monthlyperformace-report1.component';
 import { MonthlyReport2Component } from './MPRReports/monthly-report2.component'
+import { POCreationComponent } from './purchase-authorization/POCreation.component'
+import { POGenerationComponent } from './purchase-authorization/POGeneration.component'
+import { from } from 'rxjs';
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -188,8 +194,13 @@ import { MonthlyReport2Component } from './MPRReports/monthly-report2.component'
     BGViewComponent,
     BGListComponent,
     ScrapRegisterComponent,
+    ScrapRegisterListComponent,
+    ScrapflowComponent,
+    ScrapRegisterTotalListComponent,
     CmmMonthlyperformaceReport1Component,
-    MonthlyReport2Component
+    MonthlyReport2Component,
+    POCreationComponent,
+    POGenerationComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

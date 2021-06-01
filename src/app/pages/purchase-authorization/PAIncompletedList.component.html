@@ -47,7 +47,7 @@
           <td class="ptable-cell">{{rowData.PAStatus}}</td>
           <td class="ptable-cell">{{rowData.RequestedOn | date}}</td>
           <td class="ptable-cell">
-            <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" [disabled]="editable" (click)="deletepa(rowData)" class="ui-button-danger"></button>
+            <button pButton type="button" pDeleteEditableRow icon="pi pi-trash"  (click)="deletepa(rowData)" class="ui-button-danger"></button>
           </td>
           <!--<td class="ptable-cell">{{RequestedBy}}</td>-->
         </tr>

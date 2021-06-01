@@ -1,29 +1,41 @@
 <div style="text-align:center">
   <h3>Scrap Register</h3>
 </div>
-<!--<form [formGroup]="scrappageform">
+<form [formGroup]="scrappageform">
   <div class="form-control" style="height:100%;width:100%">
     <div class="row form-group">
-      <div class="col-lg-3 col-md-3 col-sm-3">
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3">
         <label for="docNo" class="form-label">Truck Number:</label> &nbsp;
         <input class="form-control" formControlName="TruckNo" type="text" [(ngModel)]="scrapmaster.TruckNo" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.TruckNo }">
         <span *ngIf="Departmentsubmittted && !scrapmaster.TruckNo" class="invalid-feedback">Enter TruckNo.</span>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3">
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">TruckNo:</label>
+        <span class="valueEdit"> {{scrapmaster.TruckNo}}</span>
+      </div>
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3">
         <label class="form-label">DateOfEntry:</label> &nbsp;
         <input type="date" class="form-control" formControlName="DateOfEntry" [(ngModel)]="scrapmaster.DateOfEntry" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.DateOfEntry}">
         <span *ngIf="Departmentsubmittted && !scrapmaster.DateOfEntry" class="invalid-feedback">Enter DateOfEntry.</span>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">DateOfEntry:</label>
+        <span class="valueEdit"> {{scrapmaster.DateOfEntry}}</span>
+      </div>
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="scrapmaster.DepartmentName" formControlName="DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.DepartmentName }" (keyup)="onsrchTxtChange('DepartmentId',scrapmaster.DepartmentName,'padetails')">
+          <input type="text" [(ngModel)]="scrapmaster.DepartmentName" formControlName="DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.DepartmentName }" (keyup)="onsrchTxtChange('DepartmentId','scrapmaster')">
           <span class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',scrapmaster.DepartmentName,undefined)"></button>
           </span>
           <span *ngIf="Departmentsubmittted && !scrapmaster.RequesterDepartmentID" class="invalid-feedback">Select Department.</span>
         </div>
-      </div>-->
+      </div>
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">Department:</label>
+        <span class="valueEdit"> {{scrapmaster.DepartmentName}}</span>
+      </div>
       <!--<div class="col-lg-3 col-md-3 col-sm-3">
         <label for="SaleOrderNo" class="form-label">Department:</label> &nbsp;
         <input class="form-control" [(ngModel)]="scrapmaster.RequesterDepartmentID">
@@ -32,53 +44,228 @@
         <label for="SaleOrderNo" class="form-label">Requested By:</label> &nbsp;
         <input class="form-control" [(ngModel)]="scrapmaster.RequestedBY">
       </div>-->
-      <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Requested By:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="scrapmaster.RequestedBY" formControlName="RequestedBY" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.RequestedBY }" (keyup)="onsrchTxtChange('DepartmentId',scrapmaster.RequestedBY,'padetails')">
+          <input type="text" [(ngModel)]="scrapmaster.RequestedName" formControlName="RequestedBY" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.RequestedName }" (keyup)="onsrchTxtChange('PreparedBy','scrapmaster')">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','CheckedBy',scrapmaster.RequestedBY,undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','PreparedBy',scrapmaster.RequestedName,undefined)"></button>
           </span>
-          <span *ngIf="Departmentsubmittted && !scrapmaster.RequestedBY" class="invalid-feedback">Select RequestedBy.</span>
+          <span *ngIf="Departmentsubmittted && !scrapmaster.RequestedName" class="invalid-feedback">Select RequestedBy.</span>
         </div>
       </div>
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">RequestedBY:</label>
+        <span class="valueEdit"> {{scrapmaster.RequestedName}}</span>
+      </div>
     </div>
-    <div class="row form-group">-->
+    <div class="row form-group">
       <!--<div class="col-lg-3 col-md-3 col-sm-3">
         <label for="SaleOrderNo" class="form-label">Preapred By:</label> &nbsp;
         <input class="form-control" [(ngModel)]="scrapmaster.PreparedBY">
       </div>-->
-      <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label class="form-label">Prepared By:</label>&nbsp;
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Approved By:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="scrapmaster.PreparedBY" formControlName="PreparedBY" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.PreparedBY }" (keyup)="onsrchTxtChange('DepartmentId',scrapmaster.PreparedBY,'padetails')">
+          <input type="text" [(ngModel)]="scrapmaster.ApprovalName" formControlName="PreparedBY" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.ApprovalName }" (keyup)="onsrchTxtChange('Buyermanagers','scrapmaster')">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','Buyermanagers',scrapmaster.ApprovalName,undefined)"></button>
           </span>
-          <span *ngIf="Departmentsubmittted && !scrapmaster.PreparedBY" class="invalid-feedback">Select Prepared By.</span>
+          <span *ngIf="Departmentsubmittted && !scrapmaster.ApprovalName" class="invalid-feedback">Select ApprovalBy.</span>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3">
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">Approved By:</label>
+        <span class="valueEdit"> {{scrapmaster.ApprovalName}}</span>
+      </div>
+      <!--<div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3">
         <label for="SaleOrderNo" class="form-label">Prepared Date:</label> &nbsp;
         <input type="date" class="form-control" formControlName="PreparedDate" [(ngModel)]="scrapmaster.PreparedDate">
         <span *ngIf="Departmentsubmittted && !scrapmaster.PreparedDate" class="invalid-feedback">Select PreparedDate.</span>
       </div>
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">PreparedDate:</label>
+        <span class="valueEdit"> {{scrapmaster.PreparedDate}}</span>
+      </div>-->
+      <div *ngIf="!showedit" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Vendor:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="scrapmaster.Vendor" formControlName="Vendor" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.Vendor }" (keyup)="onsrchTxtChange('venderid','scrapmaster')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',scrapmaster.Vendor,undefined)"></button>
+          </span>
+          <span *ngIf="Departmentsubmittted && !scrapmaster.Vendor" class="invalid-feedback">Select Vendor.</span>
+        </div>
+      </div>
+      <div *ngIf="showedit" style="margin-top:5px" class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">Vendor:</label>
+        <span class="valueEdit"> {{scrapmaster.Vendor}}</span>
+      </div>
     </div>
   </div>
-
-
   <br />
-  <p-table #dt [value]="scrapmaster.scrapitems" dataKey="Id" editMode="row">
+  <!--<button pButton type="button" icon="pi pi-plus" class="ui-button-info pull-right" [label]="'Add'" (click)="newRow()"></button>-->
+  <p-table *ngIf="!showedit" #dt [value]="scrapmaster.scrapitems" dataKey="Id" editMode="row">
     <ng-template pTemplate="header" style="width:300px">
       <tr>
         <th>Sno</th>
         <th>Item</th>
-        <th>UOM</th>
-        <th>Description</th>
+        <th style="width:180px">Description</th>
+        <th style="width:100px">UOM</th>
+        <th style="width:130px">ScrapType</th>
         <th style="width:70px">Quantity</th>
         <th style="width:70px">UnitPrice</th>
         <th style="width:70px">TCS%</th>
         <th style="width:100px">Tax</th>
+        <th style="width:100px">Total Price</th>
+        <th style="width:70px"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="product">
+        <td>{{ri+1}}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <!--<input pInputText type="text" [(ngModel)]="product.ItemId">-->
+              <div class="form-inline-list">
+                <input type="text" [(ngModel)]="product.ItemId" formControlName="ItemId" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.ItemId }" (keyup)="onsrchTxtChange('ItemId','scrapitems')">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','ItemId',product.ItemId,ri,undefined)"></button>
+                </span>
+                <span *ngIf="Departmentsubmittted && !product.ItemId" class="invalid-feedback">Select item.</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.ItemId}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea class="form-control" style="max-width:fit-content" formControlName="Description" pInputText type="text" [(ngModel)]="product.Description" required></textarea>
+              <span *ngIf="Departmentsubmittted && !product.Description" class="invalid-feedback">Enter Description.</span>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.Description}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input" >
+              <div class="form-inline-list">
+                <input type="text" [(ngModel)]="product.UOM" style="max-width:fit-content" formControlName="UOM"  class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.UOM }" (keyup)="onsrchTxtChange('UnitId','scrapitems')">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','UnitId',product.UOM,undefined,ri)"></button>
+                </span>
+                <span *ngIf="Departmentsubmittted && !product.UOM" class="invalid-feedback">Select UOM.</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.UOM}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <div class="">
+                <select [(ngModel)]="product.Scraptype" style="max-width:fit-content" formControlName="Scraptype" style="width:80%" class="form-control dropdown" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.Scraptype }">
+                  <option value=""></option>
+                  <option value="Hazardous"> Hazardous</option>
+                  <option value="Non Hazardous">Non Hazardous</option>
+                  <option value="E-Scrap">E-Scrap</option>
+                </select>
+                <span *ngIf="Departmentsubmittted && !product.Scraptype" class="invalid-feedback">Select ScrapType.</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.Scraptype}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input class="form-control" style="max-width:fit-content" formControlName="Qty" pInputText type="text" [(ngModel)]="product.Qty" required>
+              <span *ngIf="Departmentsubmittted && !product.Qty" class="invalid-feedback">Select Department.</span>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.Qty}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input class="form-control" pInputText type="text" style="max-width:fit-content" formControlName="UnitPrice" [(ngModel)]="product.UnitPrice">
+              <span *ngIf="Departmentsubmittted && !product.UnitPrice" class="invalid-feedback">Select Department.</span>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.UnitPrice | currency: 'INR'}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input class="form-control" pInputText type="text" style="max-width:fit-content" formControlName="tcs" [(ngModel)]="product.tcs" required>
+              <span *ngIf="Departmentsubmittted && !product.tcs" class="invalid-feedback">Enter Tcs.</span>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.tcs}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              SGST:<input class="form-control" (keypress)="numberOnly($event)" pInputText type="text" formControlName="sgstamount" numberOnly [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.sgstamount }" style="max-width:fit-content" [(ngModel)]="product.sgstamount">
+              CGST:<input class="form-control" (keypress)="numberOnly($event)" pInputText type="text" formControlName="cgstamount" numberOnly [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.cgstamount }" style="max-width:fit-content" [(ngModel)]="product.cgstamount">
+              IGST:<input class="form-control"  (keypress)="numberOnly($event)" numberOnly formControlName="igstamount" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.igstamount }" pInputText type="text" style="max-width:fit-content" [(ngModel)]="product.igstamount">
+            </ng-template>
+            <ng-template pTemplate="output">
+             Sgst: {{product.sgstamount}}
+              Cgst:{{product.cgstamount}}
+              Igst:{{product.igstamount}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <!--<ng-template pTemplate="input">-->
+              <!--<span>{{gettotalprice(product)}}</span>-->
+              <!--<input class="form-control" pInputText type="text" style="max-width:fit-content" formControlName="totalprice" required>
+            </ng-template>-->
+            <ng-template pTemplate="output">
+              {{gettotalprice(product)}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing"  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product,ri)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="editing"  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product,ri)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
+          <!--<button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>-->
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-table *ngIf="showedit" #dt [value]="scrapmaster.scrapitems" dataKey="ScrapItemid" editMode="row">
+    <ng-template pTemplate="header" style="width:300px">
+      <tr>
+        <th>Sn</th>
+        <th>Item</th>
+        <th style="width:100px">UOM</th>
+        <th style="width:180px">Description</th>
+        <th>ScrapType</th>
+        <th style="width:70px">Quantity</th>
+        <th style="width:70px">UnitPrice</th>
+        <th style="width:70px">TCS%</th>
+        <th style="width:100px">Tax</th>
+        <th style="width:100px">Total Price</th>
         <th style="width:8rem"></th>
       </tr>
     </ng-template>
@@ -87,14 +274,14 @@
         <td>{{ri+1}}</td>
         <td>
           <p-cellEditor>
-            <ng-template pTemplate="input">-->
+            <ng-template pTemplate="input">
               <!--<input pInputText type="text" [(ngModel)]="product.ItemId">-->
-              <!--<div class="form-inline-list">
-                <input type="text" [(ngModel)]="scrapmaster.ItemId" formControlName="ItemId" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.ItemId }" (keyup)="onsrchTxtChange('DepartmentId',scrapmaster.DepartmentName,'padetails')">
+              <div class="form-inline-list">
+                <input type="text" [(ngModel)]="product.ItemId" formControlName="ItemId" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.ItemId }" (keyup)="onsrchTxtChange('ItemId','scrapitems')">
                 <span class="input-group-append">
-                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','ItemId',scrapmaster.ItemId,undefined)"></button>
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','ItemId',product.ItemId,ri,undefined)"></button>
                 </span>
-                <span *ngIf="Departmentsubmittted && !scrapmaster.ItemId" class="invalid-feedback">Select Department.</span>
+                <span *ngIf="Departmentsubmittted && !product.ItemId" class="invalid-feedback">Select Item.</span>
               </div>
             </ng-template>
             <ng-template pTemplate="output">
@@ -106,9 +293,9 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <div class="form-inline-list">
-                <input type="text" [(ngModel)]="scrapmaster.UOM" formControlName="UOM" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.UOM }" (keyup)="onsrchTxtChange('DepartmentId',scrapmaster.UOM,'padetails')">
+                <input type="text" [(ngModel)]="product.UOM" style="max-width:fit-content" formControlName="UOM" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !product.UOM }" (keyup)="onsrchTxtChange('DepartmentId',product.UOM)">
                 <span class="input-group-append">
-                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','UnitId',scrapmaster.UOM,undefined)"></button>
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','UnitId',product.UOM,ri,undefined)"></button>
                 </span>
                 <span *ngIf="Departmentsubmittted && !product.UOM" class="invalid-feedback">Select UOM.</span>
               </div>
@@ -132,6 +319,24 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
+              <div class="">
+                <select [(ngModel)]="scrapmaster.Scraptype" formControlName="Scraptype" style="width:80%" class="form-control dropdown" [ngClass]="{ 'is-invalid':Departmentsubmittted && !scrapmaster.Scraptype }">
+                  <option value=""></option>
+                  <option value="Hazardous"> Hazardous</option>
+                  <option value="Non Hazardous">Non Hazardous</option>
+                  <option value="E-Scrap">E-Scrap</option>
+                </select>
+                <span *ngIf="Departmentsubmittted && !scrapmaster.Scraptype" class="invalid-feedback">Select ScrapType.</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.Scraptype}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
               <input class="form-control" style="max-width:fit-content" formControlName="Qty" pInputText type="text" [(ngModel)]="product.Qty" required>
               <span *ngIf="Departmentsubmittted && !product.Qty" class="invalid-feedback">Select Department.</span>
             </ng-template>
@@ -147,7 +352,7 @@
               <span *ngIf="Departmentsubmittted && !product.UnitPrice" class="invalid-feedback">Select Department.</span>
             </ng-template>
             <ng-template pTemplate="output">
-              {{product.UnitPrice | currency: 'USD'}}
+              {{product.UnitPrice | currency: 'INR'}}
             </ng-template>
           </p-cellEditor>
         </td>
@@ -155,7 +360,7 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <input class="form-control" pInputText type="text" style="max-width:fit-content" formControlName="tcs" [(ngModel)]="product.tcs" required>
-              <span *ngIf="Departmentsubmittted && !product.tcs" class="invalid-feedback">Select Department.</span>
+              <span *ngIf="Departmentsubmittted && !product.tcs" class="invalid-feedback">Enter Tcs.</span>
             </ng-template>
             <ng-template pTemplate="output">
               {{product.tcs}}
@@ -165,88 +370,406 @@
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              SGST:<input class="form-control" pInputText type="text" formControlName="sgstamount" style="max-width:fit-content" [(ngModel)]="product.sgstamount" required>
+              SGST:<input class="form-control" pInputText type="text" formControlName="sgstamount" style="max-width:fit-content" numberOnly [(ngModel)]="product.sgstamount" required>
               CGST:<input class="form-control" pInputText type="text" formControlName="cgstamount" style="max-width:fit-content" [(ngModel)]="product.cgstamount" required>
-              IGST:<input class="form-control" [disabled]="product.sgstamount!=0" formControlName="igstamount" pInputText type="text" style="max-width:fit-content" [(ngModel)]="product.igstamount" required>
+              IGST:<input class="form-control" *ngIf="product.sgstamount!=0" formControlName="igstamount" pInputText type="text" style="max-width:fit-content" [(ngModel)]="product.igstamount" required>
             </ng-template>
             <ng-template pTemplate="output">
-              {{product.sgstamount}}
-              {{product.cgstamount}}
-              {{product.igstamount}}
+              Sgst:&nbsp;{{product.sgstamount}}&nbsp;&nbsp;
+              Cgst:&nbsp;{{product.cgstamount}}&nbsp;&nbsp;&nbsp;
+              Igst:&nbsp;{{product.igstamount}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input class="form-control" pInputText type="text" style="max-width:fit-content" formControlName="totalprice" [(ngModel)]="product.TotalPrice">
+              <span *ngIf="Departmentsubmittted && !product.TotalPrice" class="invalid-feedback"></span>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{product.TotalPrice | currency: 'INR'}}
             </ng-template>
           </p-cellEditor>
         </td>
         <td style="text-align:center">
-          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product,ri)" class="p-button-rounded p-button-text"></button>
-          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>-->
+          <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEdit1Init(product,ri)" class="p-button-rounded p-button-text"></button>
+          <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product,ri)" class="p-button-rounded p-button-text p-button-success p-mr-2"></button>
           <!--<button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>-->
-        <!--</td>
+        </td>
       </tr>
     </ng-template>
   </p-table>
 </form>
-<button pButton type="button" icon="pi pi-plus" class="ui-button-info" [label]="'Add'" (click)="newRow()"></button>-->
-<!--<table class="table table-sm table-striped table-bordered">
-  <thead class="thead-dark" style="font-size:small;text-transform:uppercase;">
-    <tr>
-      <th>Item</th>
-      <th>UOM</th>
-      <th>Description</th>
-      <th>Quantity</th>
-      <th>UnitPrice</th>
-      <th style="width:8rem"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let field of scrapmaster.scrapitems; let i = index">
-      <td>
-        <input [(ngModel)]="field.code" class="form-control" type="text" name="{{field.ItemId}}" />
-      </td>
-      <td>
-        <input [(ngModel)]="field.name" class="form-control" type="text" name="{{field.Qty}}" />
-      </td>
-      <td>
-        <input [(ngModel)]="field.price" class="form-control" type="text" name="{{field.UnitPrice}}" />
-      </td>-->
-<!--<td>
-  <button class="btn btn-default" type="button" (click)="deleteFieldValue(i)">Delete</button>
-</td>-->
-<!--</tr>
-    <tr>
-      <td>
-        <input class="form-control" type="text" id="newAttributeCode" [(ngModel)]="field.ItemId" name="ItemId" />
-      </td>
-      <td>
-        <input class="form-control" type="text" id="newAttributeName" [(ngModel)]="field.Qty" name="Qty" />
-      </td>
-      <td>
-        <input class="form-control" type="text" id="newAttributePrice" [(ngModel)]="field.UnitPrice" name="UnitPrice" />
-      </td>
-      <td>
-        <button class="btn btn-default" type="button" (click)="addFieldValue()">Add</button>
-      </td>
-    </tr>
-  </tbody>
-</table>-->
-<!--<br />
-<div class="row form-control" style="width:100%;height:100%;margin-left:2px">
+<button *ngIf="!showedit" pButton type="button" icon="pi pi-plus" class="ui-button-info pull-right" [label]="'Add'" (click)="newRow()"></button>
+<br />
+<div *ngIf="!showedit" class="row form-control" style="width:100%;height:100%;margin-left:2px">
   <div class="form-group">
-    <input type="file" id="file" multiple style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;-->
-    <!--<div *ngFor="let selected of myFiles;let index = index">
+    <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
+    <div *ngFor="let selected of myFiles;let index = index">
       <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
       <br />
-    </div>-->
-    <!--<div class="" style="margin-top:10px">
-      <button (click)="uploadFiles()">Upload</button>
+    </div>
+    <div class="" style="margin-top:10px">
+      <!--<button (click)="uploadFiles()">Upload</button>-->
     </div>
   </div>
 </div>
-<div class="row" style="margin-bottom:10px">
+<div class="form-control" *ngIf="showedit && scrapmaster.documents.length" style="height:100%;width:100%">
+  <label class="form-label"><b> Documents Attached :</b></label>
+  <div *ngFor="let document of scrapmaster.documents" class="col-lg-10 col-md-10 col-sm-10">
+    <button (click)="viewDocument(document.path,document.DocumentNAme)" class="btn btn-link">{{document.DocumentNAme}}&nbsp;&nbsp;<span *ngIf="document.DocumentType" style="color:orange">({{document.DocumentType}})</span></button>
+    <!--<button type="button" *ngIf="purchasedetails.PAStatus!='Approved'" class="btn btn-danger btn-sm" (click)="Deletefile(document.DocumentId)">Delete</button>-->
+    <!--<i class="fa fa-remove" aria-hidden="true" (click)="removeSelecteduploadFile(index)"></i>-->
+  </div>
+</div>
+<div class="row" *ngIf="!showedit || scrapmaster.ScrapStatusId<=1 " style="margin-bottom:10px;">
   <div class="col-md-12" style="text-align:center">
     <button type="button" class="btn btn-primary" (click)="displayitems()">Submit</button>
   </div>
 </div>
+<br />
+<div *ngIf="Approvedemployee" class="form-control" style="height:100%;border-radius:0px;background-color:gainsboro; margin-left:0px;margin-top:5px">
+  <div class="form-inline pt-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+      &nbsp;&nbsp;
+      <label class="form-label">Status:</label>&nbsp;
+      <select [(ngModel)]="scrapmaster.Approvalstatus" class="form-control dropdown">
+        <option value="Pending">Pending</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Approved">Approved</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label">Remarks:</label>&nbsp;
+      <textarea type="text" class="form-control" [(ngModel)]="scrapmaster.ApprovalRemarks"></textarea>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <button type="button" class="btn btn-success" (click)="Approvescraprequest(scrapmaster)" label="Save">Submit</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="SoCreated">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> So Details:</div>
+  </div>
+  <form [formGroup]="soform">
+    <div class="form-control" style="height:100%;width:100%">
+      <div class="row">
+        <div class="col-md-3">
+          <label class="form-label">Sono:</label> &nbsp;
+          <input type="text" formControlName="SONO" [ngClass]="{ 'is-invalid':sosubmitted && !scrapmaster.SONO }" class="form-control" [(ngModel)]="scrapmaster.SONO" />
+          <span *ngIf="sosubmitted && !scrapmaster.SONO" class="invalid-feedback">Please Enter SONO</span>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">SODate:</label> &nbsp;
+          <input type="date" class="form-control" [value]="scrapmaster.SoDate | date:'yyyy-MM-dd'" formControlName="SoDate" [(ngModel)]="scrapmaster.SoDate" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row" *ngIf="SoCreated" style="margin-bottom:10px;margin-top:5px">
+  <div class="col-md-12" style="text-align:center">
+    <button type="button" class="btn btn-primary" (click)="displayitems1(scrapmaster.ScrapStatusId,'socreated')">Submit</button>
+  </div>
+</div>
+<div *ngIf="showedit && getstatus('socreated')">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> So Details:</div>
+    <div class="col-md-3 edit pt-1">
+      <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="Edit('soedit')"></button>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-3">
+        <label class="form-label">Sono:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.SONO}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">SODate:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.SoDate|date:'dd/MM/yyyy'}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Soupdatedby:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.Soupdatedby}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">SoUpdatedby:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.Soupdateddate|date:'dd/MM/yyyy'}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="Vatinvoice">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Invoice Details:</div>
+  </div>
+  <form [formGroup]="vatinvoiceform">
+    <div class="form-control" style="height:100%;width:100%">
+      <div class="row">
+        <div class="col-md-3">
+          <label class="form-label">Vat Invoice No:</label> &nbsp;
+          <input type="text" formControlName="VATInvoiceno" class="form-control" [ngClass]="{ 'is-invalid':vatsubmitted && !scrapmaster.VATInvoiceno }" [(ngModel)]="scrapmaster.VATInvoiceno" />
+          <span *ngIf="!scrapmaster.VATInvoiceno" class="invalid-feedback">Please Enter VATInvoiceno</span>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Vat Invoice Date:</label> &nbsp;
+          <input type="date" formControlName="VATInvoiceDate" [value]="scrapmaster.VATInvoiceDate | date:'yyyy-MM-dd'" class="form-control" [(ngModel)]="scrapmaster.VATInvoiceDate" />
+        </div>
+        <div class="col-md-4">
+          <input type="file" formControlName="VatInvoiceDocumentUploaded" [value]="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value" class="form-control" id="file" multiple (change)="scrapflowfiles($event,'vatinvoice')" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+          <div *ngFor="let selected of scrapFiles;let index = index">
+            <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+            <br />
+          </div>
+          <!--<div class="" style="margin-top:10px">
+            <button (click)="uploadscrapfiles()">Upload</button>
+          </div>-->
+          <span *ngIf="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload vat Document</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row" *ngIf="Vatinvoice" style="margin-bottom:10px;margin-top:5px">
+  <div class="col-md-12" style="text-align:center">
+    <button type="button" class="btn btn-primary" (click)="displayitems1(scrapmaster.ScrapStatusId,'vatinvoice')">Submit</button>
+  </div>
+</div>
+<div *ngIf="showedit && getstatus('vatinvoice')" style="margin-top:10px">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Invoice Details:</div>
+    <div class="col-md-3 edit pt-1">
+      <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="Edit('vatinvoiceedit')"></button>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-3">
+        <label class="form-label">Vat Invoice No:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.VATInvoiceno}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Vat Invoice Date:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.VATInvoiceDate | date:'dd/MM/yyyy'}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Vat Invoice UpdatedBy:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.VATInvoiceupdatedby}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Vat Invoice Date:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.VatInvoiceUpdatedDate | date:'dd/MM/yyyy'}}</span>
+      </div>
+      <!--<div class="col-md-4">
+        <input type="file" formControlName="VatInvoiceDocumentUploaded" [value]="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value" class="form-control" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+        <span *ngIf="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload vat Document</span>
+      </div>-->
+    </div>
+  </div>
+</div>
+<!--<div *ngIf="gatepass">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> GatePass Details:</div>
+  </div>
+  <form [formGroup]="gatepassform">
+    <div class="form-control" style="height:100%;width:100%">
+      <div class="row">
+        <div class="col-md-3">
+          <label class="form-label">GatePass No:</label> &nbsp;
+          <input type="text" [ngClass]="{ 'is-invalid':gatepasssubmitted && !scrapmaster.GatePAssNo }" formControlName="GatePAssNo" class="form-control" [(ngModel)]="scrapmaster.GatePAssNo" />
+          <span *ngIf="gatepasssubmitted && !scrapmaster.GatePAssNo" class="invalid-feedback">Please Enter Gatepassno</span>
+
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">GapePass Date:</label> &nbsp;
+          <input type="date" formControlName="GatePassDate" class="form-control" [(ngModel)]="scrapmaster.GatePassDate" [ngClass]="{ 'is-invalid': gatepasssubmitted &&  !scrapmaster.GatePassDate }" />
+        </div>
+        <div class="col-md-4">
+          <input type="file" formControlName="GatePassDocumentUploaded" [value]="gatepassform.controls.GatePassDocumentUploaded.value" class="form-control" id="file" multiple (change)="scrapflowfiles($event,'gatepass')" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+          <div *ngFor="let selected of scrapFiles;let index = index">
+            <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+            <br />
+          </div>
+          <span *ngIf="gatepassform.controls.GatePassDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload gatepass Document</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>-->
+<!--<div class="row" *ngIf="gatepass" style="margin-bottom:10px;margin-top:5px">
+  <div class="col-md-12" style="text-align:center">
+    <button type="submit" class="btn btn-primary" (click)="displayitems1(scrapmaster.ScrapStatusId,'gatepass')">Submit</button>
+  </div>
+</div>
+<div *ngIf="taxinvoice || readyfordispatch" style="margin-top:10px">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Gatepass Details:</div>
+    <div class="col-md-3 edit pt-1">
+      <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="Edit('gatepassedit')"></button>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-3">
+        <label class="form-label">GatePass No:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.GatePAssNo}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">GatePass Date:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.GatePassDate | date}}</span>
+      </div>-->
+      <!--<div class="col-md-4">
+        <input type="file" formControlName="VatInvoiceDocumentUploaded" [value]="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value" class="form-control" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+        <span *ngIf="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload vat Document</span>
+      </div>-->
+    <!--</div>
+  </div>
+</div>-->
+<div *ngIf="taxinvoice">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Fund Verification:</div>
+  </div>
+  <form [formGroup]="taxinvoiceform">
+    <div class="form-control" style="height:100%;width:100%">
+      <div class="row">
+        <div class="col-md-3">
+          <label class="form-label">Fund Available With Vendor:</label> &nbsp;
+          <input type="text" [ngClass]="{ 'is-invalid':taxsubmitted && !scrapmaster.fundavailablewithvendor }" formControlName="fundavailablewithvendor" (keypress)="numbersOnly($event)" class="form-control" [(ngModel)]="scrapmaster.fundavailablewithvendor" />
+          <span *ngIf="taxsubmitted && !scrapmaster.fundavailablewithvendor" class="invalid-feedback">Please Enter Fund Available with Vendor</span>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+          <label class="form-label">Remarks:</label>&nbsp;
+          <textarea type="text" class="form-control" formControlName="fundavendorremarks" [(ngModel)]="scrapmaster.fundavendorremarks" [ngClass]="{ 'is-invalid': readyfordispatchsubmitted &&  dispatchform.controls.verifierremarks.errors }"></textarea>
+          <span *ngIf="taxsubmitted && !scrapmaster.fundavendorremarks" class="invalid-feedback">Verifier Remarks Required.</span>
+        </div>
+        <!--<div class="col-md-3">
+          <label class="form-label">Taxinvoice Date:</label> &nbsp;
+          <input type="date" formControlName="TaxInvoiceDate" class="form-control" [(ngModel)]="scrapmaster.TaxInvoiceDate" [value]="scrapmaster.TaxInvoiceDate | date:'yyyy-MM-dd'" [ngClass]="{ 'is-invalid': taxsubmitted &&  !scrapmaster.TaxInvoiceDate }" />
+        </div>-->
+        <div class="col-md-4">
+          <!--<input type="file" formControlName="TaxInvoiceDocumentUpdated" class="form-control" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">-->
+          <!--<span *ngIf="gatepasssubmitted && !scrapmaster.GatePassDocumentUploaded" class="invalid-feedback">Please upload gatepass Document</span>-->
+          <input type="file" formControlName="TaxInvoiceDocumentUpdated" [value]="taxinvoiceform.controls.TaxInvoiceDocumentUpdated.value" class="form-control" id="file" multiple (change)="scrapflowfiles($event,'taxinvoice')" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+          <div *ngFor="let selected of scrapFiles;let index = index">
+            <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+            <br />
+          </div>
+          <span *ngIf="taxinvoiceform.controls.TaxInvoiceDocumentUpdated.value.trim()==''" class="invalid-feedback">Please upload TaxInvoice Document</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row" *ngIf="taxinvoice" style="margin-bottom:10px;margin-top:5px">
+  <div class="col-md-12" style="text-align:center">
+    <button type="submit" class="btn btn-primary" (click)="displayitems1(scrapmaster.ScrapStatusId,'Taxinvoice')">Submit</button>
+  </div>
+</div>
+<div *ngIf="showedit &&  getstatus('taxinvoice')" style="margin-top:10px">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Fund Verification Details:</div>
+    <div class="col-md-3 edit pt-1">
+      <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="Edit('taxedit')"></button>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-5">
+        <label class="form-label">Fund Available With Vendor:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.fundavailablewithvendor}}</span>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label">Remarks:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.fundavendorremarks}}</span>
+      </div>
+      <!--<div class="col-md-4">
+        <input type="file" formControlName="VatInvoiceDocumentUploaded" [value]="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value" class="form-control" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+        <span *ngIf="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload vat Document</span>
+      </div>-->
+    </div>
+  </div>
+</div>
+<div *ngIf="readyfordispatch">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Ready For Dispatch:</div>
+  </div>
+  <form [formGroup]="dispatchform">
+    <div class="form-control" style="height:100%;width:100%">
+      <div class="row">
+        <!--<div class="col-md-4">
+          <label class="form-label">Verifier Name:</label>&nbsp;
+          <div class="form-inline-list">
+            
+          </div>
+        </div>-->
+        <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+          <label class="form-label">Remarks:</label>&nbsp;
+          <textarea type="text" class="form-control" formControlName="verifierremarks" [(ngModel)]="scrapmaster.VerifierRemarks" [ngClass]="{ 'is-invalid': readyfordispatchsubmitted &&  dispatchform.controls.verifierremarks.errors }"></textarea>
+          <span *ngIf="readyfordispatchsubmitted && dispatchform.controls.verifierremarks.errors" class="invalid-feedback">Verifier Remarks Required.</span>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+          <button type="button" class="btn btn-success"  label="Save" (click)="displayitems1(scrapmaster.ScrapStatusId,'readytodispatch')">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngIf="showedit && getstatus('dispatch')" style="margin-top:10px">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Dispatch Details:</div>
+    <!--<div class="col-md-3 edit pt-1">
+      <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="Edit('taxedit')"></button>
+    </div>-->
+  </div>
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-3">
+        <label class="form-label">Verifier By:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.Verifier}}</span>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Verifier Remarks:</label> &nbsp;
+        <span class="valueEdit"> {{scrapmaster.VerifierRemarks}}</span>
+      </div>
+      <!--<div class="col-md-4">
+        <input type="file" formControlName="VatInvoiceDocumentUploaded" [value]="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value" class="form-control" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+        <span *ngIf="vatinvoiceform.controls.VatInvoiceDocumentUploaded.value.trim()==''" class="invalid-feedback">Please upload vat Document</span>
+      </div>-->
+    </div>
+  </div>
+</div>
+<div class="row head-text pl-0" style="margin-left:0px;width:100%;margin-top:10px">
+  <div class="col-md-6 pt-2"> Scrap Status Track:</div>
+</div>
+<div class="">
+  <p-table [value]="scrapmaster.statustarck" [paginator]="true" [style]="{'width':'100%','overflow':'auto!important'}" [rows]="50" [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true">
+    <ng-template pTemplate="header">
+      <tr class="mprltbldata">
+        <th style="width:40px">S.No</th>
+        <th style="width:40px">ScrapId</th>
+        <th style="width:100px">Status</th>
+        <th style="width:100px">Status Updated Date</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td>
+          {{ri+1}}
+        </td>
+        <td class="ptable-cell">{{rowData.scrapid}}</td>
+        <td class="ptable-cell">{{rowData.Status}}</td>
+        <td class="ptable-cell">{{rowData.UpdatedDate|date:'yyyy/MM/dd'}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
   <div class="ui-g ui-fluid">
     <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
   </div>
@@ -255,6 +778,6 @@
       <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
     </div>
   </p-footer>
-</p-dialog>-->
+</p-dialog>
 <br />
 

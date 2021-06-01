@@ -204,7 +204,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'MSA Line Item List',
         link: '/SCM/MSALineItem',
         icon: 'layers-outline'
-      }
+      },
+      {
+        title: 'PO Creation',
+        link: '/SCM/pocreation',
+        icon: 'list-outline'
+      },
     ],
   },
   {
@@ -312,6 +317,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/PAstatusReport',
         icon: 'list-outline'
       },
+
       {
         title: 'Monthly Report 1',
         link: '/SCM/MonthlyPerformanceReport1',
@@ -364,8 +370,23 @@ export const MENU_ITEMS: NbMenuItem[] = [
     expanded: false,
     children: [
       {
-        title: 'Scrapmaster Initiate',
+        title: 'Scrap Register',
         link: '/SCM/scrapregister',
+        icon: 'list-outline'
+      },
+      {
+        title: 'ScrapList',
+        link: '/SCM/scrapregisterlist',
+        icon: 'list-outline'
+      },
+      {
+        title: 'ScrapFlowConfiguration',
+        link: '/SCM/scrapflow',
+        icon: 'list-outline'
+      },
+      {
+        title: 'ScrapTotalList',
+        link: '/SCM/scraptotallist',
         icon: 'list-outline'
       }
     ],

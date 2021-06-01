@@ -341,7 +341,7 @@ export class purchasePaymentComponent implements OnInit {
       if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted" || this.purchasedetails.PAStatus == "Rejected") {
         this.pasubmitted = true;
         for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-          this.purchasedetails.Item[i]["itemsum"] = (this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]) + this.purchasedetails.Item[i]["TotalFreightAmount"] + this.purchasedetails.Item[i]["TotalPFAmount"] + this.purchasedetails.Item[i]["HandlingAmount"] + this.purchasedetails.Item[i]["DutyAmount"] + this.purchasedetails.Item[i]["ImportFreightAmount"] + this.purchasedetails.Item[i]["InsuranceAmount"]
+          this.purchasedetails.Item[i]["itemsum"] = ((this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]) - this.purchasedetails.Item[i]["rawdiscount"]) + this.purchasedetails.Item[i]["TotalFreightAmount"] + this.purchasedetails.Item[i]["TotalPFAmount"] + this.purchasedetails.Item[i]["HandlingAmount"] + this.purchasedetails.Item[i]["DutyAmount"] + this.purchasedetails.Item[i]["ImportFreightAmount"] + this.purchasedetails.Item[i]["InsuranceAmount"]
         }
         this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
         this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
@@ -869,6 +869,7 @@ Review Date :<<>>   Reviewed By :<<>>*/
   insertprno(items: any) {
     this.paService.UpdateMsaprconfirmation(items).subscribe(data => {
       this.prDialog = false;
+      this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'PRNOs Updated Succesfully' });
     })
   }
   closedialog() {

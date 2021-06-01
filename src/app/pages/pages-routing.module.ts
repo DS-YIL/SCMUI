@@ -60,8 +60,14 @@ import { BGApplicableListComponent } from './BG/BGApplicableList.component';
 import { BGViewComponent } from './BG/BGView.component';
 import { BGListComponent } from './BG/BGList.component';
 import { ScrapRegisterComponent } from './ScrapRegister/ScrapRegister.component';
+import { ScrapRegisterListComponent } from './ScrapRegister/ScrapRegisterList.component'
+import { ScrapflowComponent } from './ScrapRegister/Scrapflow.component'
+import { ScrapRegisterTotalListComponent } from './ScrapRegister/ScrapRegisterTotalList.component'
 import { CmmMonthlyperformaceReport1Component } from './MPRReports/cmm-monthlyperformace-report1.component';
 import { MonthlyReport2Component } from './MPRReports/monthly-report2.component';
+import { POCreationComponent } from './purchase-authorization/POCreation.component';
+import { POGenerationComponent } from './purchase-authorization/POGeneration.component'
+
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -133,18 +139,24 @@ const routes: Routes = [{
     { path: "projectduration", component: ProjectDurationReportsComponent, canActivate: [AuthGuard] },
     { path: "ASNInitiate", component: ASNInitiateComponent, canActivate: [AuthGuard] },
     { path: "ASNView/:ASNId", component: AsnViewComponent, canActivate: [AuthGuard] },
-      { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
-      { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
-      { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
+    { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
+    { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
+    { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
     { path: "VendorList", component: VendorListComponent, canActivate: [AuthGuard] },
     { path: "VendorInfo/:VendorId", component: VendorInfoComponent, canActivate: [AuthGuard] },
     { path: "BGApplicableList", component: BGApplicableListComponent, canActivate: [AuthGuard] },
     { path: "BGView/:BGId", component: BGViewComponent, canActivate: [AuthGuard] },
     { path: "BGList", component: BGListComponent, canActivate: [AuthGuard] },
+    { path: "scrapregister/:scrapid", component: ScrapRegisterComponent, canActivate: [AuthGuard] },
     { path: "scrapregister", component: ScrapRegisterComponent, canActivate: [AuthGuard] },
+    { path: "scrapregisterlist", component: ScrapRegisterListComponent, canActivate: [AuthGuard] },
+    { path: "scrapflow", component: ScrapflowComponent, canActivate: [AuthGuard] },
+    { path: "scraptotallist", component: ScrapRegisterTotalListComponent, canActivate: [AuthGuard] },
     { path: "MonthlyPerformanceReport1", component: CmmMonthlyperformaceReport1Component, canActivate: [AuthGuard] },
     { path: "MonthlyReport2", component: MonthlyReport2Component, canActivate: [AuthGuard] },
-    
+    { path: "pocreation", component: POCreationComponent, canActivate: [AuthGuard] },
+    { path: "pogeneration", component: POGenerationComponent, canActivate: [AuthGuard] },
+    { path: "pogeneration/:RevisionId", component: POGenerationComponent, canActivate: [AuthGuard] },
     // {
     //      path: '',
     //      redirectTo: 'Login',

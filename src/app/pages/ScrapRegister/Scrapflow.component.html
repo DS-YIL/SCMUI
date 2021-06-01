@@ -1,0 +1,70 @@
+<div style="text-align:center">
+  <h3>Scrap Flow</h3>
+</div>
+<form [formGroup]="scrapflowform">
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row form-group">
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label class="form-label">ScrapFlow:</label>&nbsp;
+        <select [(ngModel)]="scrapflowmodel.Scrapflow" formControlName="Scrapflow" style="width:80%" class="form-control dropdown" [ngClass]="{ 'is-invalid':scrapflowsubmittted && !scrapflowmodel.Scrapflow }">
+          <option value=""></option>
+          <option value="SoCreation"> SoCreation</option>
+          <option value="VatInvoice">Tax/VatInvoice</option>
+          <option value="FundVerification">Fund Verification</option>
+          <option value="ReadyToDisPatch">Ready To DisPatch</option>
+          <!--<option value="E-Scrap">Rady</option>-->
+        </select>
+        <span *ngIf="scrapflowsubmittted && !scrapflowmodel.Scrapflow" class="invalid-feedback">Select Scarpflow.</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label class="form-label">Employee:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [value]="scrapflowform.controls.Inchargename.value" formControlName="Inchargename" class="form-control" [ngClass]="{ 'is-invalid':scrapflowsubmittted && !scrapflowmodel.Inchargename }" (keyup)="onsrchTxtChange('PreparedBy',scrapflowmodel.Inchargename,'padetails')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'PreparedBy',scrapflowform.controls.Inchargename.value,undefined)"></button>
+          </span>
+          <span *ngIf="scrapflowsubmittted && !scrapflowmodel.Incharge" class="invalid-feedback">Select Employee.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="row" style="margin-bottom:10px;">
+  <div class="col-md-12" style="text-align:center">
+    <button type="button" class="btn btn-primary" (click)="InsertScarpflow(scrapflowmodel)">Submit</button>
+  </div>
+</div>
+<br />
+<p-table [value]="scraplist" [paginator]="true" [style]="{'width':'100%','overflow':'auto!important'}" [rows]="50" [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true">
+  <ng-template pTemplate="header">
+    <tr class="mprltbldata">
+      <th style="width:40px">S.No</th>
+      <th style="width:40px">Scrapflow</th>
+      <th style="width:100px">InchargeName</th>
+      <th style="width:100px">CreatedBy</th>
+      <th style="width:100px">createddate</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+    <tr>
+      <td>
+        {{ri+1}}
+      </td>
+      <td class="ptable-cell">{{rowData.Scrapflow}}</td>
+      <td class="ptable-cell">{{rowData.Inchargename}}</td>
+      <td class="ptable-cell">{{rowData.createdby}}</td>
+      <td class="ptable-cell">{{rowData.createddate|date}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog #dialog header="List View :" [(visible)]="showList"  [contentStyle]="{'overflow':'visible'}">
+  <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

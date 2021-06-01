@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel, MSAMasterConfimationModel, msainputmodel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel, MSAMasterConfimationModel, msainputmodel, POMaster } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ScrapRegisterMasterModel, ScrapItems } from '../Models/ScrapRegister'
+import { ScrapRegisterMasterModel, ScrapItems, ScrapflowModel, scrapsearchmodel } from '../Models/ScrapRegister'
 
 @Injectable({
   providedIn: 'root'
@@ -215,9 +215,9 @@ export class purchaseauthorizationservice {
 
   uploadMSADocument(formdata: FormData): Observable<any> {
     return this.http.post<any>(this.url + 'PA/uploadMSA', formdata)
-    .pipe(map(data => {
-      return data;
-    }))
+      .pipe(map(data => {
+        return data;
+      }))
   }
   UpdateMSAMasterConfirmation(MSAConfirmationModel: MSAMasterConfimationModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/UpdateMSAConfirmation', MSAConfirmationModel, this.httpOptions)
@@ -240,10 +240,70 @@ export class purchaseauthorizationservice {
   InsertScrapItems(scrapmaster: ScrapRegisterMasterModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/InsertScrapRregister', scrapmaster, this.httpOptions)
   }
+  getscraplist(data: scrapsearchmodel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/getscraplist', data, this.httpOptions)
+  }
+  getscrapitembyid(scrapid: number): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/getscrapitembyid/' + scrapid);
+  }
+  uploadscrapExcel(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/uploadscrapExcel', formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
+  uploadscrapfileExcel(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/uploadscrapfileExcel', formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
+  Approvescraprequest(approve: ScrapRegisterMasterModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/UpdateScrapRequest', approve, this.httpOptions)
+  }
+  Updatescraprequest(approve: ScrapRegisterMasterModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/UpdateScrapRregister', approve, this.httpOptions)
+  }
+  InsertScarpflowIncharge(approve: ScrapflowModel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/InsertScarpflowIncharge', approve, this.httpOptions)
+  }
+  getscrapflowlist(): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Getincharelist', this.httpOptions)
+  }
+  Getscrapitemdetails(itemcode: string): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/Getscrapitemdetails/' + itemcode)
+  }
+  getscraplistbysearch(input: scrapsearchmodel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/getscraplistbysearch', input, this.httpOptions)
+  }
+  Getincharepermissionlist(input: scrapsearchmodel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/Getincharepermissionlist', input, this.httpOptions)
+  }
+  getauthorizescrapflowlist(employeeno: string): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/getauthorizescrapflowlist/' + employeeno)
+  }
   GetCMMMonthlyPerformance1(status: ReportInputModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/GetCMMMonthlyPerformancereport1', status, this.httpOptions)
   }
   GetCMMMonthlyPerformance2(status: ReportInputModel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/GetCMMMonthlyreport2', status, this.httpOptions)
   }
+  LoadPOItems(details: PADetailsModel): Observable<ItemsViewModel[]> {
+    return this.http.post<ItemsViewModel[]>(this.url + 'PA/LoadItemsforpocreation', details, this.httpOptions);
+  }
+  LoadItemsForPOGeneration(PAId: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/LoadItemsforpogeneration', PAId, this.httpOptions);
+  }
+  LoadItemsforpogenerationbasedonvendor(VendorId: any, PAId: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/LoadItemsforpogenerationbasedonvendor/' + VendorId + '', PAId, this.httpOptions);
+  }
+  InsertPoitems(poitem: POMaster): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/InsertPOItems', poitem, this.httpOptions);
+  }
+  GetPolineItemsToExcel(revisionId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/GetPolineItemsToExcel/' + revisionId, { responseType: 'blob' as 'json' });
+  }
+  //getscrapflowlist(): Observable<any> {
+
+  //}
 } 

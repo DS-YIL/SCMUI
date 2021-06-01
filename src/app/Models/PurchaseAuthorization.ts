@@ -137,6 +137,7 @@ export class ItemsViewModel {
   itemtype: string;
   PRno: string;
   PRLineItemNo: string;
+  rawdiscount: number;
 }
 export class Additionaltaxes {
     HandlingAmount: number;
@@ -496,5 +497,25 @@ export class msainputmodel {
   PRcreatedBy: string;
   PAItemID: number;
   paid: number;
+}
+export class POMaster {
+  BuyerGroupID: number;
+  departmentid: number;
+  preparedby: string;
+  poremarks: string;
+  poterms: string;
+  insurance: string;
+  potype: string;
+  collectiveno: number;
+  priorvendor: number;
+  Reqdeliverydate: Date;
+  poitems: Array<POItem> = [];
+  scmpoconfirmation: string;
+  scmpoconfirmationby: string;
+  itemtype: string;
+
+}
+export class POItem {
+  paitemid: number;
 }
 

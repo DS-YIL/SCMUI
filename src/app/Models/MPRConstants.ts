@@ -6,7 +6,7 @@ import { searchParams, AccessList } from '../Models/mpr';
 })
 export class constants {
   //local
-  //public url = 'http://localhost:49659/Api/';
+ public url = 'http://localhost:49659/Api/';
 
   //test server
   //public url = 'http://10.29.15.68:90/Api/';
@@ -17,10 +17,11 @@ export class constants {
 
   //live
   public accessTokenUrl = "http://10.29.15.183:90/token";
-  public url = 'http://10.29.15.183:90/Api/';
+  //public url = 'http://10.29.15.183:90/Api/';
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
+  public scrapdocumentpath = "http://10.29.15.183:90/ScrapDocuments/";
   public vscmurl = "http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
 
   public dateFormat = "dd/MM/yyyy";
@@ -35,6 +36,7 @@ export class constants {
 
   //public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   //public PADocumentPath = "http://49659/PADocuments/";
+  //public scrapdocumentpath ="http://49659/scrapDocuments/"
 
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " where BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
   public ProjectManager: searchParams = { tableName: 'ProjectManagers', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
@@ -48,6 +50,7 @@ export class constants {
   public PreferredVendorTypeId: searchParams = { tableName: 'MPRPreferredVendorTypes', fieldId: 'PreferredVendorTypeId', fieldName: 'PreferredVendorType', condition: " where ", fieldAliasName: "PreferredVendorType", updateColumns: "" };
   public DispatchLocation: searchParams = { tableName: 'MPRDispatchLocations', fieldId: 'DispatchLocationId', fieldName: 'DispatchLocation', condition: " where ", fieldAliasName: "DispatchLocation", updateColumns: "" };
   public ScopeId: searchParams = { tableName: 'MPRScopes', fieldId: 'ScopeId', fieldName: 'Scope', condition: " where ", fieldAliasName: "Scope", updateColumns: " where " };
+  public Buyermanagers: searchParams = { tableName: 'MPRBuyerGroups', fieldId: 'BuyerManager', fieldName: 'Buyername', condition: " where ", fieldAliasName: "Scope", updateColumns: " where " };
 
   public ProcurementSourceId: searchParams = { tableName: 'MPRProcurementSources', fieldId: 'ProcurementSourceId', fieldName: 'ProcurementSource', condition: " where BoolInUse=1 and ", fieldAliasName: "ProcurementSource", updateColumns: "" };
   public CustomsDutyId: searchParams = { tableName: 'MPRCustomsDuty', fieldId: 'CustomsDutyId', fieldName: 'CustomsDuty', condition: " where ", fieldAliasName: "CustomDuty", updateColumns: "" };
@@ -73,5 +76,6 @@ export class constants {
   public soldtoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'soldtoparty', fieldName: 'soldtopartyname', condition: "  where  ", fieldAliasName: "soldtopartyname", updateColumns: "" }
   public Enduser: searchParams = { tableName: 'SaleorderDetails', fieldId: 'Enduser', fieldName: 'Endusername', condition: "  where Endusername != '' and ", fieldAliasName: "Endusername", updateColumns: "" }
   public shiptoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'shiptoparty', fieldName: 'shiptopartyname', condition: "  where ", fieldAliasName: "shiptopartyname", updateColumns: "" }
+  public verifier: searchParams = { tableName: 'scrapflow', fieldId: 'incharge', fieldName: 'Name', condition: "  where ", fieldAliasName: "", updateColumns: "" }
 }
 
