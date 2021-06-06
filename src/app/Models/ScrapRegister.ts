@@ -102,7 +102,7 @@ export class scrapsearchmodel {
   DepartmentName: string;
   Vendorid: string;
   VendorName: string;
-  Scraptype: string;
+  Datetype: string;
   scrapfrom: Date;
   scrapto: Date;
   scraptypepending: string;

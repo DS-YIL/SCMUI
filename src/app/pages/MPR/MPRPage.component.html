@@ -515,6 +515,8 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 form-group "><b>Note:<i>  If Total Target Spend is greater than 5 lakh and Type of Purchase is multiple vendor than we need to add 3 vendor list.
+          or select any Multiple vendor justification while Proceed.</i></b></div>
         <p-table [value]="mprRevisionModel.MPRVendorDetails" [style]="{'width':'100%','overflow':'auto!important'}">
           <ng-template pTemplate="caption">
             <span style="float:left">Vendor Details :</span>
@@ -574,6 +576,31 @@
 
           </ng-template>
         </p-table><br />
+        <div class="form-group row" style="margin-top:10px">
+        <div *ngIf="!vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
+          <label class="lblEdit">Multiple vendor justification &nbsp;<span style="color:red">*</span></label>
+              <!-- <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="MPRPageForm2.controls.MVjustificationId.value"> -->
+                <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="mprRevisionModel.MVJustificationId">
+                  <option value="">Select MV Justification</option>
+                <option *ngFor="let option of MprMVJustification" [value]="option.MVJustificationId">{{option.MVjustification}}</option>
+              </select>
+              <span style="color:red" *ngIf="MPRForm2Submitted && ShowMV_Justification && !mprRevisionModel.MVJustificationId" class="lblEdit">Select MV Justification</span>
+        </div>
+         <div *ngIf="vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label class="lblEdit">Multiple vendor justification </label>
+              <span class="valueEdit">{{mprRevisionModel.MVjustification}}</span>
+            </div>
+            <div *ngIf="!vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label class="lblEdit">Remarks </label>
+              <input type="text"  maxlength="500" [(ngModel)]="mprRevisionModel.VendorRemarks" id="VendorRemarks" formControlName="VendorRemarks" class="form-control">
+              <!-- <textarea class="form-control" maxlength="200" [(ngModel)]="mprRevisionModel.VendorRemarks"></textarea> -->
+            </div>
+            <div *ngIf="vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label class="lblEdit">Remarks </label>
+              <span class="valueEdit">{{mprRevisionModel.VendorRemarks}}</span>
+            </div>
+        </div>
+
         <div *ngIf="!vendorFormEdit" style="text-align: center;">
           <button type="button" class="btn btn-success" (click)="onMPRVendorSubmit('MPRVendorId','showOtherDetailsForm','vendorFormEdit')" label="Save">Proceed</button>
         </div>

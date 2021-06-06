@@ -38,7 +38,7 @@ export class MPRPageComponent implements OnInit {
   public searchresult: Array<object> = [];
   public itemDetails: MPRItemInfoes;
   public mprDocuments: MPRDocument;
-  public showList; showOldPO: boolean = false;
+  public showList; showOldPO;ShowMV_Justification: boolean = false;
   public selectedItem: searchList;
   public saleorderdetails: SaleOrderDetails;
   public selectedmultiItem: searchList;
@@ -89,6 +89,7 @@ export class MPRPageComponent implements OnInit {
   public communicationlist: Array<any> = [];
   public mprRevisionId: string;
   public tokuchuinformation: Array<any> = [];
+  public MprMVJustification: any;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -172,7 +173,9 @@ export class MPRPageComponent implements OnInit {
       PurchaseTypeId: ['', [Validators.required]],
       PreferredVendorTypeId: ['', [Validators.required]],
       JustificationForSinglePreferredVendor: ['', [Validators.required]],
-      oldPORef: ['', [Validators.required]]
+      oldPORef: ['', [Validators.required]],
+      MVJustificationId: ['', [Validators.required]],
+      VendorRemarks: ['', [Validators.required]]
     });
 
     this.MPRInchargeForm = this.formBuilder.group({
@@ -287,12 +290,14 @@ export class MPRPageComponent implements OnInit {
       if (params["MPRRevisionId"] && !this.constants.RequisitionId) { //load mpr revision data 
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
+        
         this.getEmpList();
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
         this.getPAdetails(revisionId);
         this.getCommunicationList();
         this.GetTokuchuinformation(revisionId);
+        
       }
       else {
         if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
@@ -321,7 +326,7 @@ export class MPRPageComponent implements OnInit {
       }
       this.getStatusList();
     });
-
+// this.ShowMVJustification();
   }
   getEmpList() {
     this.MprService.getEmployeeList().subscribe(data => {
@@ -344,6 +349,7 @@ export class MPRPageComponent implements OnInit {
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     //if (e.type == "keyup" && searchTxt && searchTxt.length < 3)
     //  return;
+    console.log(name);
     this.formName = formName;
     this.dialogTop = e.clientY + 30 + "px";
     this.txtName = name;
@@ -625,9 +631,15 @@ export class MPRPageComponent implements OnInit {
 
   // edit icon click event
   onFormEdit(form, formId) {
+    // if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && Number(this.calculateTargetSpend())>500000 && this.mprRevisionModel.MPRVendorDetails.length<3)
+    // {
+    //   this.ShowMV_Justification=true;
+    // }
+    this.ShowMVJustification();
     this[form] = false;
     this.animateCSS(formId, 'slideInLeft');
     this.loadlocations();
+    this.loadMPRMVJustification();
     //document.getElementById(formId).animate([{ transform: 'translateX(-500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
   }
 
@@ -759,6 +771,7 @@ export class MPRPageComponent implements OnInit {
           this.mprRevisionModel.MPRVendorDetails.splice(index, 1);
 
         }
+        this.ShowMVJustification();
       });
     }
     else {
@@ -783,11 +796,19 @@ export class MPRPageComponent implements OnInit {
     if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && this.mprRevisionModel.MPRVendorDetails.length <= 1) {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Please Add Atleast two vendors' });
       return;
+      
     }
-    if (this.MPRPageForm2.invalid) {
+    if (this.ShowMV_Justification && this.mprRevisionModel.MVJustificationId<1) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Please Select MV Justification' });
       return;
+      
     }
+    // if (this.MPRPageForm2.invalid) {
+    //   alert('Invalid Page. PLease fix issue');
+    //   return;
+    // }
     else {
+      
       this.mprRevisionModel.MPRItemInfoes = [];
       this.mprRevisionModel.MPRDocuments = [];
       this.mprRevisionModel.MPRDocumentations = [];
@@ -1029,6 +1050,7 @@ export class MPRPageComponent implements OnInit {
           else {
             this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Failed to add try again' });
           }
+          this.ShowMVJustification();
         })
       }
       //}
@@ -1407,6 +1429,7 @@ export class MPRPageComponent implements OnInit {
 
           this.bindStatusDetails();
           this.showPage = true;
+          this.ShowMVJustification();
           this.spinner.hide();
         });
       }
@@ -2023,6 +2046,22 @@ export class MPRPageComponent implements OnInit {
   }​​​​​​​
 
   //<<SCM Open issues coding Ended>>
+
+  ShowMVJustification(){
+    if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && Number(this.calculateTargetSpend())>500000 && this.mprRevisionModel.MPRVendorDetails.length<3)
+    {
+      this.ShowMV_Justification=true;
+    }
+    else
+    {
+      this.ShowMV_Justification=false;
+    }
+  }
+  loadMPRMVJustification() {
+    this.MprService.getMPRMVJustification().subscribe(data => {
+      this.MprMVJustification = data;
+    })
+  }
 }
 
 

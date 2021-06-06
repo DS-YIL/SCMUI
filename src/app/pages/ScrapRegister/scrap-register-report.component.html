@@ -1,0 +1,130 @@
+<div style="text-align:center">
+    <h3>Scrap Register Report</h3>
+  </div>
+  <div class="form-control" style="width:100%;height:100%">
+    <div class="row form-group">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Department:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="scrapsearch.DepartmentName" [value]="" class="form-control" (keyup)="onsrchTxtChange('DepartmentName','scrapsearch')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',scrapsearch.DepartmentName,undefined)"></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Scrap Type:</label>&nbsp;
+        <select [(ngModel)]="scrapsearch.Scraptype" style="max-width:fit-content"  style="width:80%" class="form-control dropdown">
+          <option value=""></option>
+          <option value="Hazardous"> Hazardous</option>
+          <option value="Non Hazardous">Non Hazardous</option>
+          <option value="E-Scrap">E-Scrap</option>
+        </select>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">TruckNo</label>
+        <input type="text" class="form-control" [(ngModel)]="scrapsearch.truckno" />
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <label class="form-label">VendorName:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="scrapsearch.VendorName" class="form-control"  (keyup)="onsrchTxtChange('Vendorid','scrapsearch')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',scrapsearch.VendorName,undefined)"></button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+            <label class="form-label">Date Type:</label>&nbsp;
+            <select [(ngModel)]="scrapsearch.Datetype" style="max-width:fit-content"  style="width:100%" class="form-control dropdown">
+              <option value=""></option>
+              <option value="PreparedDate"> Prepared Date</option>
+              <option value="Dateofentry">Date of entry</option>
+            </select>
+          </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <label class="form-label">From</label><br />
+        <input type="date" class="form-control" [(ngModel)]="scrapsearch.scrapfrom">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <label class="form-label">To</label>&nbsp;<br />
+        <input type="date" class="form-control" [(ngModel)]="scrapsearch.scrapto">
+      </div>
+     
+    </div>
+  </div>
+  <div class="row" style="margin-top:5px">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="submit(scrapsearch)">Submit</button>
+    </div>
+  </div>
+  <br />
+  <!--<i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large" (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i>-->
+  <p-table [value]="scrapflowlist" #TABLE #table [paginator]="true" [style]="{'width':'100%','overflow':'auto!important'}" [rows]="50" [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th colspan="1">
+          <button type="button" class="btn btn-sm btn-primary" (click)="ExportTOExcel(scrapflowlist)">ExportTOExcel</button>
+        </th>
+      </tr>
+      <tr class="mprltbldata">
+        <th style="width:40px">S.No</th>
+        <th style="width:40px">Contractor</th>
+        <th style="width:40px">Department</th>
+        <th style="width:100px">Date</th>
+        <th style="width:100px">Date of entry</th>
+        <th style="width:100px">TruckNo</th>
+        <th style="width:100px">Item Description</th>
+        <th style="width:100px">QTY</th>
+        <th style="width:100px">UOM</th>
+        <th style="width:100px">Unit Price</th>
+        <th style="width:110px">Basic Price</th>
+        <th style="width:110px">TCS@1.2%</th>
+        <th style="width:100px">Total Basic</th>
+        <th style="width:100px">GST Price</th>
+        <th style="width:100px">GST@ %</th>
+        <th style="width:100px">Total</th>
+        <th style="width:100px">Remarks1</th>
+        <th style="width:100px">Remarks2</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td>
+          {{ri+1}}
+        </td>
+        <!-- <td class="ptable-cell"><a [routerLink]="['/SCM/scrapregister',rowData.ScrapentryId]" target="_blank" routerLinkActive="active">{{rowData.ScrapentryId}}</a></td> -->
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
+        <td class="ptable-cell">{{rowData.Department}}</td>
+        <td class="ptable-cell">{{rowData.PreparedDate | date:'yyyy.MM.dd'}}</td>
+        <td class="ptable-cell">{{rowData.Dateofentry | date:'yyyy.MM.dd'}}</td>
+        <td class="ptable-cell">{{rowData.TruckNo}}</td>
+        <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td class="ptable-cell">{{rowData.Qty}}</td>
+        <td class="ptable-cell">{{rowData.UOM}}</td>
+        <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+        <td class="ptable-cell">{{rowData.BasicPrice}}</td>
+        <td class="ptable-cell">{{rowData.TCS}}</td>
+        <td class="ptable-cell">{{rowData.TotalBasic}}</td>
+        <td class="ptable-cell">{{rowData.GSTAmt}}</td>
+        <td class="ptable-cell">{{rowData.GSTper}}</td>
+        <td class="ptable-cell">{{rowData.TotalPrice}}</td>
+        <td class="ptable-cell">{{rowData.Remarks1}}</td>
+        <td class="ptable-cell">{{rowData.Remarks2}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+    <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
+    <div class="ui-g ui-fluid">
+      <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  

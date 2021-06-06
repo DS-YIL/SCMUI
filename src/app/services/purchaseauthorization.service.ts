@@ -303,7 +303,7 @@ export class purchaseauthorizationservice {
   GetPolineItemsToExcel(revisionId: any): Observable<any> {
     return this.http.get<any>(this.url + 'PA/GetPolineItemsToExcel/' + revisionId, { responseType: 'blob' as 'json' });
   }
-  //getscrapflowlist(): Observable<any> {
-
-  //}
+  getscrapRegisterReport(input: scrapsearchmodel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/getscrapRegisterReport', input, this.httpOptions)
+  }
 } 

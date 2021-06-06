@@ -149,6 +149,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/VendorList',
         icon: 'list-outline'
       },
+      {
+        title: 'MV Justification',
+        link: '/SCM/MVJustification',
+        icon: 'list-outline'
+      },
 
     ],
 
@@ -387,6 +392,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'ScrapTotalList',
         link: '/SCM/scraptotallist',
+        icon: 'list-outline'
+      },
+      {
+        title: 'Scrap Register Report',
+        link: '/SCM/scrapregisterreport',
         icon: 'list-outline'
       }
     ],

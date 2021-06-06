@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess, YILTermsGroup, YILTermsandCondition, BGStatusTrack, BankGuarantee, BGfilters } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess, YILTermsGroup, YILTermsandCondition, BGStatusTrack, BankGuarantee, BGfilters, MPRMVJustification } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -333,6 +333,22 @@ export class MprService {
 
   updateBGStatus(bg: BGStatusTrack): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/updateBGStatus', bg, this.httpOptions);
+  }
+ 
+
+  getMPRMVJustification(): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.get<MPRMVJustification[]>(this.url + 'RFQ/GetAllMPRMVJustification', httpOptions);
+  }
+
+  addMPRMVJustification(buyerGroup: MPRMVJustification): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + 'RFQ/InsertMPRMVJustification', buyerGroup, httpOptions);
+  }
+
+  updateMPRMVJustification(buyerGroup: MPRMVJustification): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + 'RFQ/UpdateMPRMVJustification', buyerGroup, httpOptions);
   }
 }
 

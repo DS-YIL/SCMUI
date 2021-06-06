@@ -288,6 +288,9 @@ export class mprRevision {
   MPRAssignNames: string;
   MPRBuyerGroup: MPRBuyerGroup;
   PreviousPORefNumber: string;
+  MVJustificationId:number;
+  MVjustification:string;
+  VendorRemarks:string;
 }
 
 export class SaleOrderDetails {
@@ -751,4 +754,9 @@ export class BGfilters {
   BGStatus: string = "";
   OrgDepartmentId: string="";
   BuyerGroupId: string="";
+}
+export class MPRMVJustification {
+  MVJustificationId: number;
+  MVjustification: string;
+  Createdby:string;
 }

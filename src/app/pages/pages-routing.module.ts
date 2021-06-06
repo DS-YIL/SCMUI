@@ -65,8 +65,10 @@ import { ScrapflowComponent } from './ScrapRegister/Scrapflow.component'
 import { ScrapRegisterTotalListComponent } from './ScrapRegister/ScrapRegisterTotalList.component'
 import { CmmMonthlyperformaceReport1Component } from './MPRReports/cmm-monthlyperformace-report1.component';
 import { MonthlyReport2Component } from './MPRReports/monthly-report2.component';
-import { POCreationComponent } from './purchase-authorization/POCreation.component';
-import { POGenerationComponent } from './purchase-authorization/POGeneration.component'
+// import { POCreationComponent } from './purchase-authorization/POCreation.component';
+// import { POGenerationComponent } from './purchase-authorization/POGeneration.component';
+import { MVJustificationComponent } from './MPR/Admin/mvjustification.component';
+import{ScrapRegisterReportComponent} from './ScrapRegister/scrap-register-report.component'
 
 const routes: Routes = [{
   path: '',
@@ -154,9 +156,11 @@ const routes: Routes = [{
     { path: "scraptotallist", component: ScrapRegisterTotalListComponent, canActivate: [AuthGuard] },
     { path: "MonthlyPerformanceReport1", component: CmmMonthlyperformaceReport1Component, canActivate: [AuthGuard] },
     { path: "MonthlyReport2", component: MonthlyReport2Component, canActivate: [AuthGuard] },
-    { path: "pocreation", component: POCreationComponent, canActivate: [AuthGuard] },
-    { path: "pogeneration", component: POGenerationComponent, canActivate: [AuthGuard] },
-    { path: "pogeneration/:RevisionId", component: POGenerationComponent, canActivate: [AuthGuard] },
+    // { path: "pocreation", component: POCreationComponent, canActivate: [AuthGuard] },
+    // { path: "pogeneration", component: POGenerationComponent, canActivate: [AuthGuard] },
+    // { path: "pogeneration/:RevisionId", component: POGenerationComponent, canActivate: [AuthGuard] },
+    { path: "MVJustification", component: MVJustificationComponent, canActivate: [AuthGuard] },
+    { path: "scrapregisterreport", component: ScrapRegisterReportComponent, canActivate: [AuthGuard] },
     // {
     //      path: '',
     //      redirectTo: 'Login',
