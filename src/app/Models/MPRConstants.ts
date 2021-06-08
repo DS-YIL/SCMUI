@@ -51,7 +51,7 @@ export class constants {
   public DispatchLocation: searchParams = { tableName: 'MPRDispatchLocations', fieldId: 'DispatchLocationId', fieldName: 'DispatchLocation', condition: " where ", fieldAliasName: "DispatchLocation", updateColumns: "" };
   public ScopeId: searchParams = { tableName: 'MPRScopes', fieldId: 'ScopeId', fieldName: 'Scope', condition: " where ", fieldAliasName: "Scope", updateColumns: " where " };
   public Buyermanagers: searchParams = { tableName: 'MPRBuyerGroups', fieldId: 'BuyerManager', fieldName: 'Buyername', condition: " where ", fieldAliasName: "Scope", updateColumns: " where " };
-
+  public BuyerGroupMembers: searchParams = { tableName: 'MPRBuyerGroupMembers', fieldId: 'GroupMember', fieldName: 'EmployeeName', condition: " where ", fieldAliasName: "Scope", updateColumns: " where " };
   public ProcurementSourceId: searchParams = { tableName: 'MPRProcurementSources', fieldId: 'ProcurementSourceId', fieldName: 'ProcurementSource', condition: " where BoolInUse=1 and ", fieldAliasName: "ProcurementSource", updateColumns: "" };
   public CustomsDutyId: searchParams = { tableName: 'MPRCustomsDuty', fieldId: 'CustomsDutyId', fieldName: 'CustomsDuty', condition: " where ", fieldAliasName: "CustomDuty", updateColumns: "" };
   //public ProjectDutyApplicableId: searchParams = { tableName: 'MPRProjectDutyApplicable', fieldId: 'ProjectDutyApplicableId', fieldName: 'ProjectDutyApplicable', condition: "", fieldAliasName: "ProjectDutyApplicable", updateColumns: "" };

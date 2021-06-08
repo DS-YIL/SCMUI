@@ -1,0 +1,417 @@
+<!--<div class="alert alert-danger" role="alert" *ngIf="alert" style="position:relative">
+  Please Select Single Vendor
+</div>-->
+<!--<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top" *ngIf="alert">
+  Choose Single Vendor
+</button>-->
+<!--<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" *ngIf="alert">
+  <div class="toast" style="position: absolute; top: 0; right: 0;">
+    <div class="toast-header">
+      <img src="..." class="rounded mr-2" alt="...">
+      <strong class="mr-auto">Bootstrap</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div>-->
+<div class="" style="text-align:center">
+  <h3>PO Generation</h3>
+</div>
+<div *ngIf="hivalue" style="margin-bottom: 10%;">
+  <div class="form-control" style="width:100%;height:100%">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div style="margin-top:5px" *ngFor="let item of itemDetails | slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
+          <span class="valueEdit"> {{item.BuyerGroup}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div style="margin-top:5px" *ngFor="let item of itemDetails| slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">Department:</label>
+          <span class="valueEdit" *ngIf="i<1"> {{item.Department}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div class="form-group">
+          <label for="AribaRequired" class="form-label label" style="margin-left: 12px;">Insurance Required</label>
+          <div class="form-inline">
+            <p-radioButton class="form-inline" name="group1" value="ByYil" label="By Yil" [(ngModel)]="pomaster.insurance" inputId="opt1"></p-radioButton>&nbsp;&nbsp;
+            <p-radioButton class="form-inline" name="group1" value="ByVendor" label="By Vendor" [(ngModel)]="pomaster.insurance" inputId="opt2"></p-radioButton>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label class="form-label">RFQ Delivery Date</label><br />
+        <input type="date" class="form-control" (change)="changed($event)" [(ngModel)]="pomaster.Reqdeliverydate">
+        <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label for="Department" class="form-label label" style="margin-left: 1px;">PO Type:</label>
+        <select [(ngModel)]="pomaster.potype" style="width:80%" class="form-control dropdown">
+          <option value=""></option>
+          <option value=" Project WBS PO"> Project WBS PO</option>
+          <option value="Base Order PO">Base Order PO</option>
+          <option value="Cost Centre PO">Cost Centre PO</option>
+          <option value="CG PO">CG PO</option>
+          <option value="Dummy PO">Dummy PO</option>
+        </select>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label for="Department" class="form-label label" style="margin-left: 1px;">Purchase Type:</label>
+        <select [(ngModel)]="pomaster.purchasetype" style="width:80%" class="form-control dropdown">
+          <option value=""></option>
+          <option value="SV">Single Vendor</option>
+          <option value="MV">Multiple Vendor</option>
+          <option value="RO">Repeat Order</option>
+          <option value="RC">Rate Contract</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4">
+        <label class="form-label">PO Created By(OP Team Member):</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control" [(ngModel)]="pomaster.scmpoconfirmationby" (keyup)="onsrchTxtChange('BuyerGroupMembers',pomaster.scmpoconfirmation,'pomaster')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'BuyerGroupMembers',pomaster.scmpoconfirmationby,undefined)"></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-control" style="height:100%;width:100%">
+    <div class="row">
+      <div class="col-md-4 col-sm-4 col-lg-4">
+        <label>Material:</label> <input type="checkbox" id="supply" (click)="choosevarianttype('Material',$event)" style="height:14px;width:17px" name="Material" />
+      </div>
+      <div class="col-md-4 col-sm-4 col-lg-4">
+        <label>Service:</label><input type="checkbox" id="service" (click)="choosevarianttype('Service',$event)" style="height:14px;width:17px" name="Service" />
+      </div>
+    </div>
+  </div><br />
+
+  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
+    <p-table [value]="itemDetails" [paginator]="true" [rows]="10" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th>
+            <input type="checkbox" id="checked" (click)="selectAll($event,itemDetails)">
+          </th>
+          <th style="width:50px">Sl No</th>
+          <th>Department</th>
+          <th>Item Description</th>
+          <th style="width:50px">Quantity</th>
+          <th style="width:70px">Price</th>
+          <th style="width:70px">Total Price</th>
+          <th style="width:70px">Target Spend</th>
+          <th style="width:70px">TokuchuNo</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr class="">
+          <td>
+            <input type="checkbox" id="po{{rowData.RFQSplitItemId}}" (change)="selecteachitem($event,rowData)">
+          </td>
+          <td class="ptable-cell">{{ri+1}}</td>
+          <td class="ptable-cell" style="width:27%">
+            {{rowData.Department}}<br />
+            {{rowData.VendorName}}
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">MPR NO:&nbsp;&nbsp;<span>{{rowData.DocumentNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">SaleOrder No:&nbsp;&nbsp;<span>{{rowData.SaleOrderNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">PAID:&nbsp;&nbsp;<span>{{rowData.PAId}}</span></label>
+              <label class="col-md-10">PA Item Id&nbsp;&nbsp;<span>{{rowData.PAItemID}}</span></label>
+            </div>
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;
+              <label class="col-md-10">Payment Term Code:&nbsp;&nbsp;<span>{{rowData.PaymentTermCode}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">POItem Type:&nbsp;&nbsp;<span>{{rowData.POItemType}}</span></label>
+            </div>
+            <!--<div class="row" style="margin-left:0px;margin-top:1px">
+
+            </div>-->
+          </td>
+          <td class="ptable-cell">
+            {{rowData.ItemDescription}}<br />
+            <div class="row" style="margin-left:0px;margin-top:5px">
+              <label class="col-md-10" style="color:chocolate">PRNO:&nbsp;&nbsp;<span>{{rowData.PRno}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10" style="color:chocolate">PR LineItemNo:&nbsp;&nbsp;<span>{{rowData.PRLineItemNo}}</span></label>
+            </div>
+            <!--<label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
+            <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />-->
+            <!--<div class="row">
+              <label class="col-md-3">Supply:<input class="col-md-4" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') > -1" required /></label>
+              <label class="col-md-3">Service:<input class="col-md-5" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <div class="col-lg-8 col-md-8 col-sm-8">
+                <label class="form-label">IncoTerms:</label>&nbsp;
+                <select [(ngModel)]="purchasedetails.incoterms" class="form-control dropdown">
+                  <option value=""></option>
+                  <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Name}}</option>
+                </select>&nbsp;
+              </div>
+            </div>-->
+          </td>
+          <td class="ptable-cell">{{rowData.QuotationQty}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.QuotationQty * rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.TargetSpend}}</td>
+          <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="pt-2">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <!--<td></td>
+          <td></td>
+          <td></td>-->
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div><br />
+  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
+    <p-table [value]="itemsbasedonvendor" [paginator]="true" [rows]="10" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th>
+            <input type="checkbox" id="checked" (click)="selectAll($event,itemsbasedonvendor)">
+          </th>
+          <th style="width:50px">Sl No</th>
+          <th>Department</th>
+          <th>Item Description</th>
+          <th style="width:50px">Quantity</th>
+          <th style="width:70px">Price</th>
+          <th style="width:70px">Total Price</th>
+          <th style="width:70px">Target Spend</th>
+          <th style="width:70px">SaleOrder</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr class="">
+          <td>
+            <input type="checkbox" id="vendor{{rowData.Mprrfqsplititemid}}" (change)="selecteachitem($event,rowData)">
+          </td>
+          <td class="ptable-cell">{{ri+1}}</td>
+          <td class="ptable-cell" style="width:27%">
+            {{rowData.Department}}<br />
+            {{rowData.VendorName}}
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">DocumentNo:&nbsp;&nbsp;<span>{{rowData.DocumentNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">SaleOrderNo:&nbsp;&nbsp;<span>{{rowData.SaleOrderNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">PAID:&nbsp;&nbsp;<span>{{rowData.PAId}}</span></label>
+            </div>
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;
+              <label class="col-md-10">PaymentTermCode:&nbsp;&nbsp;<span>{{rowData.PaymentTermCode}}</span></label>
+            </div>
+          </td>
+          <td class="ptable-cell">
+            {{rowData.ItemDescription}}<br />
+            <!--<label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" maxlength="40" [(ngModel)]="rowData.PODescription" />
+            <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />-->
+            <!--<div class="row">
+              <label class="col-md-3">Supply:<input class="col-md-4" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') > -1" required /></label>
+              <label class="col-md-3">Service:<input class="col-md-5" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <div class="col-lg-8 col-md-8 col-sm-8">
+                <label class="form-label">IncoTerms:</label>&nbsp;
+                <select [(ngModel)]="purchasedetails.incoterms" class="form-control dropdown">
+                  <option value=""></option>
+                  <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Name}}</option>
+                </select>&nbsp;
+              </div>
+            </div>-->
+          </td>
+          <td class="ptable-cell">{{rowData.QuotationQty}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.QuotationQty * rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.TargetSpend}}</td>
+          <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="pt-2">
+          <td></td>
+          <!--<td></td>-->
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <!--<td></td>
+          <td></td>
+          <td></td>-->
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+  <div class="form-control " style="width:100%;height:100%">
+    <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+      <div class="col-md-6 pt-2"> PO Terms:</div>
+    </div>
+    <div class="row" *ngIf="pomaster.Reqdeliverydate" style="height:500px">
+      <textarea type="text" class="form-control" [(ngModel)]="pomaster.poterms"></textarea>
+    </div>
+  </div>
+  <div style="margin-top:10px;text-align:center">
+    <button type="button" class="btn btn-success" label="Save" (click)="InsertPoitems(pomaster)">Proceed</button>
+  </div>
+</div>
+<div *ngIf="poedit" style="margin-bottom: 10%;">
+  <div class="form-control" style="width:100%;height:100%">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div style="margin-top:5px" *ngFor="let item of poinsert | slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
+          <span class="valueEdit"> {{item.BuyerGroup}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div style="margin-top:5px" *ngFor="let item of poinsert| slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="Department" class="form-label lblEdit" style="margin-left: 0px;">Department:</label>
+          <span class="valueEdit"> {{item.Department}}</span>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-4">
+        <div style="margin-top:5px" *ngFor="let item of poinsert| slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="Insurance" class="form-label lblEdit" style="margin-left: 0px;">Insurance:</label>
+          <span class="valueEdit"> {{item.poinsurance}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4" *ngFor="let item of poinsert| slice:0:1; let i=index">
+        <label class="form-label" style="margin-left: 1px;">Delivery Date:</label>
+        <span class="valueEdit">{{item.Reqdeliverydate|date: 'dd/MM/yyyy'}}</span>
+        <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4" *ngFor="let item of poinsert| slice:0:1; let i=index">
+        <label for="Department" class="form-label label" style="margin-left: 1px;">PO Type:</label>
+        <span class="valueEdit"> {{item.potype}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4" *ngFor="let item of poinsert| slice:0:1; let i=index">
+        <label class="form-label">Prepared By:</label>&nbsp;
+        <span class="valueEdit"> {{item.preparedby}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
+    <p-table [value]="poinsert" [paginator]="true" [rows]="10" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="width:50px">Sl No</th>
+          <th>Department</th>
+          <th>Item Description</th>
+          <th style="width:50px">Quantity</th>
+          <th style="width:70px">Price</th>
+          <th style="width:70px">Total Price</th>
+          <th style="width:70px">Target Spend</th>
+          <th style="width:70px">TokuchuNo</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr class="">
+          <td class="ptable-cell">{{ri+1}}</td>
+          <td class="ptable-cell" style="width:27%">
+            {{rowData.Department}}<br />
+            {{rowData.VendorName}}
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">MPR NO:&nbsp;&nbsp;<span>{{rowData.DocumentNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">SaleOrder No:&nbsp;&nbsp;<span>{{rowData.SaleOrderNo}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">PAID:&nbsp;&nbsp;<span>{{rowData.PAId}}</span></label>
+              <label class="col-md-10">PA Item Id&nbsp;&nbsp;<span>{{rowData.PAItemID}}</span></label>
+            </div>
+            <div class="row" style="margin-left:0px;margin-top:1px">
+              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;
+              <label class="col-md-10">Payment Term Code:&nbsp;&nbsp;<span>{{rowData.PaymentTermCode}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10">POItem Type:&nbsp;&nbsp;<span>{{rowData.POItemType}}</span></label>
+            </div>
+            <!--<div class="row" style="margin-left:0px;margin-top:1px">
+
+            </div>-->
+          </td>
+          <td class="ptable-cell">
+            {{rowData.ItemDescription}}<br />
+            <div class="row" style="margin-left:0px;margin-top:5px">
+              <label class="col-md-10" style="color:chocolate">PRNO:&nbsp;&nbsp;<span>{{rowData.PRno}}</span></label>&nbsp;&nbsp;
+              <label class="col-md-10" style="color:chocolate">PR LineItemNo:&nbsp;&nbsp;<span>{{rowData.PRLineItemNo}}</span></label>
+            </div>
+          </td>
+          <td class="ptable-cell">{{rowData.Quantity}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.Quantity * rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.collectiveno}}</td>
+          <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr class="pt-2">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <!--<td></td>
+          <td></td>
+          <td></td>-->
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div><br />
+  <div class="form-control " style="width:100%;height:100%">
+    <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+      <div class="col-md-6 pt-2"> PO Terms:</div>
+    </div>
+    <div *ngFor=" let item of poinsert | slice:0:1; let i=index" class="row" poinsert style="height:400px">
+      <textarea style="margin-left:15px;margin-right:15px" class="form-control" [value]="item.poterms" readonly></textarea>
+      <!--<span class="form-control"  style="margin-left:10px"> {{item.poterms}}</span>-->
+      <!--<textarea type="text" class="form-control" [(ngModel)]="pomaster.poterms"></textarea>-->
+    </div>
+  </div>
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+
+
+
+
+
+
+

@@ -138,6 +138,7 @@ export class ItemsViewModel {
   PRno: string;
   PRLineItemNo: string;
   rawdiscount: number;
+  prapproval: boolean;
 }
 export class Additionaltaxes {
     HandlingAmount: number;
@@ -238,6 +239,8 @@ export class mprpadetailsmodel {
   TargetedSpendAmount: number;
   PurchaseCost: number;
   PackagingForwarding: string;
+  mprbuyergroupmember: string;
+  mprbuyergroupname: string;
   Taxes: string;
   Freight: string;
   Insurance: string;
@@ -284,6 +287,8 @@ export class mprpadetailsmodel {
   AribaRequired: boolean;
   msarequired: boolean;
   incoterms: string;
+  pacreatedby: string;
+  pacreatedname: string;
 }
 export class parequestedanddeletemodel {
   paid: number;
@@ -513,9 +518,22 @@ export class POMaster {
   scmpoconfirmation: string;
   scmpoconfirmationby: string;
   itemtype: string;
-
+  VendorCode: string;
+  purchasetype: string;
 }
 export class POItem {
   paitemid: number;
 }
-
+export class posearchmodel {
+  potype: string;
+  //employeeno: string;
+  //scrapflow: string[];
+  DepartmentName:string
+  DepartmentId: number;
+  BuyerGroup:string
+  Buyergroupid: number;
+  poid: number;
+  VendorName: string;
+  Vendorid: string;
+  scrapto: Date;
+}

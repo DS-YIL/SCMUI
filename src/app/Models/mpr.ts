@@ -52,7 +52,10 @@ export class MPRItemInfoes {
   DeleteFlag: boolean;
   ProjectDefinition: string;
   WBS: string;
-  SystemModel: string
+  SystemModel: string;
+  PRno: string;
+  PRLineItemNo: string;
+  paid: number;
 }
 
 

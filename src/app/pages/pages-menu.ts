@@ -215,6 +215,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/pocreation',
         icon: 'list-outline'
       },
+      {
+        title: 'PO List',
+        link: '/SCM/polist',
+        icon: 'list-outline'
+      },
     ],
   },
   {

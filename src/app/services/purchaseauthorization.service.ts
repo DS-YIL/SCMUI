@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel, MSAMasterConfimationModel, msainputmodel, POMaster } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, posearchmodel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel, MSAMasterConfimationModel, msainputmodel, POMaster } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -305,5 +305,14 @@ export class purchaseauthorizationservice {
   }
   getscrapRegisterReport(input: scrapsearchmodel): Observable<any> {
     return this.http.post<any>(this.url + 'PA/getscrapRegisterReport', input, this.httpOptions)
+  }
+  GetpoitemsByPoId(revisionId: any): Observable<any> {
+    return this.http.get<any>(this.url + 'PA/GetpoitemsByPoId/' + revisionId);
+  }
+  LoadPolist(posearch: posearchmodel): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/LoadPolist', posearch, this.httpOptions);
+  }
+  Updateprnoapproval(model: any): Observable<any> {
+    return this.http.post<any>(this.url + 'PA/Updateprnoapproval', model, this.httpOptions)
   }
 } 

@@ -11,14 +11,15 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { HeaderComponent } from 'src/app/@theme/components/header/header.component'
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
-
+import { log } from 'util';
+import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 @Component({
   providers: [HeaderComponent],
   selector: 'app-MPRPage',
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private HeaderComponent: HeaderComponent,private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
+  constructor(private HeaderComponent: HeaderComponent, private paService: purchaseauthorizationservice,private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent: ElementRef;
   //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent;
@@ -90,6 +91,7 @@ export class MPRPageComponent implements OnInit {
   public mprRevisionId: string;
   public tokuchuinformation: Array<any> = [];
   public MprMVJustification: any;
+  public prDialog: boolean;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -2061,6 +2063,50 @@ export class MPRPageComponent implements OnInit {
     this.MprService.getMPRMVJustification().subscribe(data => {
       this.MprMVJustification = data;
     })
+  }
+  openprdialog() {
+    this.prDialog = true;
+    //this.msadata = data
+    //this.paid = padelete.PAId
+  }
+  closedialog() {
+    this.prDialog = false;
+  }
+  insertprno(items: any) {
+    console.log("items", items);
+    items[0]['paid'] = this.PAdetailsList[0]['PAID'];
+    this.paService.UpdateMsaprconfirmation(items).subscribe(data => {
+      this.prDialog = false;
+      this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'PRNOs Updated Succesfully' });
+    })
+  }
+  copyprno(event: any, type: string) {
+    if (type == 'prno') {
+      var index = this.mprRevisionModel.MPRItemInfoes.findIndex(x => x.PRno != null);
+      console.log("data", index)
+      if (index >= 0) {
+
+        if (event.target.checked == true) {
+          for (var i = 0; i < this.mprRevisionModel.MPRItemInfoes.length; i++) {
+            var prno = this.mprRevisionModel.MPRItemInfoes[0]['PRno'];
+            this.mprRevisionModel.MPRItemInfoes[i]['PRno'] = prno;
+          }
+        }
+        else {
+          for (var i = 0; i < this.mprRevisionModel.MPRItemInfoes.length; i++) {
+            this.mprRevisionModel.MPRItemInfoes[i]['PRno'] = '';
+          }
+          (<HTMLInputElement>document.getElementById('prchecked')).checked = false;
+        }
+      }
+      else {
+        (<HTMLInputElement>document.getElementById('prchecked')).checked = false;
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter Atleast one Prno' });
+      }
+    }
+  }
+  approveprno() {
+
   }
 }
 

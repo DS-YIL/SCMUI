@@ -1,0 +1,167 @@
+
+  <div class="form-control" style="height:100%">
+    <div class="row">
+      <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <label class="form-label label">Prepared From</label><br />
+    <p-calendar class="FromDate" [(ngModel)]="reportsearch.FromDate" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yy.mm.dd" yearRange="2000:2030"></p-calendar>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <label class="form-label label">Prepared To</label><br />
+    <p-calendar class="ToDate" [(ngModel)]="reportsearch.ToDate" [monthNavigator]="true" [yearNavigator]="true" dateFormat="yy.mm.dd" yearRange="2000:2030"></p-calendar>
+  </div>-->
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label label">POID</label><br />
+        <input class="form-control" [(ngModel)]="posearch.poid">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Department:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="posearch.DepartmentName" [value]="" class="form-control" (keyup)="onsrchTxtChange('DepartmentName','posearch')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',posearch.DepartmentName,undefined)"></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">BuyerGroup:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="posearch.BuyerGroup" [value]="" class="form-control" (keyup)="onsrchTxtChange('BuyerGroup','posearch')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',posearch.BuyerGroup,undefined)"></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Vendor:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="posearch.VendorName" [value]="" class="form-control" (keyup)="onsrchTxtChange('VendorName','posearch')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',posearch.VendorName,undefined)"></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-Top:10px">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="loadpolist()">Search</button>
+    </div>
+  </div>
+  <!--<div class="form-control" style="height:100%;border-radius:0px;margin-top:40px">
+    <p-table #dt [value]="palist" [style]="{'width':'100%','overflow':'auto!important'}"  [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true" appendTo="body">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="width:100px">S.No</th>
+          <th style="width:110px">DocumentNo</th>
+          <th style="width:100px">MPR RevisionId</th>
+          <th style="width:100px">Department</th>
+          <th style="width:100px">BuyerGroup</th>
+          <th style="width:100px">First Approver Status</th>
+          <th style="width:110px">ApprovedOn</th>
+          <th style="width:100px">Second Approver Status</th>
+          <th style="width:100px">Second ApprovedOn</th>
+          <th style="width:100px">Third Approver Status</th>
+          <th style="width:100px">Submitted</th>
+          <th style="width:100px">Checked</th>
+          <th style="width:100px">Approved</th>
+          <th style="width:100px">Rejected</th>
+          <th style="width:100px">RFQ Generated</th>
+          <th style="width:100px">RFQ Responded</th>
+          <th style="width:100px">Technical Spec Approved</th>
+          <th style="width:100px">Acknowledged</th>
+          <th style="width:100px">ClarificationtoEndUser</th>
+          <th style="width:100px">Quote Finalized</th>
+          <th style="width:100px">PA Generated</th>
+          <th style="width:100px">PO Released</th>
+          <th style="width:100px">Raising PO Checked</th>
+          <th style="width:100px">Raising PO Approved</th>
+          <th style="width:100px">MPR Rejected</th>
+          <th style="width:100px">MPR On Hold</th>
+          <th style="width:100px">RFQ Finalized</th>
+          <th style="width:100px">PA Approved</th>
+          <th style="width:100px">MPR Closed</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td>
+            {{ri+1}}
+          </td>
+          <td class="ptable-cell">{{rowData.DocumentNo}}</td>
+          <td class="ptable-cell">{{rowData.RevisionId}}</td>
+          <td class="ptable-cell">{{rowData.Department}}</td>
+          <td class="ptable-cell">{{rowData.BuyerGroup}}</td>
+          <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
+          <td class="ptable-cell">{{rowData.ApprovedOn | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.SecondApproversStatus}}</td>
+          <td class="ptable-cell">{{rowData.SecondApprovedOn| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.ThirdApproverStatus}}</td>
+          <td class="ptable-cell">{{rowData.submitted | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.Checked | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.approved | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.rejected | date}}</td>
+          <td class="ptable-cell">{{rowData.RFQGenerated| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RFQResponded| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.TechnicalSpecApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.Acknowledged | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.ClarificationtoEndUser| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.QuoteFinalized| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.PAGenerated| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.POReleased| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RaisingPOChecked| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RaisingPOApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPRRejected| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPROnHold| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RFQFinalized| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.PAApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPRClosed| date:'dd/MM/yyyy'}}</td>
+        </tr>
+      </ng-template>
+    </p-table><br />
+  </div>-->
+
+<div class="card compar-card mt-2">
+  <div class="card-body">
+    <table class="table table-sm table-striped table-bordered" #TABLE #table>
+      <thead class="thead-dark">
+        <tr style="background-color: #33b5e5">
+          <th>S.No</th>
+          <th>PO ID</th>
+          <th>Department</th>
+          <th>BuyerGroup</th>
+          <th>Vendor</th> 
+          <th>Po Type</th>
+          <th>PO Varient</th>
+          <th>Prepared</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of polistdetails  let ndx = index">
+          <td>
+            {{ndx+1}}
+          </td>
+          <td><a [routerLink]="['/SCM/pogeneration',data.POID]" target="_blank" routerLinkActive="active">{{data.POID}}</a></td>
+          <td>{{data.Department}}</td>
+          <td>{{data.BuyerManager}}</td>
+          <td>{{data.scmpocreatedby}}</td>
+          <td>{{data.potype}}</td>
+          <td>{{data.POVariant}}</td>
+          <td>{{data.prepareddate| date:'dd/MM/yyyy'}}</td>
+
+        </tr>
+      </tbody>
+      <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->
+    </table>
+  </div>
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

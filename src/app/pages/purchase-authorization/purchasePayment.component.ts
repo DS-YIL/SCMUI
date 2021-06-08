@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
-import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
+import { Employee, MPRVendorDetail, MPRBuyerGroup, DynamicSearchResult, searchList } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MprService } from 'src/app/services/mpr.service';
@@ -84,8 +84,17 @@ export class purchasePaymentComponent implements OnInit {
   public itemdeatils: any;
   public incoterms: Array<any> = [];
   public prDialog: boolean;
+  public prapproveDialog: boolean;
+  public dialogTop: string;
+  public txtName: string;
+  public dynamicData = new DynamicSearchResult();
+  public searchresult: Array<object> = [];
+  public searchItems: Array<searchList> = [];
+  public showList: boolean = false;
+  public selectedlist: Array<searchList> = [];
+  public selectedItem: searchList;
   control = new FormArray([]);
-  constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(private paService: purchaseauthorizationservice, private router: Router, public mprservice: MprService, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -149,6 +158,10 @@ export class purchasePaymentComponent implements OnInit {
       this.paymentterm = this.selectedItems[0]["PaymentTermCode"];
       this.purchasedetails.ProjectCode = this.selectedItems[0]["JobCode"];
       this.purchasedetails.ProjectName = this.selectedItems[0]["JobName"];
+      this.purchasedetails.pacreatedby = this.employee.EmployeeNo;
+      this.purchasedetails.pacreatedname = this.employee.Name;
+      this.purchasedetails.AribaRequired = true;
+      this.purchasedetails.msarequired = true;
       this.Buyergroup = this.selectedItems[0].BuyerGroup;
       this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
       this.purchasedetails.DepartmentID = this.selectedItems[0].DepartmentId;
@@ -254,7 +267,16 @@ export class purchasePaymentComponent implements OnInit {
   //        Purpose : << generating the purchase authorization for approved items>>
   //            Review Date:<<>> Reviewed By:<<>>
   InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
+    console.log("dss", this.purchasedetails)
     if (purchasedetails.PurchaseTypeId != undefined && purchasedetails.PurchaseModeId != undefined) {
+      if (purchasedetails.incoterms == undefined) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select IncoTerms' });
+        return;
+      }
+      if (purchasedetails.potype == undefined) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select POtype' });
+        return;
+      }
       // this.purchasedetails.Item = [];
       this.purchasedetails.ApproversList = [];
       this.purchasedetails.TermId = [];
@@ -857,12 +879,56 @@ Review Date :<<>>   Reviewed By :<<>>*/
     }
 
   }
+  approveprno() {
+    this.purchasedetails.Item[0]['EmployeeNo'] = this.employee.EmployeeNo;
+    this.paService.Updateprnoapproval(this.purchasedetails.Item).subscribe(data => {
+
+    })
+  }
+  copyprno(event: any, type: string, data: any) {
+    if (type == 'checkall') {
+      if (event.target.checked == true) {
+        for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+          (<HTMLInputElement>document.getElementById(this.purchasedetails.Item[i]['paitemid'])).checked = true;
+          this.purchasedetails.Item[i]['prapproval'] = true;
+          console.log("thi", this.purchasedetails.Item[i])
+        }
+      }
+      else {
+        for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+          (<HTMLInputElement>document.getElementById(this.purchasedetails.Item[i]['paitemid'])).checked = false;
+          this.purchasedetails.Item[i]['prapproval'] = false;
+        }
+      }
+    }
+    else {
+      if (event.target.checked == true) {
+        for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+          if (this.purchasedetails.Item[i]['paitemid'] == data.paitemid) {
+            this.purchasedetails.Item[i]['prapproval'] = true;
+          }
+        }
+      }
+      else {
+        for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+          if (this.purchasedetails.Item[i]['paitemid'] == data.paitemid) {
+            this.purchasedetails.Item[i]['prapproval'] = false;
+          }
+        }
+      }
+    }
+  }
   modelChangeFn(event: any) {
     console.log("event", event)
     this.purchasedetails.Item[0]["POStatusDate"] = event;
   }
   openprdialog() {
     this.prDialog = true;
+    //this.msadata = data
+    //this.paid = padelete.PAId
+  }
+  openApprovedialog() {
+    this.prapproveDialog = true;
     //this.msadata = data
     //this.paid = padelete.PAId
   }
@@ -874,5 +940,56 @@ Review Date :<<>>   Reviewed By :<<>>*/
   }
   closedialog() {
     this.prDialog = false;
+  }
+  closeapprovedialog() {
+    this.prapproveDialog = false;
+  }
+  public bindSearchListData(e: any, name?: string, searchTxt?: string, callback?: () => any): void {
+    this.dialogTop = e.clientY + 30 + "px";
+    this.txtName = name;
+    if (searchTxt == undefined)
+      searchTxt = "";
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.tableName = this.constants[name].tableName;
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    if (name == "BuyerGroupMembers")
+      this.dynamicData.query = "select mbgm.GroupMember, e.Name as EmployeeName from MPRBuyerGroupMembers mbgm inner join Employee e on e.EmployeeNo=mbgm.GroupMember";
+    this.mprservice.GetListItems(this.dynamicData).subscribe(data => {
+      if (data.length == 0)
+        this.showList = false;
+      else
+        this.showList = true;
+      this.searchresult = data;
+      this.searchItems = [];
+      var fName = "";
+      this.searchresult.forEach(item => {
+
+        if (name == "venderid")
+          fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        else
+          fName = item[this.constants[name].fieldName];
+        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
+        this.searchItems.push(value);
+      });
+    });
+  }
+  public onSelectedOptionsChange(item: any, index: number) {
+    this.showList = false;
+
+    if (item.listName == "BuyerGroupMembers") {
+      //this.scrapflowform.controls['Inchargename'].setValue(item.name);
+      //this.scrapflowform.value['Inchargename'] = item.name;
+      this.purchasedetails.pacreatedby = item.code;
+      this.purchasedetails.pacreatedname = item.name;
+      //this.scrapflowmodel.Incharge = item.code;
+    }
+  }
+  onsrchTxtChange(modelparm: string, value: string, model: string) {
+    if (value == "") {
+      this[model][modelparm] = "";
+    }
+  }
+  dialogCancel(dialogName) {
+    this[dialogName] = false;
   }
 }

@@ -97,11 +97,11 @@
 
           </div>
           <!--<div class="col-lg-4 col-md-4 col-sm-4 input-group form-group">
-      <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
-        <button class="btn btn-secondary" type="button">
-          <i class="fa fa-search"></i>
-        </button>
-    </div>-->
+            <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
+              <button class="btn btn-secondary" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+          </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Sale Order No</label>
             <span class="valueEdit">{{mprRevisionModel.SaleOrderNo}}</span>
@@ -114,10 +114,10 @@
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
           </div>
           <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-      <label for="JobCode" class="form-label">Job Code</label>
-      <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="jobcodes.ProjectDefinition" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
-      <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
-    </div>-->
+            <label for="JobCode" class="form-label">Job Code</label>
+            <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="jobcodes.ProjectDefinition" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
+          </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Code </label>
             <span class="valueEdit">{{mprRevisionModel.JobCode}}</span>
@@ -128,10 +128,10 @@
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
           </div>
           <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-      <label for="JobName" class="form-label">Job Name</label>
-      <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="jobcodes.ProjectText" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
-      <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
-    </div>-->
+            <label for="JobName" class="form-label">Job Name</label>
+            <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="jobcodes.ProjectText" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
+          </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Name </label>
             <span class="valueEdit">{{mprRevisionModel.JobName}}</span>
@@ -150,7 +150,7 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">Sold To Party/Contract Company</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" readonly  class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
+              <input type="text" readonly class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
               <div class="input-group-append">
                 <button type="button" [disabled]="true" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','soldtoparty',MPRPageForm1.controls.soldtoparty.value,undefined)"></button>
               </div>
@@ -221,12 +221,12 @@
             <label style="font-weight:bold">MPR Assigned To : </label>&nbsp;
             <span>{{mprRevisionDetails.MPRAssignNames}}</span>
           </div>
-          </div>
-          <div *ngIf="!form1Edit" style="text-align: center;">
-            <button type="button" class="btn btn-success" (click)="onMPRForm1Submit('MPRPageForm1','showMaterialForm','form1Edit')" label="Save">Proceed</button>
-          </div>
+        </div>
+        <div *ngIf="!form1Edit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRForm1Submit('MPRPageForm1','showMaterialForm','form1Edit')" label="Save">Proceed</button>
         </div>
       </div>
+    </div>
   </form>
   <br />
   <form *ngIf="showMaterialForm" [formGroup]="MPRPageForm2">
@@ -308,7 +308,8 @@
                     <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
                     <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
                     &nbsp; &nbsp;<label class="mt-2">DownLoad format :</label>&nbsp; <button class="mt-2" type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
-                    &nbsp; &nbsp;<label class="mt-2">Tokuchu Download :</label>&nbsp; <button class="mt-2" *ngIf="tokuchuinformation.length" type="button"  pButton icon="fa fa-download" (click)="downLoadExcel(tokuchuinformation)"></button>
+                    &nbsp; &nbsp;<label class="mt-2">Tokuchu Download :</label>&nbsp; <button class="mt-2" *ngIf="tokuchuinformation.length" type="button" pButton icon="fa fa-download" (click)="downLoadExcel(tokuchuinformation)"></button>
+                    &nbsp; &nbsp;<label class="mt-2">Add PRNo's :</label>&nbsp; <button class="mt-2" type="button" pButton icon="fa fa-plus" (click)="openprdialog()"></button>
                   </span>
                 </div>
               </ng-template>
@@ -336,7 +337,7 @@
                       <label class="col-lg-6 col-md-6 col-sm-6">Reference:&nbsp;&nbsp;<span>{{rowData.ReferenceDocNo}}</span></label>
                     </div>
                     <div class="row" style="margin-right:0px">
-                     
+
                       <label class="col-lg-6 col-md-6 col-sm-6">YGS Project:&nbsp;&nbsp;<span>{{rowData.ProjectDefinition}}</span></label>
                       <label class="col-lg-6 col-md-6 col-sm-6">WBS:&nbsp;&nbsp;<span>{{rowData.WBS}}</span></label>
                     </div>
@@ -515,8 +516,14 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 form-group "><b>Note:<i>  If Total Target Spend is greater than 5 lakh and Type of Purchase is multiple vendor than we need to add 3 vendor list.
-          or select any Multiple vendor justification while Proceed.</i></b></div>
+        <div class="col-lg-12 col-md-12 col-sm-12 form-group ">
+          <b>
+            Note:<i>
+              If Total Target Spend is greater than 5 lakh and Type of Purchase is multiple vendor than we need to add 3 vendor list.
+              or select any Multiple vendor justification while Proceed.
+            </i>
+          </b>
+        </div>
         <p-table [value]="mprRevisionModel.MPRVendorDetails" [style]="{'width':'100%','overflow':'auto!important'}">
           <ng-template pTemplate="caption">
             <span style="float:left">Vendor Details :</span>
@@ -577,28 +584,28 @@
           </ng-template>
         </p-table><br />
         <div class="form-group row" style="margin-top:10px">
-        <div *ngIf="!vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
-          <label class="lblEdit">Multiple vendor justification &nbsp;<span style="color:red">*</span></label>
-              <!-- <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="MPRPageForm2.controls.MVjustificationId.value"> -->
-                <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="mprRevisionModel.MVJustificationId">
-                  <option value="">Select MV Justification</option>
-                <option *ngFor="let option of MprMVJustification" [value]="option.MVJustificationId">{{option.MVjustification}}</option>
-              </select>
-              <span style="color:red" *ngIf="MPRForm2Submitted && ShowMV_Justification && !mprRevisionModel.MVJustificationId" class="lblEdit">Select MV Justification</span>
-        </div>
-         <div *ngIf="vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
-              <label class="lblEdit">Multiple vendor justification </label>
-              <span class="valueEdit">{{mprRevisionModel.MVjustification}}</span>
-            </div>
-            <div *ngIf="!vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
-              <label class="lblEdit">Remarks </label>
-              <input type="text"  maxlength="500" [(ngModel)]="mprRevisionModel.VendorRemarks" id="VendorRemarks" formControlName="VendorRemarks" class="form-control">
-              <!-- <textarea class="form-control" maxlength="200" [(ngModel)]="mprRevisionModel.VendorRemarks"></textarea> -->
-            </div>
-            <div *ngIf="vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
-              <label class="lblEdit">Remarks </label>
-              <span class="valueEdit">{{mprRevisionModel.VendorRemarks}}</span>
-            </div>
+          <div *ngIf="!vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
+            <label class="lblEdit">Multiple vendor justification &nbsp;<span style="color:red">*</span></label>
+            <!-- <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="MPRPageForm2.controls.MVjustificationId.value"> -->
+            <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="mprRevisionModel.MVJustificationId">
+              <option value="">Select MV Justification</option>
+              <option *ngFor="let option of MprMVJustification" [value]="option.MVJustificationId">{{option.MVjustification}}</option>
+            </select>
+            <span style="color:red" *ngIf="MPRForm2Submitted && ShowMV_Justification && !mprRevisionModel.MVJustificationId" class="lblEdit">Select MV Justification</span>
+          </div>
+          <div *ngIf="vendorFormEdit && ShowMV_Justification" class="col-lg-6 col-md-6 col-sm-6 form-group">
+            <label class="lblEdit">Multiple vendor justification </label>
+            <span class="valueEdit">{{mprRevisionModel.MVjustification}}</span>
+          </div>
+          <div *ngIf="!vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+            <label class="lblEdit">Remarks </label>
+            <input type="text" maxlength="500" [(ngModel)]="mprRevisionModel.VendorRemarks" id="VendorRemarks" formControlName="VendorRemarks" class="form-control">
+            <!-- <textarea class="form-control" maxlength="200" [(ngModel)]="mprRevisionModel.VendorRemarks"></textarea> -->
+          </div>
+          <div *ngIf="vendorFormEdit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+            <label class="lblEdit">Remarks </label>
+            <span class="valueEdit">{{mprRevisionModel.VendorRemarks}}</span>
+          </div>
         </div>
 
         <div *ngIf="!vendorFormEdit" style="text-align: center;">
@@ -683,7 +690,7 @@
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Specify Dispatch Location</label>&nbsp;<span style="color:red">*</span>
-              <input type="text" [(ngModel)]="DispatchLocation" maxlength="100"  [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
+              <input type="text" [(ngModel)]="DispatchLocation" maxlength="100" [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
               <span *ngIf="MPRForm3Submitted && specifyDispatchDisply==false && !MPRPageForm3.controls.specifyDispatchLocation.value" class="invalid-feedback">Specify dispatch location required.</span>
             </div>
 
@@ -719,7 +726,7 @@
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;
-              <div  class="form-inline-list  ml-2 ">
+              <div class="form-inline-list  ml-2 ">
                 <input type="text" class="form-control forms-input" formControlName="shiptoparty" (keypress)="onsrchTxtChange('shiptoparty','mprRevisionModel')" [value]="MPRPageForm3.controls.shiptoparty.value">
                 <div class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','shiptoparty',MPRPageForm3.controls.shiptoparty.value,undefined)"></button>
@@ -1575,10 +1582,10 @@
               <span *ngIf="MPRItemDetailsSubmitted && (MPRItemDetailsForm.controls.UnitId.value.trim()=='' || !itemDetails.UnitId)" class="invalid-feedback">Select Units.</span>
             </div>
             <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
-        <option value="select" selected>Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>-->
+              <option value="select" selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>-->
 
           </div>
         </div>
@@ -1847,7 +1854,7 @@
           </div>
           <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
             <label *ngIf="comm.MailAddressType=='CC'" class="form-control">
-              <span  style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <span style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
               <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
             </label>&nbsp;
           </div>
@@ -1960,6 +1967,35 @@
     </p-footer>
   </p-dialog>
 </div>
+<p-dialog header="Add" [(visible)]="prDialog" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>DocumentNo</th>
+        <th>ItemDescription</th>
+        <th>
+          PRNO
+          <input type="checkbox" id="prchecked" (click)="copyprno($event,'prno')" style="height:20px;width:20px" />
+        </th>
+        <th>PRLineItemNo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of mprRevisionModel.MPRItemInfoes">
+        <td>{{mprRevisionModel.MPRDetail.DocumentNo}}</td>
+        <td>{{items.ItemDescription}}</td>
+        <td><input id="txtcopy1" type="text" [(ngModel)]="items.PRno" required maxlength="10" class="form-control" /></td>
+        <td><input type="text" [(ngModel)]="items.PRLineItemNo" required class="form-control" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="margin-left: 12px;">
+      <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="insertprno(mprRevisionModel.MPRItemInfoes)" label="Insert"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="closedialog()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
 
 
 
