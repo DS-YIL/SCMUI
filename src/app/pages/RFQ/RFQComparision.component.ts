@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
-import { Employee, MPRItemInfoes, DynamicSearchResult } from 'src/app/Models/mpr';
+import { Employee, MPRItemInfoes, DynamicSearchResult,mprRevision } from 'src/app/Models/mpr';
 import { parse } from 'cfb/types';
+import * as XLSX from 'xlsx';
+import * as jspdf from 'jspdf';  
+import html2canvas from 'html2canvas'; 
+
 
 @Component({
   selector: 'app-RFQComparision',
@@ -16,7 +20,8 @@ import { parse } from 'cfb/types';
 })
 
 export class RFQComparisionComponent implements OnInit {
-  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
+  @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
+  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService,private formBuilder: FormBuilder) { }
 
   //variable Declarations
   public employee: Employee;
@@ -32,10 +37,14 @@ export class RFQComparisionComponent implements OnInit {
   public termCols: Array<rfqTerms> = []
   public tp: number = 0;
   public PreviousPrices: MPRItemInfoes;
-  public showPODialog: boolean = false;
+  public showPODialog;ShowMV_Justification;YetToApproved: boolean = false;
   public poRowIndex: number;
   public rfqrevisionsList: Array<any> = [];
   public dynamicData = new DynamicSearchResult();
+  public MprMVJustification: any;
+  public MPRMvJustificationForm: FormGroup;
+  public mprRevisionModel:mprRevision;
+  
 
   //page load event
   ngOnInit() {
@@ -45,21 +54,30 @@ export class RFQComparisionComponent implements OnInit {
       this.router.navigateByUrl("Login");
 
     this.PreviousPrices = new MPRItemInfoes();
+    this.mprRevisionModel = new mprRevision();
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
         this.getRFQCompareItemsById();
       }
     });
+    this.MPRMvJustificationForm = this.formBuilder.group({
+    
+      MVJustificationId: ['', [Validators.required]]
+      
+    });
   }
   getRFQCompareItemsById() {
     this.RfqService.getRFQCompareItems(this.MPRRevisionId).subscribe(data => {
       this.RfqCompareItems = data["CompareTable"];
       this.rfqTermsList = data["RfqtermsTable"];
+      this.loadMPRMVJustification();
       this.prepareRfQItems();
       if (this.rfqTermsList.length > 0)
         this.prepareTermNames();
       this.getRfqrevisionList();
+      this.ShowMVJustification();
+     
     })
   }
 
@@ -108,6 +126,7 @@ export class RFQComparisionComponent implements OnInit {
               this.createEmptyVendor();
             }
             this.discountCalculation(this.vendorDetails);
+            
             this.vendorDetails.UnitPrice = parseFloat(this.vendorDetails.UnitPrice).toFixed(2);
             this.vendorDetails.FreightAmount = parseFloat(this.calculateFRAmount(this.vendorDetails).toString()).toFixed(2);
             //this.vendorDetails.FreightAmount = parseFloat(this.vendorDetails.FreightAmount).toFixed(2);
@@ -122,7 +141,13 @@ export class RFQComparisionComponent implements OnInit {
             if (this.vendorDetails.Discount)
               this.vendorDetails.Discount = parseFloat(this.vendorDetails.Discount).toFixed(2);
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
+            
           });
+        
+        var ItemListStatus=  rfqQuoteItems.suggestedVendorDetails.filter(li => li.Status != "Approved");
+          if(ItemListStatus.length>0)
+          this.YetToApproved=true;
+
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
           rfqQuoteItems.leastPrice = Math.min.apply(Math, rfqQuoteItems.suggestedVendorDetails.filter(li => li.UnitPrice != null).map(function (o) { return o.UnitPrice; }));
           this.rfqQuoteModel.push(rfqQuoteItems);
@@ -375,7 +400,7 @@ export class RFQComparisionComponent implements OnInit {
       this.PreviousPrices.PODate = new Date(itemdata.PODate);
     else
       this.PreviousPrices.PODate = new Date();
-    this.PreviousPrices.POPrice = itemdata.POPrice;
+    this.PreviousPrices.POUnitPrice = itemdata.POUnitPrice;
     this.PreviousPrices.PORemarks = itemdata.PORemarks;
     this.PreviousPrices.Itemdetailsid = itemdata.Itemdetailsid;
   }
@@ -385,21 +410,40 @@ export class RFQComparisionComponent implements OnInit {
   }
 
   addPreviousprice() {
+    this.PreviousPrices.POPrice=this.PreviousPrices.POUnitPrice
     this.RfqService.PreviouPriceUpdate(this.PreviousPrices).subscribe(data => {
       if (data) {
         this.rfqQuoteModel[this.poRowIndex].PONumber = this.PreviousPrices.PONumber;
         this.rfqQuoteModel[this.poRowIndex].PODate = this.PreviousPrices.PODate;
-        this.rfqQuoteModel[this.poRowIndex].POPrice = this.PreviousPrices.POPrice;
+        this.rfqQuoteModel[this.poRowIndex].POUnitPrice = this.PreviousPrices.POUnitPrice;
         this.rfqQuoteModel[this.poRowIndex].PORemarks = this.PreviousPrices.PORemarks;
+        this.rfqQuoteModel[this.poRowIndex].POPrice=(Number(this.rfqQuoteModel[this.poRowIndex].POUnitPrice)*Number(this.rfqQuoteModel[this.poRowIndex].MprQuantity)).toString()
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Prices Added sucessfully' });
         this.showPODialog = false;
+
       }
     })
   }
   statusSubmit() {
-    if (this.selectedVendorList.length > 0) {
-      this.selectedVendorList.forEach((el) => { el.CreatedBy = this.employee.EmployeeNo; })
-      this.RfqService.statusUpdate(this.selectedVendorList).subscribe(data => {
+   
+    if (this.ShowMV_Justification && !this.mprRevisionModel.MVJustificationId) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select MV Justification' });
+        return;
+    }
+  
+    var itemList=this.rfqQuoteModel.filter(li => Number(li.POUnitPrice)<=0);
+   
+    if (this.selectedVendorList.length >0 ) {
+      if(itemList.length>0)
+      {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please enter Unit Price for each item' });
+        return;
+      }
+      this.selectedVendorList.forEach((el) => { 
+        el.CreatedBy = this.employee.EmployeeNo;
+        el.MVJustificationId=this.mprRevisionModel.MVJustificationId
+      })
+       this.RfqService.statusUpdate(this.selectedVendorList).subscribe(data => {
         if (data)
           this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated sucessfully' });
       })
@@ -413,6 +457,49 @@ export class RFQComparisionComponent implements OnInit {
     }
     return null;
   }
+  ShowMVJustification(){
+    if (this.RfqCompareItems[0].PurchaseType == "Multiple Vendor" && Number(this.RfqCompareItems[0].TargetSpend)<500000 )
+    {
+      this.ShowMV_Justification=true;
+    }
+    else
+    {
+      this.ShowMV_Justification=false;
+    }
+  }
+  loadMPRMVJustification() {
+    this.MprService.getMPRMVJustification().subscribe(data => {
+      this.MprMVJustification = data;
+    })
+  }
+  ExportTOExcel() {
+
+    var json= JSON.stringify(this.rfqQuoteModel);
+    // console.log(json)
+    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rfqQuoteModel);
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // XLSX.writeFile(wb, 'MonthlyPerformanceReport1.xlsx');
+  }  
+  public captureScreen()  
+  {  
+    var data = document.getElementById('contentToConvert');  
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.save('RFQComparision.pdf'); // Generated PDF   
+    });  
+  } 
+   
+
 
 }
 

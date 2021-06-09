@@ -56,6 +56,7 @@ export class MPRItemInfoes {
   PRno: string;
   PRLineItemNo: string;
   paid: number;
+  POUnitPrice: string;
 }
 
 

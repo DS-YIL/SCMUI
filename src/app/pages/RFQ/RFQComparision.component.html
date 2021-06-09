@@ -70,8 +70,37 @@
           <span class="valueEdit">{{RfqCompareItems[0].BuyerGroupName}}</span>
         </div>
       </div>
+      <div class="row " style="margin-top:10px">
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+          <label class="form-label lblEdit">Target Spend</label>
+          <span class="valueEdit">{{RfqCompareItems[0].TargetSpend}}</span>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+          <label class="form-label lblEdit">Purchase Type</label>
+          <span class="valueEdit">{{RfqCompareItems[0].PurchaseType}}</span>
+        </div>
+        <div *ngIf="ShowMV_Justification && RfqCompareItems[0].MVjustification" class="col-lg-4 col-md-4 col-sm-4 form-group">
+          <label class="form-label lblEdit">RFQ MV Justification</label>
+          <span class="valueEdit">{{RfqCompareItems[0].MVjustification}}</span>
+        </div>
+      </div>
     </div>
+    <form *ngIf="ShowMV_Justification && !RfqCompareItems[0].MVjustification && YetToApproved" [formGroup]="MPRMvJustificationForm">
+    <div *ngIf="ShowMV_Justification" class="card-body">
+      <div class="row " >
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+          <label class="form-label lblEdit">Multiple vendor justification&nbsp;<span style="color:red">*</span></label>
+          <select class="form-control forms-input" formControlName="MVJustificationId" [(ngModel)]="mprRevisionModel.MVJustificationId">
+            <option value="">Select MV Justification</option>
+            <option *ngFor="let option of MprMVJustification" [value]="option.MVJustificationId">{{option.MVjustification}}</option>
+          </select>
+          <span style="color:red" *ngIf="ShowMV_Justification && !mprRevisionModel.MVJustificationId" class="lblEdit">Select MV Justification</span>
+        </div>
+      </div>
   </div>
+</form>
+  </div>
+  
   <div class="card  compar-card mt-3">
     <div class="card-header gra-header">
       <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Least Price</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -94,7 +123,10 @@
       <span><b><i class="fa fa-times times-color"></i> - </b>Rejected</span>&nbsp;&nbsp;&nbsp;&nbsp;
 
     </div>
-    <div class="card-body" style="overflow:auto !important">
+    <i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:x-large"  (click)="captureScreen()" pTooltip="Export TO PDF"></i>
+    <!-- <i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large"  (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i> -->
+    <div id="contentToConvert" class="card-body"  #TABLE>
+      
       <p-table [columns]="cols" [value]="rfqQuoteModel">
         <ng-template pTemplate="header" let-columns>
           <tr class="mprltbldata">
@@ -148,6 +180,7 @@
                   <span class="valueEdit">{{rowData.PORemarks}}</span>
                 </div>
               </div>
+            
               <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4 form-group"></div>
                 <button type="button" class="btn btn-success center" (click)="showDialog(rowData,rowIndex)" label="Save">ADD</button>
@@ -320,7 +353,7 @@
         <label>Status :&nbsp;<span class="blink_text">{{status}}</span></label>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
-        <button type="button" class="btn btn-success" (click)="statusSubmit()" label="Save">Submit</button>
+        <button [attr.disabled]="!YetToApproved == true ? true : null" type="button" class="btn btn-success" (click)="statusSubmit()" label="Save">Submit</button>
       </div>
     </div>
   </div>
@@ -349,7 +382,7 @@
       <label for="procSrc">PO Unit price: </label>
     </div>
     <div class="ui-g-5">
-      <input type="text" [(ngModel)]="PreviousPrices.POPrice" class="form-control" />
+      <input type="text" [(ngModel)]="PreviousPrices.POUnitPrice" class="form-control" />
     </div>
   </div>
   <div class="ui-g-12">
