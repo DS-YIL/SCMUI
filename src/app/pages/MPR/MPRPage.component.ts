@@ -19,7 +19,7 @@ import { purchaseauthorizationservice } from 'src/app/services/purchaseauthoriza
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private HeaderComponent: HeaderComponent, private paService: purchaseauthorizationservice,private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
+  constructor(private HeaderComponent: HeaderComponent, private paService: purchaseauthorizationservice, private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent: ElementRef;
   //@ViewChild(HeaderComponent, { read: ElementRef, static: true }) HeaderComponent;
@@ -39,7 +39,7 @@ export class MPRPageComponent implements OnInit {
   public searchresult: Array<object> = [];
   public itemDetails: MPRItemInfoes;
   public mprDocuments: MPRDocument;
-  public showList; showOldPO;ShowMV_Justification: boolean = false;
+  public showList; showOldPO; ShowMV_Justification: boolean = false;
   public selectedItem: searchList;
   public saleorderdetails: SaleOrderDetails;
   public selectedmultiItem: searchList;
@@ -292,14 +292,14 @@ export class MPRPageComponent implements OnInit {
       if (params["MPRRevisionId"] && !this.constants.RequisitionId) { //load mpr revision data 
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
-        
+
         this.getEmpList();
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
         this.getPAdetails(revisionId);
         this.getCommunicationList();
         this.GetTokuchuinformation(revisionId);
-        
+
       }
       else {
         if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
@@ -328,7 +328,7 @@ export class MPRPageComponent implements OnInit {
       }
       this.getStatusList();
     });
-// this.ShowMVJustification();
+    // this.ShowMVJustification();
   }
   getEmpList() {
     this.MprService.getEmployeeList().subscribe(data => {
@@ -478,8 +478,8 @@ export class MPRPageComponent implements OnInit {
 
         if (this.MPRCommunications.SendEmail == true)
           this.MPRReminderTrackings.MailSentOn = new Date();
-          this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-          this.communicationlist.push(item)
+        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+        this.communicationlist.push(item)
       }
     }
     if (this.formName != "") {
@@ -798,19 +798,19 @@ export class MPRPageComponent implements OnInit {
     if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && this.mprRevisionModel.MPRVendorDetails.length <= 1) {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Please Add Atleast two vendors' });
       return;
-      
+
     }
-    if (this.ShowMV_Justification && this.mprRevisionModel.MVJustificationId<1) {
+    if (this.ShowMV_Justification && this.mprRevisionModel.MVJustificationId < 1) {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Please Select MV Justification' });
       return;
-      
+
     }
     // if (this.MPRPageForm2.invalid) {
     //   alert('Invalid Page. PLease fix issue');
     //   return;
     // }
     else {
-      
+
       this.mprRevisionModel.MPRItemInfoes = [];
       this.mprRevisionModel.MPRDocuments = [];
       this.mprRevisionModel.MPRDocumentations = [];
@@ -1101,10 +1101,10 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunications = new MPRCommunication();
   }
 
-    getComName(code: string) {
-        if (code && this.communicationlist.filter(li => li.code == code)[0])
-            return this.communicationlist.filter(li => li.code == code)[0].name
-    }
+  getComName(code: string) {
+    if (code && this.communicationlist.filter(li => li.code == code)[0])
+      return this.communicationlist.filter(li => li.code == code)[0].name
+  }
 
   removeCommunication(details: MPRReminderTracking) {
     var index = this.MPRCommunications.MPRReminderTrackings.findIndex(x => x.MailTo == details.MailTo);
@@ -1117,6 +1117,7 @@ export class MPRPageComponent implements OnInit {
   }
 
   onCommnicationSubmit(dialogName: string) {
+    this.spinner.show();
     this.mprRevisionModel.MPRItemInfoes = [];
     this.mprRevisionModel.MPRDocuments = [];
     this.mprRevisionModel.MPRDocumentations = [];
@@ -1133,6 +1134,7 @@ export class MPRPageComponent implements OnInit {
       this.MPRCommunicationForm.controls['sendemail'].updateValueAndValidity()
     }
     if (this.MPRCommunicationForm.invalid) {
+      this.spinner.hide();
       return;
     }
     else {
@@ -1144,6 +1146,7 @@ export class MPRPageComponent implements OnInit {
       this.MPRCommunications.RemarksDate = new Date();
       this.mprRevisionModel.MPRCommunications.push(this.MPRCommunications);
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+        this.spinner.hide();
         this.mprRevisionModel = data;
         this[dialogName] = false;
       });
@@ -1175,7 +1178,7 @@ export class MPRPageComponent implements OnInit {
 
   getCommunicationList() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from RFQCommunications com inner join RFQRevisions_N rn on rn.rfqrevisionid=com.RfqRevisionId inner join rfqmaster rm on rm.rfqmasterid=rn.rfqmasterid where rm.mprrevisionid=" + this.mprRevisionId+"";
+    this.dynamicData.query = "select * from RFQCommunications com inner join RFQRevisions_N rn on rn.rfqrevisionid=com.RfqRevisionId inner join rfqmaster rm on rm.rfqmasterid=rn.rfqmasterid where rm.mprrevisionid=" + this.mprRevisionId + "";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.rfqCommunicationList = data;
     })
@@ -1909,124 +1912,131 @@ export class MPRPageComponent implements OnInit {
       }
     }
   }
-    Copymail(event) {
-        //var mailsending = new Array();
-        //to
-        if (this.MPRCommunications.SendEmail == true) {
-            //this.MPRCommunicationForm.controls.toEmail.value = this.AllMPRStatusTrackDetails[0].Name;
-            let Prepared = this.mprRevisionModel.PreparedBy;
-            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Prepared)[0]);
+  Copymail(event) {
+    //var mailsending = new Array();
+    //to
+    if (this.MPRCommunications.SendEmail == true) {
+      //this.MPRCommunicationForm.controls.toEmail.value = this.AllMPRStatusTrackDetails[0].Name;
+      let Prepared = this.mprRevisionModel.PreparedBy;
+      if (this.EmployeeList.filter(x => x.EmployeeNo == Prepared)[0])
+        this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Prepared)[0]);
 
 
-            //cc
-            //firstapprover
-            let Approver = this.mprRevisionModel.ApprovedBy;
-            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Approver)[0]);
+      //cc
+      //firstapprover
+      let Approver = this.mprRevisionModel.ApprovedBy;
+      if (this.EmployeeList.filter(x => x.EmployeeNo == Approver)[0])
+        this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == Approver)[0]);
 
-            //this['MPRCommunicationForm'].controls['ccEmail'].setValue(data[0].Name);
-            //this.MPRCommunicationForm.controls.ccEmail.value = data[0].Name;
+      //this['MPRCommunicationForm'].controls['ccEmail'].setValue(data[0].Name);
+      //this.MPRCommunicationForm.controls.ccEmail.value = data[0].Name;
 
-            //checker
-            let checker = this.mprRevisionModel.CheckedBy;
-            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == checker)[0]);
-            //this['MPRCommunicationForm'].controls['ccEmail'].setValue(this.MPRReminderTrackings.MailTo);
+      //checker
+      let checker = this.mprRevisionModel.CheckedBy;
+      if (this.EmployeeList.filter(x => x.EmployeeNo == checker)[0])
+        this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == checker)[0]);
+      //this['MPRCommunicationForm'].controls['ccEmail'].setValue(this.MPRReminderTrackings.MailTo);
 
-            //buyermanager
-            let buyermanager = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
-            this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == buyermanager)[0]);
+      //buyermanager
+      let buyermanager = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
+      if (this.EmployeeList.filter(x => x.EmployeeNo == buyermanager)[0])
+        this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == buyermanager)[0]);
 
-            //mpr_assignment
-            //buyermanager
-            if (this.mprRevisionModel.MPR_Assignment.length > 0) {
-                let mprassignment = this.mprRevisionModel.MPR_Assignment[0].Employeeno
-                this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == mprassignment)[0]);
-            }
+      //mpr_assignment
+      //buyermanager
+      if (this.mprRevisionModel.MPR_Assignment.length > 0) {
+        let mprassignment = this.mprRevisionModel.MPR_Assignment[0].Employeeno
+        if (this.EmployeeList.filter(x => x.EmployeeNo == mprassignment)[0])
+          this.mailsending.push(this.EmployeeList.filter(x => x.EmployeeNo == mprassignment)[0]);
+      }
 
-            if (this.mailsending.length > 0) {
-                this.MPRReminderTrackings = new MPRReminderTracking();
-                if (this.employee.OrgDepartmentId == 14) {
-                    this.MPRReminderTrackings.MailAddressType = 'To';
-                    this.MPRReminderTrackings.MailTo = this.mailsending[0].EmployeeNo;
-                    this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
-                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-                    this.MPRReminderTrackings = new MPRReminderTracking();
-                    this.MPRReminderTrackings.MailAddressType = 'To';
-                    this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
-                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-                }
-                else {
-                    this.MPRReminderTrackings.MailAddressType = 'To';
-                    this.MPRReminderTrackings.MailTo = this.mailsending[3].EmployeeNo;
-                    this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
-                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-                    this.MPRReminderTrackings = new MPRReminderTracking();
-                    this.MPRReminderTrackings.MailAddressType = 'To';
-                    this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
-                    this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-                }
-
-
-                this.MPRReminderTrackings = new MPRReminderTracking();
-                this.MPRReminderTrackings.MailAddressType = 'CC';
-                this.MPRReminderTrackings.MailTo = this.mailsending[1].EmployeeNo;
-                this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-
-                this.MPRReminderTrackings = new MPRReminderTracking();
-                this.MPRReminderTrackings.MailAddressType = 'CC';
-                this.MPRReminderTrackings.MailTo = this.mailsending[2].EmployeeNo;
-                this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-            }
-            for (var i = 0; i < this.mailsending.length; i++) {
-                var searchItems = new searchList();
-                searchItems.code = this.mailsending[i].EmployeeNo
-                searchItems.name = this.mailsending[i].Name
-                this.communicationlist.push(searchItems)
-            }
-            //this.searchItems.push(this.mailsending[0])
-            //this.searchItems.push(this.mailsending[1])
-            //this.searchItems.push(this.mailsending[2])
-            //this.searchItems.push(this.mailsending[3])
-            //console.log("his.searchItem",this.searchItems)
-            //for (var i = 0; i < this.mailsending.length; i++) {
-            //    if (this.mailsending[i][0].Status == 'Submitted') {
-            //        this.MPRReminderTrackings = new MPRReminderTracking();
-            //        this.MPRReminderTrackings.MailAddressType = 'To';
-
-            //        if (this.employee.OrgDepartmentId == 14) {
-            //            this.MPRReminderTrackings.MailTo = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
-
-            //        }
-            //        else {
-            //            this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo;
-            //        }
-            //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-            //        this.getComName(this.mailsending[i][0].Name)
-            //    }
-            //    else {
-            //        this.MPRReminderTrackings = new MPRReminderTracking();
-            //        this.MPRReminderTrackings.MailAddressType = 'CC';
-            //        this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo
-            //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
-            //    }
-            //}
+      if (this.mailsending.length > 0) {
+        this.MPRReminderTrackings = new MPRReminderTracking();
+        if (this.employee.OrgDepartmentId == 14) {
+          this.MPRReminderTrackings.MailAddressType = 'To';
+          this.MPRReminderTrackings.MailTo = this.mailsending[0].EmployeeNo;
+          this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
+          this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+          this.MPRReminderTrackings = new MPRReminderTracking();
+          this.MPRReminderTrackings.MailAddressType = 'To';
+          if (this.mailsending[4]) {
+            this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
+            this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+          }
         }
         else {
-            //this.MPRReminderTrackings = new MPRReminderTracking();
-            this.mailsending.splice(0, this.mailsending.length)
-            this.MPRCommunications.MPRReminderTrackings.splice(0, this.MPRCommunications.MPRReminderTrackings.length)
+          this.MPRReminderTrackings.MailAddressType = 'To';
+          this.MPRReminderTrackings.MailTo = this.mailsending[3].EmployeeNo;
+          this['MPRCommunicationForm'].controls['toEmail'].setValue(this.mailsending[0].Name);
+          this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+          this.MPRReminderTrackings = new MPRReminderTracking();
+          this.MPRReminderTrackings.MailAddressType = 'To';
+          this.MPRReminderTrackings.MailTo = this.mailsending[4].EmployeeNo;
+          this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+        }
 
-        }
-        // console.log("this.mailsending", this.MPRCommunications.MPRReminderTrackings)
+
+        this.MPRReminderTrackings = new MPRReminderTracking();
+        this.MPRReminderTrackings.MailAddressType = 'CC';
+        this.MPRReminderTrackings.MailTo = this.mailsending[1].EmployeeNo;
+        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+
+        this.MPRReminderTrackings = new MPRReminderTracking();
+        this.MPRReminderTrackings.MailAddressType = 'CC';
+        this.MPRReminderTrackings.MailTo = this.mailsending[2].EmployeeNo;
+        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+      }
+      for (var i = 0; i < this.mailsending.length; i++) {
+        var searchItems = new searchList();
+        searchItems.code = this.mailsending[i].EmployeeNo
+        searchItems.name = this.mailsending[i].Name
+        this.communicationlist.push(searchItems)
+      }
+      //this.searchItems.push(this.mailsending[0])
+      //this.searchItems.push(this.mailsending[1])
+      //this.searchItems.push(this.mailsending[2])
+      //this.searchItems.push(this.mailsending[3])
+      //console.log("his.searchItem",this.searchItems)
+      //for (var i = 0; i < this.mailsending.length; i++) {
+      //    if (this.mailsending[i][0].Status == 'Submitted') {
+      //        this.MPRReminderTrackings = new MPRReminderTracking();
+      //        this.MPRReminderTrackings.MailAddressType = 'To';
+
+      //        if (this.employee.OrgDepartmentId == 14) {
+      //            this.MPRReminderTrackings.MailTo = this.mprRevisionModel.MPRBuyerGroup.BuyerManager;
+
+      //        }
+      //        else {
+      //            this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo;
+      //        }
+      //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+      //        this.getComName(this.mailsending[i][0].Name)
+      //    }
+      //    else {
+      //        this.MPRReminderTrackings = new MPRReminderTracking();
+      //        this.MPRReminderTrackings.MailAddressType = 'CC';
+      //        this.MPRReminderTrackings.MailTo = this.mailsending[i][0].EmployeeNo
+      //        this.MPRCommunications.MPRReminderTrackings.push(this.MPRReminderTrackings);
+      //    }
+      //}
     }
-    removemailCommunication(details: any) {
-        for (var i = 0; i < this.mailsending.length; i++) {
-            var index = this.mailsending[i].findIndex(x => x.EmployeeNo == details.EmployeeNo);
-            if (index > -1) {
-                this.mailsending[i].splice(index, 1);
-            }
-        }
-        //var index = this.mailsending[0].findIndex(x => x.EmployeeNo == details.EmployeeNo);
+    else {
+      //this.MPRReminderTrackings = new MPRReminderTracking();
+      this.mailsending.splice(0, this.mailsending.length)
+      this.MPRCommunications.MPRReminderTrackings.splice(0, this.MPRCommunications.MPRReminderTrackings.length)
+
     }
+    // console.log("this.mailsending", this.MPRCommunications.MPRReminderTrackings)
+  }
+  removemailCommunication(details: any) {
+    for (var i = 0; i < this.mailsending.length; i++) {
+      var index = this.mailsending[i].findIndex(x => x.EmployeeNo == details.EmployeeNo);
+      if (index > -1) {
+        this.mailsending[i].splice(index, 1);
+      }
+    }
+    //var index = this.mailsending[0].findIndex(x => x.EmployeeNo == details.EmployeeNo);
+  }
   gettokuchuinformation() {
 
   }
@@ -2045,18 +2055,16 @@ export class MPRPageComponent implements OnInit {
       });
       this.spinner.hide();
     }
-  }​​​​​​​
+  }
 
   //<<SCM Open issues coding Ended>>
 
-  ShowMVJustification(){
-    if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && Number(this.calculateTargetSpend())>500000 && this.mprRevisionModel.MPRVendorDetails.length<3)
-    {
-      this.ShowMV_Justification=true;
+  ShowMVJustification() {
+    if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Multiple Vendor" && Number(this.calculateTargetSpend()) > 500000 && this.mprRevisionModel.MPRVendorDetails.length < 3) {
+      this.ShowMV_Justification = true;
     }
-    else
-    {
-      this.ShowMV_Justification=false;
+    else {
+      this.ShowMV_Justification = false;
     }
   }
   loadMPRMVJustification() {
