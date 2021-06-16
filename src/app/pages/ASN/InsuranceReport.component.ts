@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { NgxSpinnerService } from 'ngx-spinner'
 import { constants } from 'src/app/Models/MPRConstants';
 import { ASNfilters } from 'src/app/Models/mpr';
 import { InvoiceDetails } from 'src/app/Models/rfq';
+import { MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
-import {  MessageService } from 'primeng/api';
-import {  saveAs } from 'file-saver';
 
 @Component({
-  selector: 'app-asn-list',
-  templateUrl: './ASNList.component.html'
+  selector: 'app-Insurance-list',
+  templateUrl: './InsuranceReport.component.html'
 })
-export class AsnListComponent implements OnInit {
+export class InsuranceReport implements OnInit {
 
-  constructor(public RfqService: RfqService, private spinner: NgxSpinnerService, private datePipe: DatePipe, public constants: constants, private messageService: MessageService,) { }
+  @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
+  constructor(public RfqService: RfqService, private spinner: NgxSpinnerService, public constants: constants, private messageService: MessageService, private datePipe: DatePipe) { }
 
   public AsnList: Array<any> = [];
   public ASNfilters: ASNfilters;
@@ -23,12 +23,12 @@ export class AsnListComponent implements OnInit {
   ngOnInit() {
     this.ASNfilters = new ASNfilters();
     this.ASNfilters.Type = "CreatedDate";
-    this.ASNfilters.FromDate = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 30)), "yyyy-MM-dd");    
+    this.ASNfilters.ReportType = "Insurance";
+    this.ASNfilters.FromDate = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 90)), "yyyy-MM-dd");
     this.ASNfilters.ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd");
-
     this.InvoiceDetails = new InvoiceDetails();
     this.InvoiceDetails.InvoiceDocuments = [];
-    this.asnList();
+   // this.asnList();
   }
 
   asnList() {
@@ -39,27 +39,12 @@ export class AsnListComponent implements OnInit {
     })
 
   }
-  //invoice details
-  async MergeInvoiceDocs(details: any) {
-    this.spinner.show();
-    this.InvoiceDetails.InvoiceNo = details.InvoiceNo;
-    this.InvoiceDetails.ASNId = details.ASNId;
-    this.RfqService.MergeInvoiceDocs(this.InvoiceDetails).subscribe(async data => {
-      this.spinner.hide();
-      if (data.size != 0) {
-        this.downloadFile(data);
-      }
-      else {
-        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'No files' });
-      }
-    });
-
-
-
-  }
-  downloadFile(data) {
-    saveAs(data, "InvoiceMerge" + "_" + this.InvoiceDetails.InvoiceNo + "_" + Date.now() + ".pdf");
-  }
+  //ExportTOExcel() {
+  //  const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
+  //  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  //  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  //  XLSX.writeFile(wb, 'Insurance.xlsx');
+  //}
 
   ExportTOExcel() {
     debugger;
@@ -69,20 +54,15 @@ export class AsnListComponent implements OnInit {
       let new_list = this.AsnList.map(function (obj) {
         var InvoiceDate = datep.transform(obj.InvoiceDate, format);
         var ShippingDate = datep.transform(obj.ShippingDate, format);
-        var DeliveryDate = datep.transform(obj.DeliveryDate, format);
-        var Createddate = datep.transform(obj.CreatedDate, format);
         var POandDate = obj.PONos;
         if (obj.PODate)
           POandDate += ' & ' + datep.transform(obj.PODate, format)
         return {
-          'ASN No': obj.ASNNo,
           'VendorName && Code': obj.VendorName,
           'PO NO && Date': POandDate,
           'Project Name': obj.ProjectName,
           'Invoice No': obj.InvoiceNo,
           'Invoice Date': InvoiceDate,
-          'Delivery Date': DeliveryDate,
-          'Created Date': Createddate,
           'Shipping Date': ShippingDate,
           'Inco Terms': obj.IncoTerm,
           'Insurance': obj.Insurance,
@@ -95,7 +75,7 @@ export class AsnListComponent implements OnInit {
         const worksheet = xlsx.utils.json_to_sheet(new_list);
         const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
         const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-        this.saveAsExcelFile(excelBuffer, "ASN Report");
+        this.saveAsExcelFile(excelBuffer, "Insurance Report");
       });
     }
     else {

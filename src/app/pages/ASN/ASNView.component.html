@@ -102,6 +102,14 @@
       <label class="lblEdit">Insurance:</label>
       <span class="valueEdit">{{asnItem.Insurance}}</span>
     </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">Invoice Amount:</label>
+      <span class="valueEdit">{{asnItem.InvoiceAmntByVendor}}</span>
+    </div>
+    <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+      <label class="lblEdit">PO Value for ASN:</label>
+      <span class="valueEdit">{{asnItem.DefaultInvoiceAmnt}}</span>
+    </div>
   </div>
 
 
@@ -121,6 +129,7 @@
           <th style="width:200px">Material Description</th>
           <th>HSN Code</th>
           <th style="width:100px">PO Qty</th>
+          <th style="width:100px">Unit Price</th>
           <th style="width:200px">Supplier Cumulative Qty</th>
           <!--<th style="width:200px">PO Cumulative Qty</th>-->
         </tr>
@@ -137,6 +146,7 @@
           <td class="ptable-cell">{{rowData.MaterialDescription}}</td>
           <td class="ptable-cell">{{rowData.HSNCode}}</td>
           <td class="ptable-cell">{{rowData.POQty}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
           <td class="ptable-cell">{{rowData.SupplierCumulativeQty}}</td>
           <!--<td class="ptable-cell">{{rowData.PoCumulativeQty}}</td>-->
         </tr>

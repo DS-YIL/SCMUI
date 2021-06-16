@@ -1,4 +1,4 @@
-<h4 class="text-center">ASN List</h4>
+<h4 class="text-center">Insurance Report</h4>
 <div class="card m-2">
   <div class="row m-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group">
@@ -50,45 +50,58 @@
   <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export to Excel" (click)="ExportTOExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
 </div>
 <div class="card compar-card m-2">
-  <div class="card-body" style="overflow:auto !important">
+  <div class="card-body" style="overflow:auto !important" #TABLE>
     <p-table #dt [value]="AsnList" [paginator]="true" [rows]="10">
       <ng-template pTemplate="header">
         <tr class="mprltbldata">
           <th class="text-center">S.No</th>
           <th class="text-center">ASN No</th>
-          <th class="text-center">PONo</th>
-          <!--<th class="text-center">PO Date</th>-->
           <th class="text-center">Vendor Name & Vendor Code</th>
+          <th class="text-center">PONo && Date</th>
+          <th class="text-center">Project Name</th>
           <th class="text-center">Invoice No</th>
           <th class="text-center">Invoice Date</th>
-          <th class="text-center">Delivery Date</th>
-          <th class="text-center">Created Date</th>
-          <th class="text-center">Merge Invoice Docs</th>
+          <th class="text-center">Shipping Date</th>
+          <th class="text-center">Inco Terms</th>
+          <th class="text-center">Insurance</th>
+          <th class="text-center">Transporter Name</th>
+          <th class="text-center">LR No</th>
+          <!--<th class="text-center">Type Of Invoice</th>-->
+          <th class="text-center">Invoice Amount</th>
         </tr>
         <tr>
           <th></th>
           <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'ASNNo', 'contains')"></th>
-          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PONos', 'contains')"></th>
-          <!--<th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PODate', 'contains')"></th>-->
           <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'VendorName', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'PONos', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'ProjectName', 'contains')"></th>
           <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'InvoiceNo', 'contains')"></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'InvoiceDate', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'ShippingDate', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'IncoTerm', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'Insurance', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'TransporterName', 'contains')"></th>
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'BillofLodingNumber', 'contains')"></th>
+          <!--<th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'TypeOfInvoice', 'contains')"></th>-->
+          <th> <input pInputText type="text" class="form-control" (input)="dt.filter($event.target.value, 'InvoiceAmntByVendor', 'contains')"></th>
+
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
         <tr>
           <td class="text-center">{{ri +1}}</td>
           <td class="text-center"><a [routerLink]="['/SCM/ASNView',rowData.ASNId]" target="_blank" routerLinkActive="active">{{rowData.ASNNo}}</a></td>
-          <td class="text-center">{{rowData.PONos}}</td>
           <td class="text-center">{{rowData.VendorName}}</td>
+          <td class="text-center">{{rowData.PONos}} <span *ngIf="rowData.PODate">&</span> {{rowData.PODate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.ProjectName}}</td>
           <td class="text-center">{{rowData.InvoiceNo}}</td>
           <td class="text-center">{{rowData.InvoiceDate | date :  constants.dateFormat}}</td>
-          <td class="text-center">{{rowData.DeliveryDate | date :  constants.dateFormat}}</td>
-          <td class="text-center">{{rowData.CreatedDate | date :  constants.dateFormat}}</td>
-          <td class="text-center"><button type="button" pButton icon="fa fa-download" class="ui-button-download" (click)="MergeInvoiceDocs(rowData)"></button></td>
+          <td class="text-center">{{rowData.ShippingDate | date :  constants.dateFormat}}</td>
+          <td class="text-center">{{rowData.IncoTerm}}</td>
+          <td class="text-center">{{rowData.Insurance}}</td>
+          <td class="text-center">{{rowData.TransporterName}}</td>
+          <td class="text-center">{{rowData.BillofLodingNumber}}</td>
+          <td class="text-center">{{rowData.InvoiceAmntByVendor}}</td>
         </tr>
       </ng-template>
     </p-table>

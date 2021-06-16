@@ -100,6 +100,9 @@ import { POListComponent } from './purchase-authorization/POList.component'
 import { MVJustificationComponent } from './MPR/Admin/mvjustification.component';
 import { from } from 'rxjs';
 import { ScrapRegisterReportComponent } from './ScrapRegister/scrap-register-report.component';
+import { InsuranceReport } from './ASN/InsuranceReport.component';
+//import { DAComponent } from './DA/DAcomponent'
+
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -206,7 +209,9 @@ import { ScrapRegisterReportComponent } from './ScrapRegister/scrap-register-rep
     POGenerationComponent,
     POListComponent,
     MVJustificationComponent,
-    ScrapRegisterReportComponent
+    ScrapRegisterReportComponent,
+    InsuranceReport,
+    //DAComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

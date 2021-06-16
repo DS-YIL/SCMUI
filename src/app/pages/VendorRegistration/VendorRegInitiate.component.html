@@ -74,6 +74,16 @@
   <div *ngIf="showEdit" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
 </div>
 <div *ngIf="VendorData" class="card m-2" style="margin-top:0px !important">
+  <div class="row m-2">
+    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
+      <label class="lblEdit">Read Yokogawa General Terms and Conditions</label>
+      <span class="valueEdit"><span *ngIf="VendorData.TermsAndConditions==true">Yes</span><span *ngIf="!VendorData.TermsAndConditions || VendorData.TermsAndConditions==false">No</span></span>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4  form-group">
+      <label class="lblEdit">Read Yokogawa Sustainable Procurement Guidelines</label>
+      <span class="valueEdit"><span *ngIf="VendorData.Guidelines==true">Yes</span><span *ngIf="!VendorData.Guidelines ||VendorData.Guidelines==false ">No</span></span>
+    </div>
+  </div>
   <div *ngIf="typeOfUser=='Intiator' || typeOfUser=='Checker'" class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="form-label">One time vendor</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;

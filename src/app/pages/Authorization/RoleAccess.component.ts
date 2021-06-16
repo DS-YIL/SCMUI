@@ -30,7 +30,7 @@ export class RoleAccessComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      this.emp = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.emp = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
     this.groupMasterForm = this.formBuilder.group({
@@ -56,6 +56,7 @@ export class RoleAccessComponent implements OnInit {
   CreateRoles(roleAccessModel: RoleAccessModel) {
     this.submitted = true;
     if (this.roleIdUpdate == null) {
+      roleAccessModel.updatedBy = this.emp.EmployeeNo;
       this.configService.createRoleAccess(roleAccessModel).subscribe(data => {
         alert(data);
         this.getAllRole();

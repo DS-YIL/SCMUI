@@ -94,7 +94,7 @@
       <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
         <tr>
           <td class="ptable-cell text-center">{{ri +1}}</td>
-          <td class="ptable-cell text-center"><a [routerLink]="['/SCM/MPRForm',rowData.MPRRevisionId]" target="_blank" routerLinkActive="active">{{rowData.MPRRevisionId}}</a></td>
+          <td class="ptable-cell text-center"><a *ngIf="rowData && rowData.MPRRevisionId" [routerLink]="['/SCM/MPRForm',rowData?.MPRRevisionId]" target="_blank" routerLinkActive="active">{{rowData.MPRRevisionId}}</a></td>
           <td class="ptable-cell text-center">{{rowData.PONo}}</td>
           <td class="ptable-cell text-center">{{rowData.PODate | date :  constants.dateFormat}}</td>
           <td class="ptable-cell text-center">{{rowData.POValue | currency:'INR'}}</td>
@@ -104,7 +104,7 @@
           <td class="ptable-cell text-center">{{rowData.PMName}}</td>
           <td class="ptable-cell text-center">{{rowData.Department}}</td>
           <td class="ptable-cell text-left">{{rowData.BuyerGroup}}</td>
-          <td class="ptable-cell text-left"><a [routerLink]="['/SCM/BGView',rowData.BGId]" target="_blank" routerLinkActive="active">{{rowData.BGNo}}</a></td>
+          <td class="ptable-cell text-left"><a *ngIf="rowData && rowData.BGId" [routerLink]="['/SCM/BGView',rowData.BGId]" target="_blank" routerLinkActive="active">{{rowData.BGNo}}</a></td>
           <td class="text-center">
             <button *ngIf="rowData.BGNo" type="button" style="font-size:12px" pButton icon="fa fa-check" (click)="sendReminder(rowData)" label="Send Reminder"></button>
             <button *ngIf="!rowData.BGNo" type="button" style="font-size:12px" pButton icon="fa fa-check" (click)="displayBGDialog(rowData)" label="Submit"></button>

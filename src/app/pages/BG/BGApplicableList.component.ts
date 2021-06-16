@@ -6,6 +6,7 @@ import { BGfilters, Employee, BankGuarantee } from 'src/app/Models/mpr';
 import { MessageService } from 'primeng/api';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-bgApp-list',
@@ -13,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class BGApplicableListComponent implements OnInit {
 
-  constructor(public MprService: MprService, private router: Router, private paService: purchaseauthorizationservice, private spinner: NgxSpinnerService, private messageService: MessageService, public constants: constants) { }
+  constructor(public MprService: MprService, private datePipe: DatePipe,private router: Router, private paService: purchaseauthorizationservice, private spinner: NgxSpinnerService, private messageService: MessageService, public constants: constants) { }
   public employee: Employee;
   public BGList: Array<any> = [];
   public BGfilters: BGfilters;
@@ -30,6 +31,8 @@ export class BGApplicableListComponent implements OnInit {
       return true;
     }
     this.BGfilters = new BGfilters();
+    this.BGfilters.FromDate = this.datePipe.transform(new Date(new Date().setDate(new Date().getDate() - 30)), "yyyy-MM-dd");
+    this.BGfilters.ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd");
     this.BGModel = new BankGuarantee();
     this.loadallmprdepartments();
     this.loadbuyergroups();

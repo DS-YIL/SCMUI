@@ -355,6 +355,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/ASNList',
         icon: 'list-outline'
       },
+      {
+        title: 'Insurance Report',
+        link: '/SCM/InsuranceReport',
+        icon: 'list-outline'
+      },
+
     ],
   },
   {
@@ -406,4 +412,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ],
   },
+  //{
+  //  title: 'DA',
+  //  icon: 'lock-outline',
+  //  expanded: false,
+  //  children: [
+  //    {
+  //      title: 'DA',
+  //      link: '/SCM/DA',
+  //      icon: 'list-outline'
+  //    }
+  //  ],
+  //},
 ];

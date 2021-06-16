@@ -598,6 +598,8 @@ export class VendorRegistration {
   SwiftCode: string = "";
   IncoTerms: string;
   Country: string;
+  TermsAndConditions: boolean;
+  Guidelines: boolean;
 }
 export class vendorRegfilters {
   FromDate: Date;
@@ -669,6 +671,8 @@ export class ASNfilters {
   VendorName: string;
   IntiatedBy: string;
   PONo: string;
+  Type: string;
+  ReportType: string;
 }
 export class VendorUserMaster {
   VendorId: number;
@@ -763,4 +767,11 @@ export class MPRMVJustification {
   MVJustificationId: number;
   MVjustification: string;
   Createdby:string;
+}
+
+export class DADetails {
+  DATo: string;
+  DANo: string;
+  DACC: string;
+  DAFrom: string;
 }

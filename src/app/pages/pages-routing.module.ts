@@ -52,6 +52,7 @@ import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationRep
 import { ASNInitiateComponent } from './ASN/ASNInitiate.compenent';
 import { AsnViewComponent } from './ASN/ASNView.component';
 import { AsnListComponent } from './ASN/ASNList.component';
+import { InsuranceReport } from './ASN/InsuranceReport.component';
 import { PAStatusReportsComponent } from './MPRReports/PAStatusReports.component';
 import { MSALineItemListComponent } from './purchase-authorization/msaline-item-list.component';
 import { VendorListComponent } from './MPR/Admin/VendorList.component';
@@ -70,6 +71,8 @@ import { MonthlyReport2Component } from './MPRReports/monthly-report2.component'
 import { MVJustificationComponent } from './MPR/Admin/mvjustification.component';
 import { ScrapRegisterReportComponent } from './ScrapRegister/scrap-register-report.component';
 import { POListComponent } from './purchase-authorization/POList.component'
+//import { DAComponent } from './DA/DAcomponent'
+
 
 const routes: Routes = [{
   path: '',
@@ -143,6 +146,7 @@ const routes: Routes = [{
     { path: "ASNInitiate", component: ASNInitiateComponent, canActivate: [AuthGuard] },
     { path: "ASNView/:ASNId", component: AsnViewComponent, canActivate: [AuthGuard] },
     { path: "ASNList", component: AsnListComponent, canActivate: [AuthGuard] },
+    { path: "InsuranceReport", component: InsuranceReport, canActivate: [AuthGuard] },
     { path: "PAstatusReport", component: PAStatusReportsComponent, canActivate: [AuthGuard] },
     { path: "MSALineItem", component: MSALineItemListComponent, canActivate: [AuthGuard] },
     { path: "VendorList", component: VendorListComponent, canActivate: [AuthGuard] },
@@ -163,6 +167,9 @@ const routes: Routes = [{
     { path: "polist", component: POListComponent, canActivate: [AuthGuard] },
     { path: "MVJustification", component: MVJustificationComponent, canActivate: [AuthGuard] },
     { path: "scrapregisterreport", component: ScrapRegisterReportComponent, canActivate: [AuthGuard] },
+    //{ path: "DA", component: DAComponent, canActivate: [AuthGuard] },
+
+    
     // {
     //      path: '',
     //      redirectTo: 'Login',

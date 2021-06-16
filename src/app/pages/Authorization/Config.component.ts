@@ -32,11 +32,12 @@ export class ConfigComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      this.em = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.em = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
+
     this.groupMasterForm = this.formBuilder.group({
-      GroupName: ['', [Validators.required, Validators.maxLength(10)]],
+      GroupName: ['', [Validators.required, Validators.maxLength(50)]],
       AccessGroupId: null
     });
     this.getAllGroupName();
@@ -64,7 +65,7 @@ export class ConfigComponent implements OnInit {
 
   CreateGroupMaster(groupmaster: GroupMasterModel) {
     this.submitted = true;
-
+    groupmaster.UpdatedBy = this.em.EmployeeNo;
     if (this.accessGroupIdUpdate == null) {
       this.configService.createNewGroupMaster(groupmaster).subscribe(data => {
         alert(data);
@@ -111,7 +112,7 @@ export class ConfigComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
+        groupMastergetallModel.DeletedBy = this.em.EmployeeNo;
         this.configService.deleteGroupMaster(groupMastergetallModel).subscribe(res => {
           const status: any = 'success';
           this.getAllGroupName();

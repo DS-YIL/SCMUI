@@ -302,6 +302,8 @@ export class AsnModels {
   DocumentDate: string
   ASNCommunications: Array<any> = [];
   PONos: string;
+  InvoiceAmntByVendor: string;
+  DefaultInvoiceAmnt: string;
 }
 
 

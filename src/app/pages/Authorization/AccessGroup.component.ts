@@ -36,10 +36,10 @@ export class AccessGroupComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
-    //localStorage.clear();
+
     this.groupAccessForm = this.formBuilder.group({
       GroupName: [''],
       AccessName: ['', [Validators.required]],
@@ -76,7 +76,7 @@ export class AccessGroupComponent implements OnInit {
   get f() { return this.groupAccessForm.controls; }
   CreateAccessName(accessNameModel: AccessNameModelNew) {
     if (this.accessNameIdUpdate == 0) {
-
+      accessNameModel.updatedBy = this.employee.EmployeeNo;
       this.configService.createAccessName(accessNameModel).subscribe(data => {
         alert(data);
         this.groupId = accessNameModel.AccessGroupId;
