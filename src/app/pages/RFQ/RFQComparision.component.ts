@@ -8,11 +8,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
 import { Employee, MPRItemInfoes, DynamicSearchResult,mprRevision } from 'src/app/Models/mpr';
-import { parse } from 'cfb/types';
-import * as XLSX from 'xlsx';
-import * as jspdf from 'jspdf';  
-import html2canvas from 'html2canvas'; 
-
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-RFQComparision',
@@ -21,7 +17,7 @@ import html2canvas from 'html2canvas';
 
 export class RFQComparisionComponent implements OnInit {
   @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
-  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService,private formBuilder: FormBuilder) { }
+  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService,private formBuilder: FormBuilder,private spinner: NgxSpinnerService) { }
 
   //variable Declarations
   public employee: Employee;
@@ -68,6 +64,7 @@ export class RFQComparisionComponent implements OnInit {
     });
   }
   getRFQCompareItemsById() {
+    this.spinner.show();
     this.RfqService.getRFQCompareItems(this.MPRRevisionId).subscribe(data => {
       this.RfqCompareItems = data["CompareTable"];
       this.rfqTermsList = data["RfqtermsTable"];
@@ -77,8 +74,11 @@ export class RFQComparisionComponent implements OnInit {
         this.prepareTermNames();
       this.getRfqrevisionList();
       this.ShowMVJustification();
-     
+      this.spinner.hide();
+    
     })
+   
+    
   }
 
   //ger rfqrevision list
@@ -458,7 +458,7 @@ export class RFQComparisionComponent implements OnInit {
     return null;
   }
   ShowMVJustification(){
-    if (this.RfqCompareItems[0].PurchaseType == "Multiple Vendor" && Number(this.RfqCompareItems[0].TargetSpend)<500000 )
+    if (this.RfqCompareItems[0].PurchaseType == "Multiple Vendor" && Number(this.RfqCompareItems[0].TargetSpend)>500000 )
     {
       this.ShowMV_Justification=true;
     }
@@ -473,31 +473,35 @@ export class RFQComparisionComponent implements OnInit {
     })
   }
   ExportTOExcel() {
-
-    var json= JSON.stringify(this.rfqQuoteModel);
-    // console.log(json)
-    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rfqQuoteModel);
-    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    // XLSX.writeFile(wb, 'MonthlyPerformanceReport1.xlsx');
+    this.spinner.show();
+    
+    this.RfqService.IsExcelExported().subscribe((resultBlob: Blob)=> 
+    {
+      var downloadURL = URL.createObjectURL(resultBlob);
+      var anchor = document.createElement("a");
+      anchor.download = this.RfqCompareItems[0].DocumentNo+"_.xlsx";
+      anchor.href = downloadURL;
+      anchor.click();
+      this.spinner.hide();
+        });
   }  
-  public captureScreen()  
-  {  
-    var data = document.getElementById('contentToConvert');  
-    html2canvas(data).then(canvas => {  
-      // Few necessary setting options  
-      var imgWidth = 208;   
-      var pageHeight = 295;    
-      var imgHeight = canvas.height * imgWidth / canvas.width;  
-      var heightLeft = imgHeight;  
+  // public captureScreen()  
+  // {  
+  //   var data = document.getElementById('contentToConvert');  
+  //   html2canvas(data).then(canvas => {  
+  //     // Few necessary setting options  
+  //     var imgWidth = 208;   
+  //     var pageHeight = 295;    
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;  
+  //     var heightLeft = imgHeight;  
   
-      const contentDataURL = canvas.toDataURL('image/png')  
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-      pdf.save('RFQComparision.pdf'); // Generated PDF   
-    });  
-  } 
+  //     const contentDataURL = canvas.toDataURL('image/png')  
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;  
+  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+  //     pdf.save('RFQComparision.pdf'); // Generated PDF   
+  //   });  
+  // } 
    
 
 

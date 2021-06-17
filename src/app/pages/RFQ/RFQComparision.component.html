@@ -100,7 +100,9 @@
   </div>
 </form>
   </div>
-  
+  <div class="col-md-1 pt-1">
+    <a id='downloadfileLnk'><i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large"  (click)="ExportTOExcel()" pTooltip="Export TO EXCEL"></i></a>
+  </div>
   <div class="card  compar-card mt-3">
     <div class="card-header gra-header">
       <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Least Price</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -123,10 +125,10 @@
       <span><b><i class="fa fa-times times-color"></i> - </b>Rejected</span>&nbsp;&nbsp;&nbsp;&nbsp;
 
     </div>
-    <i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:x-large"  (click)="captureScreen()" pTooltip="Export TO PDF"></i>
-    <!-- <i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large"  (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i> -->
-    <div id="contentToConvert" class="card-body"  #TABLE>
+    
       
+    
+    <div id="contentToConvert" class="card-body"  #TABLE>
       <p-table [columns]="cols" [value]="rfqQuoteModel">
         <ng-template pTemplate="header" let-columns>
           <tr class="mprltbldata">

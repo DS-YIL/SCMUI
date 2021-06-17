@@ -144,4 +144,8 @@ export class RfqService {
     return this.http.post<any>(this.url + 'RFQ/RecreateNewRfqRevision/' + revisionId + '/' + recreate, this.httpOptions);
 
   }
+  IsExcelExported(): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/IsExcelExported', { responseType: 'blob' as 'json' });
+  }
+  
 }
