@@ -10,6 +10,8 @@ import { MessageService } from 'primeng/api';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import * as FileSaver from 'file-saver';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-POGeneration',
@@ -18,7 +20,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class POGenerationComponent implements OnInit {
   selectedItems1 = [];
 
-  constructor(public paService: purchaseauthorizationservice, public messageservice: MessageService, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) {
+  constructor(public paService: purchaseauthorizationservice, private datePipe: DatePipe, public messageservice: MessageService, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) {
 
   }
   public hivalue = true;
@@ -57,7 +59,8 @@ export class POGenerationComponent implements OnInit {
   public paid: Array<any> = [];
   public pomaster: POMaster;
   public poinsert: any;
-  public poid: any
+  public poid: any;
+  public isReadonly: boolean;
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -76,18 +79,20 @@ export class POGenerationComponent implements OnInit {
     this.pomaster.poitems = new Array<POItem>();
     this.pomaster.scmpoconfirmation = this.employee.EmployeeNo;
     this.pomaster.scmpoconfirmationby = this.employee.Name;
+    this.isReadonly = true;
     this.activeroute.params.subscribe(params => {
-      if (params["poid"]) {
-        this.poid = params["poid"];
+      if (params["POID"]) {
+        this.poid = params["POID"];
         this.GetpoitemsByPoId();
+        console.log("poid", this.poid)
       }
     })
     if (localStorage.getItem("Poitems")) {
       this.selectedItems = JSON.parse(localStorage.getItem("Poitems"));
       for (var i = 0; i < this.selectedItems.length; i++) {
         this.paid.push(this.selectedItems[i]['PAId'])
-        this.loadpogenrationitems(this.paid);
       }
+      this.loadpogenrationitems(this.paid);
       this.txtName = this.selectedItems[0]['VendorId']
       this.loadpogenerationitemsbyvendor(this.txtName);
       console.log("pogeneration", this.selectedItems)
@@ -97,17 +102,32 @@ export class POGenerationComponent implements OnInit {
   loadpogenrationitems(PAId: any) {
     this.paService.LoadItemsForPOGeneration(PAId).subscribe(data => {
       this.itemDetails = data;
-      this.pomaster.poterms = 'YIL Sale Order Ref:' + '\n' + this.itemDetails[0]['JobCode'] + '--' + this.itemDetails[0]['Endusername'] + '--' + this.itemDetails[0]['DocumentNo'] + '\n' + 'Suppliers Reference:' + this.itemDetails[0]['PaymentTermRemarks'] +'-'+ this.itemDetails[0]['RFQNo']+'\n' +'Terms and conditions:' + '\n' + '01.Packing & Forwarding :' + this.itemDetails[0]['PackagingForwarding'] + '\n' + '02. Freight :' + this.itemDetails[0]['Freight'] + '\n' + '03. Delivery Date :' + this.pomaster.Reqdeliverydate + '\n' + '04. Mode of Despatch :' + this.itemDetails[0]['ShipmentMode'] + '\n' + '05. Insurance : ' + this.itemDetails[0]['painsurance'] + '\n' + '06. Liquidated Damages:' + this.itemDetails[0]['LDPenaltyTerms'] + '\n' +
-        '07. Bank Guarantee : ' + this.itemDetails[0]['BankGuarantee'] + '\n' + '08. Warranty :' + this.itemDetails[0]['Warranty'] + '\n' + '09. Payment Terms:' + this.itemDetails[0]['PaymentTerms'] +'\n'+
-        '10.Special Instructions:' + '\n' + 'A. DRAWINGS AND DATA SHEETS TO BE SUBMITTED FOR ISSUING MANUFACTURING CLEARANCE.' + '\n' + 'B. TEST REPORTS TO BE SUBMITTED FOR ARRANGING TPI INSPECTION FROM BHEL AT YOUR WORKS. ALL TEST REPORTS TO BE SUBMITTED ALONG WITH MATERIALS.' + '\n' + 'C. MATERIAL TEST REPORT, INTERNAL TCS AND WARRANTY CERTIFICATES TO BE PROVIDED ALONG WITH MATERIALS.';
-      console.log("details", this.itemDetails)
+      console.log("itemmisiinh", this.itemDetails)
+      //this.pomaster.poterms = 'YIL Sale Order Ref:' + '\n' + this.itemDetails[0]['JobCode'] + '--' + this.itemDetails[0]['Endusername'] + '--' + this.itemDetails[0]['DocumentNo'] + '\n' + 'Suppliers Reference:' + this.itemDetails[0]['PaymentTermRemarks'] +'-'+ this.itemDetails[0]['RFQNo']+'\n' +'Terms and conditions:' + '\n' + '01.Packing & Forwarding :' + this.itemDetails[0]['PackagingForwarding'] + '\n' + '02. Freight :' + this.itemDetails[0]['Freight'] + '\n' + '03. Delivery Date :' + this.pomaster.Reqdeliverydate + '\n' + '04. Mode of Despatch :' + this.itemDetails[0]['ShipmentMode'] + '\n' + '05. Insurance : ' + this.itemDetails[0]['painsurance'] + '\n' + '06. Liquidated Damages:' + this.itemDetails[0]['LDPenaltyTerms'] + '\n' +
+      //  '07. Bank Guarantee : ' + this.itemDetails[0]['BankGuarantee'] + '\n' + '08. Warranty :' + this.itemDetails[0]['Warranty'] + '\n' + '09. Payment Terms:' + this.itemDetails[0]['PaymentTerms'] +'\n'+
+      //  '10.Special Instructions:' + '\n' + 'A. DRAWINGS AND DATA SHEETS TO BE SUBMITTED FOR ISSUING MANUFACTURING CLEARANCE.' + '\n' + 'B. TEST REPORTS TO BE SUBMITTED FOR ARRANGING TPI INSPECTION FROM BHEL AT YOUR WORKS. ALL TEST REPORTS TO BE SUBMITTED ALONG WITH MATERIALS.' + '\n' + 'C. MATERIAL TEST REPORT, INTERNAL TCS AND WARRANTY CERTIFICATES TO BE PROVIDED ALONG WITH MATERIALS.';
+      //console.log("detailstry", this.itemDetails.filter((v, i, arr) => arr.findIndex(t => t.DocumentNo === v.DocumentNo) === i))
+      //this.itemDetails.filter((v, i, arr) => arr.findIndex(t => t.DocumentNo === v.DocumentNo) === i)
     })
   }
   changed(event: any) {
-    this.pomaster.poterms = 'YIL Sale Order Ref:' + '\n' + this.itemDetails[0]['JobCode'] + '--' + this.itemDetails[0]['Endusername'] + '--' + this.itemDetails[0]['DocumentNo'] + '\n' + 'Suppliers Reference:' + this.itemDetails[0]['PaymentTermRemarks'] + '-' + this.itemDetails[0]['RFQNo'] + '\n' + 'Terms and conditions:' + '\n' + '01.Packing & Forwarding :' + this.itemDetails[0]['PackagingForwarding'] + '\n' + '02. Freight :' + this.itemDetails[0]['Freight'] + '\n' + '03. Delivery Date :' + this.pomaster.Reqdeliverydate + '\n' + '04. Mode of Despatch :' + this.itemDetails[0]['ShipmentMode'] + '\n' + '05. Insurance : ' + this.itemDetails[0]['painsurance'] + '\n' + '06. Liquidated Damages:' + this.itemDetails[0]['LDPenaltyTerms'] + '\n' +
-      '07. Bank Guarantee : ' + this.itemDetails[0]['BankGuarantee'] + '\n' + '08. Warranty :' + this.itemDetails[0]['Warranty'] + '\n' + '09. Payment Terms:' + this.itemDetails[0]['PaymentTerms'] + '\n' +
+    //for (var i = 0; i < this.itemDetails.length; i++) {
+
+    //}
+    var multiplempr = this.itemDetails.filter((v, i, arr) => arr.findIndex(t => t.DocumentNo === v.DocumentNo) === i);
+    console.log("multiplempr", multiplempr)
+    this.pomaster.poterms = '';
+    var dat = '';
+    if (multiplempr.length >= 1) {
+      for (var i = 0; i < multiplempr.length; i++) {
+        dat += 'YIL Sale Order Ref:' + '\n' + multiplempr[i]['JobCode'] + '--' + multiplempr[i]['JobName']+'--' + multiplempr[i]['SaleOrderNo'] + '--' + multiplempr[i]['DocumentNo'] + '\n' + 'YIL Reference:' + this.itemDetails[i]['PaymentTermRemarks'] + '-' + this.itemDetails[i]['RFQNo'] + '\n' + '\n';
+        console.log("dat", dat)
+      }
+    }
+    this.pomaster.poterms = dat + '\n' + 'Terms and conditions:' + '\n' + '01.Packing & Forwarding :' + this.itemDetails[0]['PackagingForwarding'] + '\n' + '02. Freight :' + this.itemDetails[0]['Freight'] + '\n' + '03. Delivery Date :' + this.datePipe.transform(this.pomaster.Reqdeliverydate, "dd-MM-yyyy") + '\n' + '04. Mode of Dispatch :' + this.itemDetails[0]['ShipmentMode'] + '\n' + '05. Insurance : ' + this.itemDetails[0]['painsurance'] + '\n' + '06. Liquidated Damages :' + this.itemDetails[0]['LDPenaltyTerms'] + '\n' +
+      '07. Bank Guarantee : ' + this.itemDetails[0]['BankGuarantee'] + '\n' + '08. Warranty :' + this.itemDetails[0]['Warranty'] + '\n' + '09. Payment Terms :' + this.itemDetails[0]['PaymentTerms'] + '\n' +
       '10.Special Instructions:' + '\n' + 'A. DRAWINGS AND DATA SHEETS TO BE SUBMITTED FOR ISSUING MANUFACTURING CLEARANCE.' + '\n' + 'B. TEST REPORTS TO BE SUBMITTED FOR ARRANGING TPI INSPECTION FROM BHEL AT YOUR WORKS. ALL TEST REPORTS TO BE SUBMITTED ALONG WITH MATERIALS.' + '\n' + 'C. MATERIAL TEST REPORT, INTERNAL TCS AND WARRANTY CERTIFICATES TO BE PROVIDED ALONG WITH MATERIALS.';
-    console.log("details", this.itemDetails)
+    //console.log("details", this.itemDetails.map(x => x.DocumentNo))
   }
   loadpogenerationitemsbyvendor(VendorId: any) {
     this.paService.LoadItemsforpogenerationbasedonvendor(VendorId, this.paid).subscribe(data => {
@@ -160,9 +180,11 @@ Review Date :<<>>   Reviewed By :<<>>*/
     console.log("pomaster", this.pomaster)
     if (type == 'Material') {
       this.pomaster.itemtype = 'Material'
+      this.isReadonly = false;
     }
     else {
       this.pomaster.itemtype = 'Service'
+      this.isReadonly = false;
     }
     if (event.currentTarget.checked) {
       for (var i = 0; i < this.itemDetails.length; i++) {
@@ -240,9 +262,16 @@ Review Date :<<>>   Reviewed By :<<>>*/
         }
   }
   selecteachitem(event, data: any) {
-    var filteredResult = this.itemDetails.filter(li => li.RFQSplitItemId == data.RFQSplitItemId);
-    this.pomaster.poitems.push(data);
-    //(<HTMLInputElement>document.getElementById("po" + data.RFQSplitItemId)).checked = true;
+    var filteredResult = this.itemDetails.findIndex(li => li.RFQSplitItemId == data.RFQSplitItemId);
+    if (event.currentTarget.checked) {
+      if (filteredResult > -1) {
+        this.pomaster.poitems.push(data);
+      }
+    }
+    else {
+      this.pomaster.poitems.splice(filteredResult, 1)
+      console.log("this.p", filteredResult)
+    }
   }
   InsertPoitems(pomaster: POMaster) {
     if (!this.pomaster.Reqdeliverydate) {
@@ -258,7 +287,7 @@ Review Date :<<>>   Reviewed By :<<>>*/
         this.messageservice.add({ severity: 'success', summary: 'success Message', detail: 'POItems Inserted Succesfully' });
         this.poid = data.Sid;
         this.paService.GetPolineItemsToExcel(this.poid).subscribe(data => {
-
+          this.downloadFile(data)
         })
         this.GetpoitemsByPoId();
       })
@@ -267,6 +296,14 @@ Review Date :<<>>   Reviewed By :<<>>*/
       this.messageservice.add({ severity: 'warn', summary: 'Warning Message', detail: 'Please Select One Item' });
     }
   }
+  downloadFile(data: Blob) {
+    const contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const blob = new Blob([data], { type: contentType });
+    const url = window.URL.createObjectURL(blob);
+    const currentdate = new Date();
+    FileSaver.saveAs(blob, 'RfqData_' + currentdate + '_'  + '.xlsx');
+  }
+
   public bindSearchListData(e: any, name?: string, searchTxt?: string, callback?: () => any): void {
     this.dialogTop = e.clientY + 30 + "px";
     this.txtName = name;

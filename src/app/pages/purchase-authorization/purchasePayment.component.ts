@@ -176,9 +176,18 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.Item.push(this.selectedItems[i]);
         this.purchasedetails.Item[i]['POText'] = this.selectedItems[i].ItemDescription;
         this.purchasedetails.Item[i]['PODescription'] = this.selectedItems[i].ItemDescription;
+        if (this.purchasedetails.Item[i]['Itemid'].indexOf("BOP") !== -1) {
+          this.purchasedetails.Item[i]['itemtypesupplier'] = 'Material';
+          //(<HTMLInputElement>document.getElementById('supply' + this.purchasedetails.Item[i]['Mprrfqsplititemid'])).checked = true;
+        }
+        else {
+          if (this.purchasedetails.Item[i]['Itemid'].indexOf("BOP") == -1) {
+            this.purchasedetails.Item[i]['itemtypesupplier'] = 'Service';
+          }
+        }
       }
       //for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-      //  if (this.purchasedetails.Item[i][])
+      //  if (this.purchasedetails.Item[i][]) 
       //}
       //for (var i = 0; i < this.purchasedetails.Item.length; i++) {
       //  this.paincompleted = false;
@@ -240,7 +249,7 @@ export class purchasePaymentComponent implements OnInit {
         if (event.currentTarget.checked) {
           var itemtype = new ItemsViewModel();
           if (this.purchasedetails.Item[i]['Mprrfqsplititemid'] == data.Mprrfqsplititemid) {
-            this.purchasedetails.Item[i]['itemtypesupplier'] = 'supply';
+            this.purchasedetails.Item[i]['itemtypesupplier'] = 'Material';
             (<HTMLInputElement>document.getElementById("service" + data.Mprrfqsplititemid)).checked = false;
           }
         }
@@ -251,7 +260,7 @@ export class purchasePaymentComponent implements OnInit {
       else {
         if (event.currentTarget.checked) {
           if (this.purchasedetails.Item[i]['Mprrfqsplititemid'] == data.Mprrfqsplititemid) {
-            this.purchasedetails.Item[i]['itemtypesupplier'] = 'service';
+            this.purchasedetails.Item[i]['itemtypesupplier'] = 'Service';
             (<HTMLInputElement>document.getElementById("supply" + data.Mprrfqsplititemid)).checked = false;
           }
         }
@@ -933,6 +942,8 @@ Review Date :<<>>   Reviewed By :<<>>*/
     //this.paid = padelete.PAId
   }
   insertprno(items: any) {
+    items[0]['PRcreatedBy'] = this.employee.EmployeeNo;
+    console.log("item", items);
     this.paService.UpdateMsaprconfirmation(items).subscribe(data => {
       this.prDialog = false;
       this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'PRNOs Updated Succesfully' });

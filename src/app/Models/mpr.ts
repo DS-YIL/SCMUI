@@ -673,6 +673,7 @@ export class ASNfilters {
   PONo: string;
   Type: string;
   ReportType: string;
+  InvoiceNo: string;
 }
 export class VendorUserMaster {
   VendorId: number;

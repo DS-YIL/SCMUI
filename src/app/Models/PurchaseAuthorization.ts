@@ -139,6 +139,7 @@ export class ItemsViewModel {
   PRLineItemNo: string;
   rawdiscount: number;
   prapproval: boolean;
+  PRcreatedBy: string;
 }
 export class Additionaltaxes {
     HandlingAmount: number;
@@ -289,6 +290,8 @@ export class mprpadetailsmodel {
   incoterms: string;
   pacreatedby: string;
   pacreatedname: string;
+  typeofpurchase: string;
+  Reqdeliverydate: Date;
 }
 export class parequestedanddeletemodel {
   paid: number;

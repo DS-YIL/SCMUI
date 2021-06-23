@@ -1562,7 +1562,7 @@
         </div>
         <div class="ui-g-12 form-group">
           <label class="form-label">MPR Item Description</label>&nbsp;<span style="color:red">*</span>
-          <textarea formControlName="ItemDescription" maxlength="200" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
+          <textarea formControlName="ItemDescription" maxlength="2500" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
           <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemDescription.errors" class="invalid-feedback">Item Description Required.</span>
         </div>
 

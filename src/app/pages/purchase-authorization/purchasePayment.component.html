@@ -37,11 +37,11 @@
         <label for="Department" class="form-label label" style="margin-left: 12px;">PO Type:<span class="required-asterisk" style="color:red">*</span></label>
         <select [(ngModel)]="purchasedetails.potype" style="width:80%" class="form-control dropdown">
           <option value=""></option>
-          <option value=" Project WBS PO"> Project WBS PO</option>
-          <option value="Base Order PO">Base Order PO</option>
-          <option value="Cost Centre PO">Cost Centre PO</option>
-          <option value="CG PO">CG PO</option>
-          <option value="Dummy PO">Dummy PO</option>
+          <option value=" ProjectWBSPO"> Project WBS PO</option>
+          <option value="BaseOrderPO">Base Order PO</option>
+          <option value="CostCentrePO">Cost Centre PO</option>
+          <option value="CGPO">CG PO</option>
+          <option value="DummyPO">Dummy PO</option>
         </select>
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
@@ -178,9 +178,23 @@
         <label class="form-label label" style="margin-left: 12px;">IncoTerms:<span class="required-asterisk" style="color:red">*</span></label>
         <select [(ngModel)]="purchasedetails.incoterms" style="margin-left: 12px;width:80%" class="form-control dropdown">
           <option value=""></option>
-          <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Name}}</option>
+          <option *ngFor="let terms of incoterms" [value]="terms.Code">{{terms.Code}}--{{terms.Name}}</option>
         </select>&nbsp;
       </div>
+      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <label for="Purchasemode" class="form-label lblEdit" style="margin-left: 0px;">Inco Terms:</label>
+        <span class="valueEdit">{{purchasedetails.incoterms}}</span>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="Department" class="form-label label" style="margin-left: 1px;">Type Of Purchase:</label>
+      <select [(ngModel)]="purchasedetails.typeofpurchase" style="width:80%" class="form-control dropdown">
+        <option value=""></option>
+        <option value="SV">Single Vendor</option>
+        <option value="MV">Multiple Vendor</option>
+        <option value="RO">Repeat Order</option>
+        <option value="RC">Rate Contract</option>
+      </select>
     </div>
   </div>
 </div>
@@ -286,8 +300,9 @@
               <label class="col-md-10">SaleOrderNo:&nbsp;&nbsp;<span>{{rowData.SaleOrderNo}}</span></label>
             </div>
             <div class="row" style="margin-left:0px;margin-top:1px">
-              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;s
+              <label class="col-md-10">HSNCode:&nbsp;&nbsp;<span>{{rowData.HSNCode}}</span></label> &nbsp;&nbsp;
               <label class="col-md-10">PaymentTermCode:&nbsp;&nbsp;<span>{{rowData.PaymentTermCode}}</span></label>
+              <label class="col-md-10">ItemID:&nbsp;&nbsp;<span>{{rowData.Itemid}}</span></label>
             </div>
           </td>
           <td class="ptable-cell">
@@ -295,8 +310,8 @@
             <label>PO Description:</label><span style="color:lightcoral">(Maxlength 40 characters)</span> <input type="text" class="form-control" minlength="5"  [attr.maxlength]="40" [(ngModel)]="rowData.PODescription" />
             <label>PO Text:</label><span style="color:lightcoral">(Maxlength 1000 characters)</span> <textarea class="form-control" maxlength="1000" [(ngModel)]="rowData.POText"></textarea><br />
             <div class="row">
-              <label class="col-md-3">Supply:<input class="col-md-4" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') > -1" required /></label>
-              <label class="col-md-3">Service:<input class="col-md-5" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" required /></label>
+              <label class="col-md-3">Supply:<input class="col-md-4" type="checkbox" id="supply{{rowData.Mprrfqsplititemid}}" (change)="itemtype('supply',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') > -1"  required /></label>
+              <label class="col-md-3">Service:<input class="col-md-5" type="checkbox" id="service{{rowData.Mprrfqsplititemid}}" (change)="itemtype('service',$event,rowData)" style="height:14px;width:17px" [checked]="rowData.Itemid.indexOf('BOP') < 0" required /></label>
             </div>
           </td>
           <td class="ptable-cell">{{rowData.QuotationQty}}</td>
@@ -424,7 +439,7 @@
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <!--<label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.PFPercentage | percent}} </span><span>%</span></label>
                 <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
-                <label *ngIf="rowData.TotalPFAmount" style="width:200px">unPF:<<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
+                <label *ngIf="rowData.TotalPFAmount" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
                 <label *ngIf="rowData.TotalFreightAmount" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}}</span>&nbsp;<span *ngIf="rowData.FreightPercentage">({{rowData.FreightPercentage}}%)</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
@@ -436,7 +451,7 @@
                 <label *ngIf="rowData.InsuranceAmount" style="width:200px">InsuranceAmount:<span>{{rowData.InsuranceAmount | currency :'INR':'symbol':'1.2-2'}}</span>&nbsp;</label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
-                <label style="width:200px">HSN Code:<span>{{rowData.HSNCode}}</span></label>
+                <label style="width:200px">HSN Code:<span>{{rowData.HSNCode}}</span></label>  
                 <!--<label style="width:200px">POItemType:&nbsp;<span>{{rowData.itemtypesupplier}}</span></label>-->
               </div>
               <!--<div class="row" style="margin-left:3px;margin-right:2px">
@@ -448,7 +463,6 @@
 
             </div>
           </td>
-          at
           <td>{{rowData.QuotationQty  }}</td>
           <td>{{rowData.UnitPrice }}</td>
           <td>{{rowData.TargetSpend| currency:'INR'}}</td>
@@ -735,7 +749,9 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div>
         <label for="ProjectCode" class="form-label label" style="margin-left: 12px;">Insurance:</label>
-        <input type="text" style="margin-left:12px;width:60%" [(ngModel)]="purchasedetails.Insurance" class="form-control" />
+        <!--<input type="text" style="margin-left:12px;width:60%" [(ngModel)]="purchasedetails.Insurance" class="form-control" />-->
+        <p-radioButton class="form-inline col-md-3" name="group1" value="ByYil" label="By Yil" [(ngModel)]="purchasedetails.Insurance" inputId="opt1"></p-radioButton>
+        <p-radioButton class="form-inline col-md-3" name="group1" value="ByVendor" label="By Vendor" [(ngModel)]="purchasedetails.Insurancee" inputId="opt2"></p-radioButton>
       </div>
     </div>
   </div>
@@ -746,18 +762,36 @@
         <input type="text" [(ngModel)]="purchasedetails.DeliveryCondition" class="form-control" style="margin-left:12px;width:60%" />
       </div>
     </div>
-    <!--<div class="col-md-6 col-lg-6 col-sm-6 form-group">
+    <div class="col-md-4 col-lg-4 col-sm-4 form-group">
       <div>
-        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Credit Days:</label>
-        <input type="text" [(ngModel)]="purchasedetails.CreditDays" class="form-control" (keyup.enter)="addInput($event)" style="margin-left: 12px;width:60%" />
+        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">PO Material Requireddate:</label>
+        <input type="date" class="form-control" (change)="changed($event)" [(ngModel)]="purchasedetails.Reqdeliverydate">
       </div>
-    </div>-->
+    </div>
+    <!--<div class="col-md-6 col-lg-6 col-sm-6 form-group">
+    <div>
+      <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Credit Days:</label>
+      <input type="text" [(ngModel)]="purchasedetails.CreditDays" class="form-control" (keyup.enter)="addInput($event)" style="margin-left: 12px;width:60%" />
+    </div>
+  </div>-->
   </div>
   <div class="row">
-    <div class="col-md-6 col-lg-6 col-sm-6 form-group">
+    <div class="col-md-4 col-lg-4 col-sm-4 form-group">
       <div>
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Mode of Shipment:</label>
         <input type="text" [(ngModel)]="purchasedetails.ShipmentMode" class="form-control" style="margin-left:12px;width:60%" />
+      </div>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 form-group">
+      <div *ngFor="let item of purchasedetails.Item | slice:0:1; let i=index">
+        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">MPR Process Date:</label>
+        <input type="text" readonly [(ngModel)]="item.mprdeliverydate  " class="form-control" style="margin-left:12px;width:60%" />
+      </div>
+    </div>
+    <div class="col-md-4 col-lg-4 col-sm-4 form-group">
+      <div *ngFor="let item of purchasedetails.Item | slice:0:1; let i=index">
+        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Vendor Delivery Date:</label>
+        <input type="text" readonly [(ngModel)]="item.rfqdeliverydate " class="form-control" style="margin-left:12px;width:60%" />
       </div>
     </div>
   </div>

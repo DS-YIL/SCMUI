@@ -28,7 +28,7 @@
       <div class="col-md-4 col-lg-4 col-sm-4">
         <div style="margin-top:5px" *ngFor="let item of itemDetails | slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
           <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
-          <span class="valueEdit"> {{item.BuyerGroup}}</span>
+          <span class="valueEdit col-md-12"> {{item.BuyerGroup}}</span>
         </div>
       </div>
       <div class="col-md-4 col-lg-4 col-sm-4">
@@ -49,20 +49,25 @@
     </div>
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-4">
-        <label class="form-label">RFQ Delivery Date</label><br />
-        <input type="date" class="form-control" (change)="changed($event)" [(ngModel)]="pomaster.Reqdeliverydate">
-        <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+        <div class="form-group">
+          <label class="form-label">RFQ Delivery Date</label><br />
+          <input type="date" class="form-control" (change)="changed($event)" [(ngModel)]="pomaster.Reqdeliverydate">
+          <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+        </div>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4">
-        <label for="Department" class="form-label label" style="margin-left: 1px;">PO Type:</label>
-        <select [(ngModel)]="pomaster.potype" style="width:80%" class="form-control dropdown">
-          <option value=""></option>
-          <option value=" Project WBS PO"> Project WBS PO</option>
-          <option value="Base Order PO">Base Order PO</option>
-          <option value="Cost Centre PO">Cost Centre PO</option>
-          <option value="CG PO">CG PO</option>
-          <option value="Dummy PO">Dummy PO</option>
-        </select>
+        <div style="margin-top:5px" *ngFor="let item of itemDetails| slice:0:1; let i=index" class="col-lg-12 col-md-12 col-sm-12 form-group">
+          <label for="PO Type" class="form-label lblEdit" style="margin-left: 1px;">PO Type:</label>
+          <span class="valueEdit"> {{item.POtype}}</span>
+        </div>
+        <!--<select [(ngModel)]="pomaster.potype" style="width:80%" class="form-control dropdown">
+    <option value=""></option>
+    <option value=" Project WBS PO"> Project WBS PO</option>
+    <option value="Base Order PO">Base Order PO</option>
+    <option value="Cost Centre PO">Cost Centre PO</option>
+    <option value="CG PO">CG PO</option>
+    <option value="Dummy PO">Dummy PO</option>
+  </select>-->
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4">
         <label for="Department" class="form-label label" style="margin-left: 1px;">Purchase Type:</label>
@@ -86,10 +91,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </div><br />
 
 
-  <div class="form-control" style="height:100%;width:100%">
+  <div class="form-control" style="height:100%;width:100%;">
     <div class="row">
       <div class="col-md-4 col-sm-4 col-lg-4">
         <label>Material:</label> <input type="checkbox" id="supply" (click)="choosevarianttype('Material',$event)" style="height:14px;width:17px" name="Material" />
@@ -98,14 +103,14 @@
         <label>Service:</label><input type="checkbox" id="service" (click)="choosevarianttype('Service',$event)" style="height:14px;width:17px" name="Service" />
       </div>
     </div>
-  </div><br />
+  </div>
 
   <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
-    <p-table [value]="itemDetails" [paginator]="true" [rows]="10" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+    <p-table [value]="itemDetails"  [responsive]="true"  [style]="{'width':'100%','overflow':'auto!important'}">
       <ng-template pTemplate="header">
         <tr class="mprltbldata">
           <th>
-            <input type="checkbox" id="checked" (click)="selectAll($event,itemDetails)">
+            <input type="checkbox" id="checked"  (click)="selectAll($event,itemDetails)">
           </th>
           <th style="width:50px">Sl No</th>
           <th>Department</th>
@@ -271,7 +276,7 @@
       <div class="col-md-6 pt-2"> PO Terms:</div>
     </div>
     <div class="row" *ngIf="pomaster.Reqdeliverydate" style="height:500px">
-      <textarea type="text" class="form-control" [(ngModel)]="pomaster.poterms"></textarea>
+      <textarea type="text" style="margin-left:15px;margin-right:15px" class="form-control" [(ngModel)]="pomaster.poterms"></textarea>
     </div>
   </div>
   <div style="margin-top:10px;text-align:center">

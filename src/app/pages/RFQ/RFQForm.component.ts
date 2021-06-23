@@ -670,10 +670,11 @@ export class RFQFormComponent implements OnInit {
   GetUnMappedMPRItems(MPRrevisionid) {
     var qry = "select distinct Itemdetailsid as MRPItemsDetailsID,Itemid,RevisionId as MPRRevisionId,ItemDescription as ItemDescription,Quantity as QuotationQty,MPRItemInfo.UnitId,UnitName,SaleOrderNo,SOLineItemNo,MfgPartNo from MPRItemInfo ";
     qry = qry + " inner join RfqMAster on RfqMAster.MPRRevisionId=MPRItemInfo.RevisionId  inner join RfqRevisions_N on RfqRevisions_N.rfqMasterId=RfqMAster.RfqMasterId left join UnitMaster on UnitMaster.UnitId=MPRItemInfo.UnitId ";
-    qry = qry + " where RevisionId=" + MPRrevisionid + " and Itemdetailsid not in (select MPRItemDetailsid from RFQItems_N where RFQRevisionId in";
+    qry = qry + " where RevisionId=" + MPRrevisionid + " and (MPRItemInfo.deleteflag=0 or MPRItemInfo.deleteflag is null) and Itemdetailsid not in (select MPRItemDetailsid from RFQItems_N where RFQRevisionId in";
     qry = qry + " (select rfqRevisionId from RFQRevisions_N where rfqMasterId in (select RfqMasterId from RFQMaster where RFQItems_N.RFQRevisionId=" + this.RevisionId + " )))";
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = qry;
+    console.log("qry", qry)
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.nonMappedItem = data;
       console.log("this.nonMappedItem", this.nonMappedItem)

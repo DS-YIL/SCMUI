@@ -163,7 +163,7 @@ const routes: Routes = [{
     { path: "MonthlyReport2", component: MonthlyReport2Component, canActivate: [AuthGuard] },
      { path: "pocreation", component: POCreationComponent, canActivate: [AuthGuard] },
      { path: "pogeneration", component: POGenerationComponent, canActivate: [AuthGuard] },
-    { path: "pogeneration/:RevisionId", component: POGenerationComponent, canActivate: [AuthGuard] },
+    { path: "pogeneration/:POID", component: POGenerationComponent, canActivate: [AuthGuard] },
     { path: "polist", component: POListComponent, canActivate: [AuthGuard] },
     { path: "MVJustification", component: MVJustificationComponent, canActivate: [AuthGuard] },
     { path: "scrapregisterreport", component: ScrapRegisterReportComponent, canActivate: [AuthGuard] },
